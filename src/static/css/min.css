@@ -5373,18 +5373,29 @@ input[type=text].c-header-search__input.no-ajax {
     }
 
     .c-header__row {
-        height: 60px;
+        position: relative;
         display: flex;
-        flex-wrap: nowrap;
+        justify-content: space-between;
         align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
         padding-left: 50px;
         padding-right: 50px;
         min-height: 90px;
     }
+
+    /*.c-header__row {*/
+    /*    height: 60px;*/
+    /*    display: flex;*/
+    /*    flex-wrap: nowrap;*/
+    /*    align-items: center;*/
+    /*    position: fixed;*/
+    /*    top: 0;*/
+    /*    left: 0;*/
+    /*    right: 0;*/
+    /*    padding-left: 50px;*/
+    /*    padding-right: 50px;*/
+    /*    min-height: 90px;*/
+    /*}*/
+
 
     .c-header__row:empty {
         display: none;
@@ -18573,4 +18584,71 @@ a.woocommerce-store-notice__dismiss-link {
     background-repeat: repeat;
     background-position: center;
     background-size: 290px 290px;
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-container input {
+    width: 100%;
+    padding-right: 40px;
+    box-sizing: border-box;
+}
+
+.input-container .fa-lock,
+.input-container .fa-unlock {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+@media screen and (max-width: 767px) {
+    .input-container {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .input-container input {
+        min-width: 0;
+    }
+}
+
+.horizontal-line {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.horizontal-line::before,
+.horizontal-line::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+
+.horizontal-line:not(:empty)::before {
+    margin-right: .25em;
+}
+
+.horizontal-line:not(:empty)::after {
+    margin-left: .25em;
+}
+
+.google-icon {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.google-icon i {
+    font-size: 24px; /* Adjust the size as needed */
 }
