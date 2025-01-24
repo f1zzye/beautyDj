@@ -1,9 +1,9 @@
+from django.conf import settings
 from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.tokens import default_token_generator
 
@@ -23,7 +23,7 @@ def send_confirmation_email(request, user):
     email = EmailMessage(
         subject=mail_subject,
         body=message,
-        from_email='kosenko2401@gmail.com',
+        from_email=settings.EMAIL_HOST_USER,
         to=[user.email]
     )
     email.content_subtype = 'html'
