@@ -18652,3 +18652,24 @@ a.woocommerce-store-notice__dismiss-link {
 .google-icon i {
     font-size: 24px; /* Adjust the size as needed */
 }
+
+.alert {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.alert h6 {
+    margin: 0;
+    font-size: 14px;
+}
+
+.alert .fas {
+    margin-right: 5px;
+}
+
+
+

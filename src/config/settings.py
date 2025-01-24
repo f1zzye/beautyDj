@@ -109,13 +109,25 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = 'uk'
 
-TIME_ZONE = "UTC"
+LANGUAGES = [
+    ('en', 'English'),
+    ('uk', 'Ukrainian'),
+]
+
+USE_L10N = True
 
 USE_I18N = True
 
+TIME_ZONE = "UTC"
+
 USE_TZ = True
+
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'src/locale'),
+]
 
 
 # Static files (CSS, JavaScript, Images)
@@ -178,3 +190,12 @@ JAZZMIN_UI_TWEAKS = {
 
 
 AUTH_USER_MODEL = 'userauths.User'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'kosenko2401@gmail.com'
+EMAIL_HOST_PASSWORD = 'ceuofvyyivnamjzl'
+EMAIL_PORT = 587
+EMAIL_FAIL_SILENTLY = False
+

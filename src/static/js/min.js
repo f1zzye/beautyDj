@@ -4958,7 +4958,6 @@ IdeaparkQueue.init();
     };
 })(jQuery, window);
 
-
 document.getElementById('togglePassword').addEventListener('click', function () {
     const passwordInput = document.querySelector('input[name="password1"]');
     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
