@@ -193,6 +193,7 @@
 
 
     <script type="text/javascript" src="{% static 'js/hooks.min.js' %}" id="wp-hooks-js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="w.js?ver=202503" id="woo-tracks-js"></script>
     <script type="text/javascript" src="{% static 'js/jquery.min.js' %}" id="jquery-core-js"></script>
     <script type="text/javascript" src="{% static 'js/jquery-migrate.min.js' %}" id="jquery-migrate-js"></script>
@@ -567,7 +568,29 @@
                     <button type="button" class="h-cb h-cb--svg c-header__callback-close js-callback-close" id="ideapark-callback-close"><i class="ip-close"></i></button>
                 </div>
             </div>
+            {% if messages %}
+                <div class="fade-alert-container">
+                    {% for message in messages %}
+                        <div class="alert-box">
+                            <div class="alert alert-{{ message.tags }}">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <script>
+                $(document).ready(function() {
+                    setTimeout(function() {
+                        $('.fade-alert-container .alert').fadeOut('slow', function() {
+                            $('.fade-alert-container').remove();
+                        });
+                    }, 3000);
+                });
+            </script>
         </header>
+
 
 {% block content %}
 

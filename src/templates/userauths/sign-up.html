@@ -12,66 +12,68 @@
             <div class="woocommerce">
 
                 <div class="c-login" id="customer_login">
-    <div class="c-login__form js-register-form c-login__form--active">
-        <div class="c-login__header">Реєстрація</div>
-        <form method="post" class="c-form">
-    {% csrf_token %}
-    <div class="c-form__row">
-        <input type="text" placeholder="Ім'я користувача" name="username" class="c-form__input c-form__input--full c-form__input--fill woocommerce-Input woocommerce-Input--text input-text" autocomplete="email" value="">
-    </div>
-    <div class="c-form__row">
-        <input type="email" placeholder="E-mail адреса" name="email" class="c-form__input c-form__input--full c-form__input--fill woocommerce-Input woocommerce-Input--text input-text" autocomplete="email" value="">
-    </div>
-    <div class="c-form__row">
-        <div class="input-container">
-            <input type="password" placeholder="Пароль" name="password1" class="c-form__input c-form__input--full c-form__input--fill woocommerce-Input woocommerce-Input--text input-text" autocomplete="email" value="">
-            <i class="fa-solid fa-lock" id="togglePassword"></i>
-        </div>
-    </div>
-    <div class="c-form__row">
-        <input type="password" placeholder="Підтвердження паролю" name="password2" class="c-form__input c-form__input--full c-form__input--fill woocommerce-Input woocommerce-Input--text input-text" autocomplete="email" value="">
-    </div>
-    {% if messages or form.errors %}
-        <div class="alert alert-danger" role="alert">
-            <span class="fas fa-exclamation-circle"></span>
-            <h6>
-                {% if messages %}
-                    {% for message in messages %}
-                        {{ message }}
-                    {% endfor %}
-                {% else %}
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            {{ field.label }}: {{ error|escape }}
-                        {% endfor %}
-                    {% endfor %}
-                {% endif %}
-            </h6>
-        </div>
-    {% endif %}
-    <div class="woocommerce-privacy-policy-text">
-        <p>Натискаючи «Реєстрація», ви погоджуєтеся з <a href="path_to_terms_of_service_page" class="terms-of-service-link" target="_blank">Умовами обслуговування</a> та <a href="../faq/index.htm" class="woocommerce-privacy-policy-link" target="_blank">Політикою конфіденційності.</a>.</p>
-    </div>
-    <div class="c-form__row">
-        <input type="hidden" id="woocommerce-register-nonce" name="woocommerce-register-nonce" value="2b3d5da06c">
-        <input type="hidden" name="_wp_http_referer" value="/my-account/">
-        <button type="submit" class="c-button c-button--outline c-button--full woocommerce-Button button" name="register" value="Реєстрація">Реєстрація</button>
-    </div>
-    <div class="c-form__row">
-        <div class="horizontal-line">
-            <span>or</span>
-        </div>
-    </div>
-    <div class="google-icon">
-        <i class="fa-brands fa-google"></i>
-    </div>
-    <div class="c-login__bottom">
-        <div></div>
-        <a href="{% url 'userauths:sign-in' %}" class="c-login__register">Увійти<i class="ip-menu-right c-login__more-icon"></i></a>
-    </div>
-</form>
-    </div>
-</div>
+                    <div class="c-login__form js-register-form c-login__form--active">
+                        <div class="c-login__header">Реєстрація</div>
+                        <form method="post" class="c-form">
+                    {% csrf_token %}
+                    <div class="c-form__row">
+                        <input type="text" placeholder="Ім'я користувача" name="username" class="c-form__input c-form__input--full c-form__input--fill woocommerce-Input woocommerce-Input--text input-text" autocomplete="email" value="">
+                    </div>
+                    <div class="c-form__row">
+                        <input type="email" placeholder="E-mail адреса" name="email" class="c-form__input c-form__input--full c-form__input--fill woocommerce-Input woocommerce-Input--text input-text" autocomplete="email" value="">
+                    </div>
+                    <div class="c-form__row">
+                        <div class="input-container">
+                            <input type="password" placeholder="Пароль" name="password1" class="c-form__input c-form__input--full c-form__input--fill woocommerce-Input woocommerce-Input--text input-text" autocomplete="email" value="">
+                            <i class="fa-solid fa-lock" id="togglePassword"></i>
+                        </div>
+                    </div>
+                    <div class="c-form__row">
+                        <input type="password" placeholder="Підтвердження паролю" name="password2" class="c-form__input c-form__input--full c-form__input--fill woocommerce-Input woocommerce-Input--text input-text" autocomplete="email" value="">
+                    </div>
+                    {% if messages or form.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <span class="fas fa-exclamation-circle"></span>
+                            <h6>
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                {% else %}
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            {{ field.label }}: {{ error|escape }}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+                            </h6>
+                        </div>
+                    {% endif %}
+                    <div class="woocommerce-privacy-policy-text">
+                        <p>Натискаючи «Реєстрація», ви погоджуєтеся з <a href="path_to_terms_of_service_page" class="terms-of-service-link" target="_blank">Умовами обслуговування</a> та <a href="../faq/index.htm" class="woocommerce-privacy-policy-link" target="_blank">Політикою конфіденційності.</a>.</p>
+                    </div>
+                    <div class="c-form__row">
+                        <input type="hidden" id="woocommerce-register-nonce" name="woocommerce-register-nonce" value="2b3d5da06c">
+                        <input type="hidden" name="_wp_http_referer" value="/my-account/">
+                        <button type="submit" class="c-button c-button--outline c-button--full woocommerce-Button button" name="register" value="Реєстрація">Реєстрація</button>
+                    </div>
+                    <div class="c-form__row">
+                        <div class="horizontal-line">
+                            <span>або</span>
+                        </div>
+                    </div>
+                    <div class="google-icon">
+                        <a href="{% url 'social:begin' 'google-oauth2' %}" target="_blank">
+                            <i class="fa-brands fa-google"></i>
+                        </a>
+                    </div>
+                    <div class="c-login__bottom">
+                        <div></div>
+                        <a href="{% url 'userauths:sign-in' %}" class="c-login__register">Увійти<i class="ip-menu-right c-login__more-icon"></i></a>
+                    </div>
+                </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

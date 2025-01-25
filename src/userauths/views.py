@@ -21,7 +21,7 @@ def register_view(request):
             new_user.is_active = False
             new_user.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, f'Обліковий запис створено для {username}. Будь ласка, підтвердіть свою електронну пошту, щоб активувати обліковий запис.')
+            messages.success(request, f'Будь ласка, підтвердіть свою електронну пошту, щоб активувати обліковий запис.')
             send_confirmation_email(request, new_user)
             return redirect('core:index')
     else:

@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "core",
     "userauths",
 
-    'social_django',
+    # "social_django",
 ]
 
 MIDDLEWARE = [
@@ -56,6 +56,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # "social_django.middleware.SocialAuthExceptionMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -71,6 +72,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # "social_django.context_processors.backends",
+                # "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -196,9 +199,16 @@ AUTH_USER_MODEL = 'userauths.User'
 
 LOGIN_URL = 'userauths:sign-in'
 
-AUTHENTICATION_BACKENDS = (
-    'social_core.backends.google.GoogleOAuth2',
-)
+LOGIN_REDIRECT_URL = 'core:index'
+
+# SOCIAL_AUTH_URL_NAMESPACE = 'social'
+#
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ""
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ""
+#
+# AUTHENTICATION_BACKENDS = (
+#     'social_core.backends.google.GoogleOAuth2',
+# )
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
