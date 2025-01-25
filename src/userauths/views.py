@@ -6,7 +6,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib.auth.models import User
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth import get_user_model
 
 
@@ -21,7 +21,7 @@ def register_view(request):
             new_user.is_active = False
             new_user.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}. Please confirm your email to activate your account.')
+            messages.success(request, f'Обліковий запис створено для {username}. Будь ласка, підтвердіть свою електронну пошту, щоб активувати обліковий запис.')
             send_confirmation_email(request, new_user)
             return redirect('core:index')
     else:
@@ -31,6 +31,37 @@ def register_view(request):
         'form': form,
     }
     return render(request, 'userauths/sign-up.html', context)
+
+
+def login_view(request):
+    if request.user.is_authenticated:
+        messages.warning(request, f'Ви вже увійшли в систему.')
+        return redirect('core:index')
+
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.get(email=email)
+            user = authenticate(request, email=email, password=password)
+
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'Ласкаво просимо, {user.username}')
+                return redirect('core:index')
+            else:
+                messages.warning(request, 'Користувач не існує, створіть обліковий запис.')
+        except:
+            messages.warning(request, f'Користувач з {email} не існує.')
+
+    return render(request, 'userauths/sign-in.html')
+
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'Ви вийшли з системи.')
+    return redirect('userauths:sign-in')
 
 
 def activate(request, uidb64, token):
@@ -44,8 +75,8 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        messages.success(request, 'Your account has been activated successfully!')
+        messages.success(request, 'Ваш обліковий запис було успішно активовано!')
         return redirect('core:index')
     else:
-        messages.error(request, 'Activation link is invalid!')
+        messages.error(request, 'Посилання для активації недійсне!')
         return redirect('core:index')

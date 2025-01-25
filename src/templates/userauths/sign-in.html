@@ -1,0 +1,96 @@
+{%  extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="l-section l-section--container l-section--bottom-margin l-section--no-sidebar l-section--top-margin-60 l-section--white">
+    <div class="l-section__content">
+        <div class="woocommerce">
+
+            <div class="c-login" id="customer_login">
+
+                <div class="c-login__form js-login-form c-login__form--active">
+                    <div class="c-login__header">Увійти</div>
+                    <form class="c-form" method="post">
+					{% csrf_token %}
+                        <div class="c-form__row">
+                            <input type="email" class="c-form__input c-form__input--full c-form__input--fill woocommerce-Input woocommerce-Input--text input-text" placeholder="E-mail адреса" name="email" id="email" required autocomplete="email" value="">
+                        </div>
+<!--                        <div class="c-form__row">-->
+<!--                            <input class="c-form__input c-form__input&#45;&#45;full c-form__input&#45;&#45;fill woocommerce-Input woocommerce-Input&#45;&#45;text input-text" placeholder="Пароль" type="password" required name="password" id="password" autocomplete="current-password">-->
+<!--                            <i class="fa-solid fa-lock" id="togglePassword"></i>-->
+<!--                        </div>-->
+                        <div class="c-form__row">
+                            <div class="input-container">
+                                <input type="password" placeholder="Пароль" id="password" name="password" class="c-form__input c-form__input--full c-form__input--fill woocommerce-Input woocommerce-Input--text input-text" required autocomplete="current-password" value="">
+                                <i class="fa-solid fa-lock" id="togglePassword" style="cursor: pointer;"></i>
+                            </div>
+                        </div>
+                        {% if messages or form.errors %}
+							<div class="alert alert-danger" role="alert">
+								<span class="fas fa-exclamation-circle"></span>
+								<h6>
+									{% if messages %}
+										{% for message in messages %}
+											{{ message }}
+										{% endfor %}
+									{% else %}
+										{% for field in form %}
+											{% for error in field.errors %}
+												{{ field.label }}: {{ error|escape }}
+											{% endfor %}
+										{% endfor %}
+									{% endif %}
+								</h6>
+							</div>
+						{% endif %}
+
+
+                        <div class="c-form__row c-form__row--inline c-login__remember">
+                            <input type="hidden" id="woocommerce-login-nonce" name="woocommerce-login-nonce" value="c4f790ac8d"><input type="hidden" name="_wp_http_referer" value="/my-account/"> <label class="c-form__label">
+                                <input class="c-form__checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever"> Запам&#039;ятати мене </label>
+                        </div>
+
+                        <div class="c-form__row">
+                            <button type="submit" class="c-button c-button--outline c-button--full woocommerce-Button button" name="login" value="Увійти">Увійти</button>
+                        </div>
+                        <div class="c-form__row">
+                            <div class="horizontal-line">
+                                <span>or</span>
+                            </div>
+                        </div>
+                        <div class="google-icon">
+                            <i class="fa-brands fa-google"></i>
+                        </div>
+
+
+                        <div class="c-login__bottom">
+                            <div class="c-login__lost-password">
+                                <a class="c-login__lost-password-link" href="lost-password/index.htm">Втратили свій пароль?</a>
+                            </div>
+                            <a href="{% url 'userauths:sign-up' %}" class="c-login__register">Реєстрація<i class="ip-menu-right c-login__more-icon"></i></a>
+                        </div>
+
+
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const passwordField = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+
+    togglePassword.addEventListener('click', function () {
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+
+        this.classList.toggle('fa-lock');
+        this.classList.toggle('fa-unlock');
+    });
+</script>
+
+{% endblock %}

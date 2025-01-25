@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     # Custom apps
     "core",
     "userauths",
+
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -191,6 +193,12 @@ JAZZMIN_UI_TWEAKS = {
 
 
 AUTH_USER_MODEL = 'userauths.User'
+
+LOGIN_URL = 'userauths:sign-in'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+)
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
