@@ -322,7 +322,9 @@
 
 
 
-                            <img fetchpriority="high" width="1654" height="538" src="{% static 'imgs/Web_logo.png' %}" alt="OnlyOneBeauty" class="c-header__logo-img c-header__logo-img--mobile">
+                            <a href="{% url 'core:index' %}">
+                                <img fetchpriority="high" width="1654" height="538" src="{% static 'imgs/Web_logo.png' %}" alt="OnlyOneBeauty" class="c-header__logo-img c-header__logo-img--mobile">
+                            </a>
 
 
                         </div>
@@ -333,7 +335,7 @@
                                 </a>
                             </div>
                             <div class="c-header__auth-button">
-                                <a class="c-header__button-link c-header__button-link--account" title="Login" href="my-account/index.htm" rel="nofollow"><i class="ip-user">
+                                <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow"><i class="ip-user">
                                         <!-- --></i></a> </div>
                             <div class="c-header__wishlist">
                                 <a class="c-header__button-link" href="wishlist/index.htm"><i class="ip-wishlist c-header__wishlist-icon"></i><span class="js-wishlist-info"></span></a>
@@ -357,7 +359,7 @@
                     <div class="c-header__menu-wrap js-mobile-menu-wrap"></div>
                     <nav itemscope="" itemtype="http://schema.org/SiteNavigationElement" class="c-mobile-menu c-mobile-menu--top-menu js-mobile-top-menu">
                         <ul id="mobile-top-menu" class="c-mobile-menu__list">
-                            <li id="menu-item-5407" class="c-mobile-menu__item current-menu-item current_page_item menu-item-5407"><a href="index.htm" aria-current="page">Головна</a></li>
+                            <li id="menu-item-5407" class="c-mobile-menu__item current-menu-item current_page_item menu-item-5407"><a href="{% url 'core:index' %}" aria-current="page">Головна</a></li>
                             <li id="menu-item-5403" class="c-mobile-menu__item c-mobile-menu__item--has-children menu-item-5403"><a href="shop/index.htm">Каталог</a>
 
                                 <!-- подпунткы каталога в мобильной версии -->
@@ -435,7 +437,7 @@
                         </a>
                     </div>
                     <div class="c-header__auth-button">
-                        <a class="c-header__button-link c-header__button-link--account" title="Login" href="my-account/index.htm" rel="nofollow"><i class="ip-user">
+                        <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow"><i class="ip-user">
                                 <!-- --></i></a> </div>
                     <div class="c-header__wishlist">
                         <a class="c-header__button-link" href="wishlist/index.htm"><i class="ip-wishlist c-header__wishlist-icon"></i><span class="js-wishlist-info"></span></a>
@@ -454,14 +456,16 @@
                         <div class="c-header__col-left">
                             <div class="c-header__logo">
 
-                                <img width="1654" height="538" src="{% static 'imgs/Web_logo.png' %}" alt="OnlyOneBeauty" class="c-header__logo-img c-header__logo-img--desktop">
+                                <a href="{% url 'core:index' %}">
+                                    <img width="1654" height="538" src="{% static 'imgs/Web_logo.png' %}" alt="OnlyOneBeauty" class="c-header__logo-img c-header__logo-img--desktop">
+                                </a>
 
                             </div>
                         </div>
                         <div class="c-header__col-center">
                             <nav itemscope="" itemtype="http://schema.org/SiteNavigationElement" class="c-top-menu js-top-menu">
                                 <ul id="top-menu-desktop" class="c-top-menu__list">
-                                    <li class="c-top-menu__item current-menu-item current_page_item menu-item-5407 js-menu-item"><a href="index.htm" aria-current="page">Головна</a></li>
+                                    <li class="c-top-menu__item current-menu-item current_page_item menu-item-5407 js-menu-item"><a href="{% url 'core:index' %}" aria-current="page">Головна</a></li>
                                     <li class="c-top-menu__item c-top-menu__item--has-children menu-item-5403 js-menu-item"><a href="shop/index.htm">Каталог</a>
 
                                         <!-- подпунткы каталога в пк версии -->
@@ -542,7 +546,7 @@
                                     </a>
                                 </div>
                                 <div class="c-header__auth-button">
-                                    <a class="c-header__button-link c-header__button-link--account" title="Login" href="my-account/index.htm" rel="nofollow"><i class="ip-user">
+                                    <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow"><i class="ip-user">
                                             <!-- --></i></a> </div>
                                 <div class="c-header__wishlist">
                                     <a class="c-header__button-link" href="wishlist/index.htm"><i class="ip-wishlist c-header__wishlist-icon"></i><span class="js-wishlist-info"></span></a>
@@ -568,6 +572,7 @@
                     <button type="button" class="h-cb h-cb--svg c-header__callback-close js-callback-close" id="ideapark-callback-close"><i class="ip-close"></i></button>
                 </div>
             </div>
+
             {% if messages %}
                 <div class="fade-alert-container">
                     {% for message in messages %}

@@ -67,7 +67,7 @@
 
                         <div class="c-login__bottom">
                             <div class="c-login__lost-password">
-                                <a class="c-login__lost-password-link" href="lost-password/index.htm">Втратили свій пароль?</a>
+                                <a class="c-login__lost-password-link" href="{% url 'userauths:password_reset' %}">Втратили свій пароль?</a>
                             </div>
                             <a href="{% url 'userauths:sign-up' %}" class="c-login__register">Реєстрація<i class="ip-menu-right c-login__more-icon"></i></a>
                         </div>

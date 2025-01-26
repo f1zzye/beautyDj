@@ -1,13 +1,22 @@
+from django.conf import settings
 from django.shortcuts import render, redirect
 from userauths.forms import UserRegisterForm
 from django.contrib import messages
-from userauths.services.emails import send_confirmation_email
+from userauths.services.emails import send_confirmation_email, send_password_reset_email
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth import get_user_model
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 User = get_user_model()
@@ -62,6 +71,41 @@ def logout_view(request):
     logout(request)
     messages.success(request, 'Ви вийшли з системи.')
     return redirect('userauths:sign-in')
+
+
+# class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+#     template_name = 'reset-password/password_reset.html'
+#     email_template_name = 'emails/password_reset_email.html'
+#     subject_template_name = 'reset-password/password_reset_subject.html'
+#     success_message = "We've emailed you instructions for setting your password, " \
+#                       "if an account exists with the email you entered. You should receive them shortly." \
+#                       " If you don't receive an email, " \
+#                       "please make sure you've entered the address you registered with, and check your spam folder."
+#     success_url = reverse_lazy('core:index')
+
+
+def password_reset_view(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            success_url, success_message = send_password_reset_email(request, user)
+            messages.success(request, success_message)
+            return redirect(success_url)
+        except User.DoesNotExist:
+            messages.error(request, _("Користувача з такою електронною адресою не знайдено."))
+            return redirect('userauths:password_reset')
+    return render(request, 'reset-password/password_reset.html')
+
+
+class CustomPasswordResetConfirmView(SuccessMessageMixin, PasswordResetConfirmView):
+    template_name = 'reset-password/password_reset_confirm.html'
+    success_url = reverse_lazy('core:index')
+    success_message = _("Новий пароль встановлено.")
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        return response
 
 
 def activate(request, uidb64, token):
