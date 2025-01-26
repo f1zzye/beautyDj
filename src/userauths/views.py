@@ -118,7 +118,7 @@ def activate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        login(request, user)
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         messages.success(request, 'Ваш обліковий запис було успішно активовано!')
         return redirect('core:index')
     else:
