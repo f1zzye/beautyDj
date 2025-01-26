@@ -31,24 +31,19 @@
                     <div class="c-form__row">
                         <input type="password" placeholder="Підтвердження паролю" name="password2" class="c-form__input c-form__input--full c-form__input--fill woocommerce-Input woocommerce-Input--text input-text" autocomplete="email" value="">
                     </div>
-                    {% if messages or form.errors %}
+                    {% if form.errors %}
                         <div class="alert alert-danger" role="alert">
                             <span class="fas fa-exclamation-circle"></span>
                             <h6>
-                                {% if messages %}
-                                    {% for message in messages %}
-                                        {{ message }}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        {{ field.label }}: {{ error|escape }}
                                     {% endfor %}
-                                {% else %}
-                                    {% for field in form %}
-                                        {% for error in field.errors %}
-                                            {{ field.label }}: {{ error|escape }}
-                                        {% endfor %}
-                                    {% endfor %}
-                                {% endif %}
+                                {% endfor %}
                             </h6>
                         </div>
                     {% endif %}
+
                     <div class="woocommerce-privacy-policy-text">
                         <p>Натискаючи «Реєстрація», ви погоджуєтеся з <a href="path_to_terms_of_service_page" class="terms-of-service-link" target="_blank">Умовами обслуговування</a> та <a href="../faq/index.htm" class="woocommerce-privacy-policy-link" target="_blank">Політикою конфіденційності.</a>.</p>
                     </div>

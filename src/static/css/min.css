@@ -18660,6 +18660,7 @@ a.woocommerce-store-notice__dismiss-link {
     padding: 10px;
     margin-top: 10px;
     border-radius: 5px;
+    font-size: 16px; /* Увеличим шрифт для лучшей читаемости */
 }
 
 .alert h6 {
@@ -18795,4 +18796,22 @@ a.woocommerce-store-notice__dismiss-link {
     width: 80%;
     max-width: 600px;
     text-align: center;
+}
+
+/* Media queries for mobile devices */
+@media (max-width: 768px) {
+    .alert {
+        font-size: 14px; /* Уменьшим шрифт для мобильных устройств */
+        padding: 8px; /* Уменьшим отступы */
+    }
+
+    .alert-box {
+        padding: 10px; /* Уменьшим отступы */
+    }
+
+    .fade-alert-container {
+        top: 50px; /* Уменьшим отступ сверху */
+        width: 90%; /* Увеличим ширину */
+        max-width: 90%; /* Увеличим максимальную ширину */
+    }
 }

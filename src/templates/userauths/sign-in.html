@@ -25,25 +25,18 @@
                                 <i class="fa-solid fa-lock" id="togglePassword" style="cursor: pointer;"></i>
                             </div>
                         </div>
-                        {% if messages or form.errors %}
-							<div class="alert alert-danger" role="alert">
-								<span class="fas fa-exclamation-circle"></span>
-								<h6>
-									{% if messages %}
-										{% for message in messages %}
-											{{ message }}
-										{% endfor %}
-									{% else %}
-										{% for field in form %}
-											{% for error in field.errors %}
-												{{ field.label }}: {{ error|escape }}
-											{% endfor %}
-										{% endfor %}
-									{% endif %}
-								</h6>
-							</div>
-						{% endif %}
-
+                        {% if form.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                <span class="fas fa-exclamation-circle"></span>
+                                <h6>
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            {{ field.label }}: {{ error|escape }}
+                                        {% endfor %}
+                                    {% endfor %}
+                                </h6>
+                            </div>
+                        {% endif %}
 
                         <div class="c-form__row c-form__row--inline c-login__remember">
                             <input type="hidden" id="woocommerce-login-nonce" name="woocommerce-login-nonce" value="c4f790ac8d"><input type="hidden" name="_wp_http_referer" value="/my-account/"> <label class="c-form__label">
