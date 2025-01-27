@@ -1,55 +1,51 @@
-from django.conf import settings
-from django.shortcuts import render, redirect
-from userauths.forms import UserRegisterForm
 from django.contrib import messages
-from userauths.services.emails import send_confirmation_email, send_password_reset_email
+from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.encoding import force_str
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
-from django.contrib.sites.shortcuts import get_current_site
-from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth import get_user_model
-from django.urls import reverse_lazy
-from django.utils.translation import gettext_lazy as _
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
+from django.utils.translation import gettext_lazy as _
 
+from userauths.forms import UserRegisterForm
+from userauths.services.emails import (send_confirmation_email,
+                                       send_password_reset_email)
 
 User = get_user_model()
 
 
 def register_view(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = UserRegisterForm(request.POST or None)
         if form.is_valid():
             new_user = form.save(commit=False)
             new_user.is_active = False
             new_user.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Будь ласка, підтвердіть свою електронну пошту, щоб активувати обліковий запис.')
+            username = form.cleaned_data.get("username")
+            messages.success(
+                request, f"Будь ласка, підтвердіть свою електронну пошту, щоб активувати обліковий запис."
+            )
             send_confirmation_email(request, new_user)
-            return redirect('core:index')
+            return redirect("core:index")
     else:
         form = UserRegisterForm()
 
     context = {
-        'form': form,
+        "form": form,
     }
-    return render(request, 'userauths/sign-up.html', context)
+    return render(request, "userauths/sign-up.html", context)
 
 
 def login_view(request):
     if request.user.is_authenticated:
-        messages.warning(request, f'Ви вже увійшли в систему.')
-        return redirect('core:index')
+        messages.warning(request, f"Ви вже увійшли в систему.")
+        return redirect("core:index")
 
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
 
         try:
             user = User.objects.get(email=email)
@@ -57,20 +53,20 @@ def login_view(request):
 
             if user is not None:
                 login(request, user)
-                messages.success(request, f'Ласкаво просимо, {user.username}')
-                return redirect('core:index')
+                messages.success(request, f"Ласкаво просимо, {user.username}")
+                return redirect("core:index")
             else:
-                messages.warning(request, 'Користувач не існує, створіть обліковий запис.')
+                messages.warning(request, "Користувач не існує, створіть обліковий запис.")
         except:
-            messages.warning(request, f'Користувач з {email} не існує.')
+            messages.warning(request, f"Користувач з {email} не існує.")
 
-    return render(request, 'userauths/sign-in.html')
+    return render(request, "userauths/sign-in.html")
 
 
 def logout_view(request):
     logout(request)
-    messages.success(request, 'Ви вийшли з системи.')
-    return redirect('userauths:sign-in')
+    messages.success(request, "Ви вийшли з системи.")
+    return redirect("userauths:sign-in")
 
 
 # class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
@@ -85,8 +81,8 @@ def logout_view(request):
 
 
 def password_reset_view(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
+    if request.method == "POST":
+        email = request.POST.get("email")
         try:
             user = User.objects.get(email=email)
             success_url, success_message = send_password_reset_email(request, user)
@@ -94,13 +90,13 @@ def password_reset_view(request):
             return redirect(success_url)
         except User.DoesNotExist:
             messages.error(request, _("Користувача з такою електронною адресою не знайдено."))
-            return redirect('userauths:password_reset')
-    return render(request, 'reset-password/password_reset.html')
+            return redirect("userauths:password_reset")
+    return render(request, "reset-password/password_reset.html")
 
 
 class CustomPasswordResetConfirmView(SuccessMessageMixin, PasswordResetConfirmView):
-    template_name = 'reset-password/password_reset_confirm.html'
-    success_url = reverse_lazy('core:index')
+    template_name = "reset-password/password_reset_confirm.html"
+    success_url = reverse_lazy("core:index")
     success_message = _("Новий пароль встановлено.")
 
     def form_valid(self, form):
@@ -118,9 +114,9 @@ def activate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-        messages.success(request, 'Ваш обліковий запис було успішно активовано!')
-        return redirect('core:index')
+        login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+        messages.success(request, "Ваш обліковий запис було успішно активовано!")
+        return redirect("core:index")
     else:
-        messages.error(request, 'Посилання для активації недійсне!')
-        return redirect('core:index')
+        messages.error(request, "Посилання для активації недійсне!")
+        return redirect("core:index")
