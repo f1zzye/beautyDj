@@ -3,8 +3,9 @@ from django.core.validators import (MaxValueValidator, MinValueValidator,
 from django.db import models
 from django.utils.html import mark_safe
 from django.utils.timezone import now
-from shortuuid.django_fields import ShortUUIDField
 from django.utils.translation import gettext_lazy as _
+from shortuuid.django_fields import ShortUUIDField
+
 from userauths.models import User
 
 STATUS_CHOICE = (
@@ -49,7 +50,9 @@ class Product(models.Model):
 
     title = models.CharField(_("Назва"), max_length=100, default="Product")
     image = models.ImageField(_("Зображення"), upload_to=user_directory_path, default="product.jpg")
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name="category", verbose_name=_("Категорія"))
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, null=True, related_name="category", verbose_name=_("Категорія")
+    )
     description = models.TextField(_("Опис"), null=True, blank=True, default="This is the product")
 
     price = models.DecimalField(_("Ціна"), max_digits=99, decimal_places=2, default="1.99")
@@ -59,7 +62,7 @@ class Product(models.Model):
     status = models.BooleanField(_("Активний"), default=True)
     in_stock = models.BooleanField(_("В наявності"), default=True)
     featured = models.BooleanField(_("Рекомендований"), default=False)
-    digital = models.BooleanField(_("Цифровий"), default=False)
+    # digital = models.BooleanField(_("Цифровий"), default=False)
 
     sku = ShortUUIDField(unique=True, length=4, max_length=10, prefix="sku", alphabet="1234567890")
 
@@ -84,7 +87,9 @@ class Product(models.Model):
 
 class ProductImages(models.Model):
     images = models.ImageField(_("Зображення"), upload_to="product-images", default="product.jpg")
-    product = models.ForeignKey(Product, verbose_name=_("Продукт"), related_name="p_images", on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(
+        Product, verbose_name=_("Продукт"), related_name="p_images", on_delete=models.SET_NULL, null=True
+    )
     data = models.DateTimeField(_("Дата"), auto_now_add=True)
 
     class Meta:
@@ -101,7 +106,7 @@ class CartOrder(models.Model):
     phone = models.CharField(
         _("Телефон"),
         max_length=15,
-        validators=[RegexValidator(r"^\+?1?\d{9,15}$", _("Введіть дійсний номер телефону."))]
+        validators=[RegexValidator(r"^\+?1?\d{9,15}$", _("Введіть дійсний номер телефону."))],
     )
 
     address = models.CharField(_("Адреса"), max_length=100, null=True, blank=True)
@@ -116,12 +121,7 @@ class CartOrder(models.Model):
     paid_status = models.BooleanField(_("Статус оплати"), default=False)
     order_date = models.DateTimeField(_("Дата замовлення"), auto_now_add=True)
     product_status = models.CharField(
-        _("Статус продукту"),
-        choices=STATUS_CHOICE,
-        max_length=30,
-        default="розглядається",
-        null=True,
-        blank=True
+        _("Статус продукту"), choices=STATUS_CHOICE, max_length=30, default="розглядається", null=True, blank=True
     )
 
     sku = ShortUUIDField(_("SKU"), null=True, blank=True, length=5, prefix="SKU", max_length=20, alphabet="1234567890")
@@ -134,7 +134,7 @@ class CartOrder(models.Model):
 
 class CartOrderItems(models.Model):
     order = models.ForeignKey(CartOrder, verbose_name=_("Замовлення"), on_delete=models.CASCADE)
-    invoice_num = models.CharField(_("Номер Інвойсу"), max_length=200)
+    invoice_num = models.CharField(_("Номер Замовлення"), max_length=200)
     product_status = models.CharField(_("Статус продукту"), max_length=200)
     item = models.CharField(_("Елемент"), max_length=200)
     image = models.CharField(_("Зображення"), max_length=200)
@@ -172,7 +172,7 @@ class Address(models.Model):
         _("Телефон"),
         max_length=15,
         null=True,
-        validators=[RegexValidator(r"^\+?1?\d{9,15}$", _("Введіть дійсний номер телефону."))]
+        validators=[RegexValidator(r"^\+?1?\d{9,15}$", _("Введіть дійсний номер телефону."))],
     )
     status = models.BooleanField(_("Статус"), default=False)
 
@@ -184,9 +184,7 @@ class Address(models.Model):
 class Coupon(models.Model):
     code = models.CharField(_("Код"), max_length=50)
     discount = models.PositiveIntegerField(
-        _("Знижка"),
-        default=1,
-        validators=[MinValueValidator(1), MaxValueValidator(100)]
+        _("Знижка"), default=1, validators=[MinValueValidator(1), MaxValueValidator(100)]
     )
     active = models.BooleanField(_("Активний"), default=True)
     start_date = models.DateTimeField(_("Дата початку"), default=now)

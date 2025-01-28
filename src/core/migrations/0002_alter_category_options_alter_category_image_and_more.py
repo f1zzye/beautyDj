@@ -17,15 +17,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="category",
             name="image",
-            field=models.ImageField(
-                default="category.jpg", upload_to="category", verbose_name="Зображення"
-            ),
+            field=models.ImageField(default="category.jpg", upload_to="category", verbose_name="Зображення"),
         ),
         migrations.AlterField(
             model_name="category",
             name="title",
-            field=models.CharField(
-                default="Food", max_length=100, verbose_name="Назва"
-            ),
+            field=models.CharField(default="Food", max_length=100, verbose_name="Назва"),
         ),
     ]

@@ -1,50 +1,47 @@
 from django.contrib import admin
-from core.models import Category, Coupon, Product, ProductImages, CartOrder, CartOrderItems, WishList, Address
+
+from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
+                         Product, ProductImages, WishList)
 
 
 class ProductImagesAdmin(admin.TabularInline):
     model = ProductImages
 
 
+@admin.register(Product)
 class ProductsAdmin(admin.ModelAdmin):
     inlines = [ProductImagesAdmin]
-    list_display = ['user', 'title', 'products_image', 'price', 'category', 'featured', 'product_status', 'pid']
+    list_display = ["user", "title", "products_image", "price", "category", "featured", "product_status", "pid"]
+    readonly_fields = ["pid", "sku"]
 
 
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['title', 'category_image']
+    list_display = ["title", "category_image"]
+    readonly_fields = ["cid"]
 
 
-class VendorAdmin(admin.ModelAdmin):
-    list_display = ['title', 'vendor_image']
-
-
+@admin.register(CartOrder)
 class CartOrderAdmin(admin.ModelAdmin):
-    list_editable = ['paid_status', 'product_status']
-    list_display = ['user', 'price', 'paid_status', 'order_date', 'product_status', 'sku']
+    list_editable = ["paid_status", "product_status"]
+    list_display = ["user", "price", "paid_status", "order_date", "product_status", "sku"]
+    readonly_fields = ["sku", "oid"]
 
 
+@admin.register(CartOrderItems)
 class CartOrderItemsAdmin(admin.ModelAdmin):
-    list_display = ['order', 'invoice_num', 'item', 'image', 'quantity', 'price', 'total']
+    list_display = ["order", "invoice_num", "item", "image", "quantity", "price", "total"]
 
 
-class ProductReviewAdmin(admin.ModelAdmin):
-    list_display = ['user', 'product', 'rating', 'review', 'date']
-
-
+@admin.register(WishList)
 class WishListAdmin(admin.ModelAdmin):
-    list_display = ['user', 'product', 'date']
+    list_display = ["user", "product", "date"]
 
 
+@admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
-    list_editable = ['address', 'status']
-    list_display = ['user', 'address', 'status']
+    list_editable = ["address", "status"]
+    list_display = ["user", "address", "status"]
 
 
-admin.site.register(Product, ProductsAdmin)
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(CartOrder, CartOrderAdmin)
-admin.site.register(CartOrderItems, CartOrderItemsAdmin)
-admin.site.register(WishList, WishListAdmin)
-admin.site.register(Address, AddressAdmin)
 admin.site.register(Coupon)
