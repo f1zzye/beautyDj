@@ -69,27 +69,16 @@
                                         <div class="c-ip-image-list-1 c-ip-image-list-1--carousel">
                                             <div class="c-ip-image-list-1__wrap c-ip-image-list-1__wrap--carousel">
                                                 <div class="c-ip-image-list-1__list c-ip-image-list-1__list--carousel  js-image-list-1 h-carousel h-carousel--dots-hide h-carousel--nav-hide">
+                                                {% for category in categories %}
                                                     <div class="c-ip-image-list-1__item c-ip-image-list-1__item--carousel">
                                                         <a href="product-category/dlya_volossya/index.htm" class="c-ip-image-list-1__link">
                                                             <div class="c-ip-image-list-1__thumb">
-                                                                <img loading="lazy" decoding="async" class="c-ip-image-list-1__image" width="115" height="115" src="{% static 'imgs/main/hair.jpg' %}" srcset="{% static 'imgs/main/hair.jpg' %}" sizes="auto, (max-width: 115px) 100vw, 115px" alt="photo_2024-11-15_12-24-26" loading="lazy"> </div>
-                                                            <div class="c-ip-image-list-1__title">Для волосся</div>
+                                                                <img loading="lazy" decoding="async" class="c-ip-image-list-1__image" width="115" height="115" src="{{ category.image.url }}" srcset="{{ category.image.url }}" sizes="auto, (max-width: 115px) 100vw, 115px" alt="photo_2024-11-15_12-24-26" loading="lazy"> </div>
+                                                            <div class="c-ip-image-list-1__title">{{ category.title }}</div>
                                                         </a>
                                                     </div>
-                                                    <div class="c-ip-image-list-1__item c-ip-image-list-1__item--carousel">
-                                                        <a href="product-category/face/index.htm" class="c-ip-image-list-1__link">
-                                                            <div class="c-ip-image-list-1__thumb">
-                                                                <img loading="lazy" decoding="async" class="c-ip-image-list-1__image" width="115" height="115" src="{% static 'imgs/main/skincare.jpg' %}" srcset="{% static 'imgs/main/skincare.jpg' %}" sizes="auto, (max-width: 115px) 100vw, 115px" alt="photo_2024-11-15_12-24-27" loading="lazy"> </div>
-                                                            <div class="c-ip-image-list-1__title">Для обличчя</div>
-                                                        </a>
-                                                    </div>
-                                                    <div class="c-ip-image-list-1__item c-ip-image-list-1__item--carousel">
-                                                        <a href="product-category/accessories/index.htm" class="c-ip-image-list-1__link">
-                                                            <div class="c-ip-image-list-1__thumb">
-                                                                <img loading="lazy" decoding="async" class="c-ip-image-list-1__image" width="115" height="115" src="{% static 'imgs/main/comb.png' %}" srcset="{% static 'imgs/main/comb.png' %}" sizes="auto, (max-width: 115px) 100vw, 115px" alt="dsf" loading="lazy"> </div>
-                                                            <div class="c-ip-image-list-1__title">Аксесуари</div>
-                                                        </a>
-                                                    </div>
+                                                {% endfor %}
+
                                                 </div>
                                             </div>
                                         </div>
