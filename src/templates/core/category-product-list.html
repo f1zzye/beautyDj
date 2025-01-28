@@ -62,7 +62,7 @@
 <!--	                        <p class="woocommerce-result-count">-->
 <!--	                            Показано 1&ndash;16 із 175</p>-->
                             <p class="woocommerce-result-count">
-	                           Ми знайшли для вас <strong>{{ products.count }}</strong> товар!</p>
+	                           Ми знайшли для вас <strong>{{ products.count }}</strong> товар{% if products.count == 1 %}{% elif products.count == 2 or 3 or 4 %}и{% else %}ів{% endif %}!</p>
 	                    </div>
 	                    <div class="c-catalog-ordering__col c-catalog-ordering__col--ordering">
                             <form class="woocommerce-ordering" method="get">
@@ -93,7 +93,7 @@
 	                                            <h2 class="woocommerce-loop-product__title">{{ product.title }}</h2>
 	                                        </a><a href="daeng-gi-meo-ri-vitalizing-treatment-%D0%BA%D0%BE%D0%BD%D0%B4%D0%B8%D1%86%D1%96%D0%BE%D0%BD%D0%B5%D1%80-%D1%80%D0%B5%D0%B3%D0%B5%D0%BD%D0%B5%D1%80%D1%83%D1%8E%D1%87%D0%B8%D0%B9-%D1%96%D0%BD%D1%82/index.htm" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
 	                                            <div class="c-product-grid__short-desc">
-	                                                <p>{{ product.description }}</p>
+	                                                <p>{{ product.mini_description }}</p>
 	                                            </div>
 	                                        </a></div>
 	                                    <!-- .c-product-grid__title-wrap -->

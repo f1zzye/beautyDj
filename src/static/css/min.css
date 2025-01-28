@@ -18815,3 +18815,26 @@ a.woocommerce-store-notice__dismiss-link {
         max-width: 90%; /* Увеличим максимальную ширину */
     }
 }
+
+.thwvsf-wrapper-item-li {
+    position: relative;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 50%; /* Makes the border oval */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
+    border: 1px solid #ccc; /* Softer border color */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.thwvsf-wrapper-item-li:hover {
+    background-color: #e0e0e0; /* Highlight color on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* More pronounced shadow on hover */
+    border-color: #999; /* Darker border color on hover */
+}
+
+@media (max-width: 768px) {
+    .c-product__atc-wrap {
+    width: 100%;
+    }
+}
+
