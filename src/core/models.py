@@ -53,8 +53,12 @@ class Product(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, related_name="category", verbose_name=_("Категорія")
     )
-    mini_description = models.TextField(_("Короткий опис"), null=True, blank=True, default="This is the product")
-    description = models.TextField(_("Опис"), null=True, blank=True, default="This is the product")
+    mini_description = models.TextField(_("Короткий опис"), null=True, blank=True, default="Короткий опис товару")
+    description = models.TextField(_("Опис"), null=True, blank=True, default="Повний опис товару")
+
+    country_of_manufacture = models.CharField(_("Країна виробник"), max_length=100, default="Ukraine")
+    usage = models.TextField(_("Використання"), max_length=100, default="Як використовувати продукт")
+    brand = models.CharField(_("Бренд"), max_length=100, default="Brand")
 
     price = models.DecimalField(_("Ціна"), max_digits=99, decimal_places=2, default="1.99")
     old_price = models.DecimalField(_("Стара ціна"), max_digits=99, decimal_places=2, default="2.99")

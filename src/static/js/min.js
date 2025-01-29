@@ -3566,6 +3566,15 @@ IdeaparkQueue.init();
             $('.c-product__tabs:not(.c-product__tabs--wide)').clone().removeClass('c-product__tabs--desktop').addClass('c-product__tabs--mobile').insertAfter($('.c-product__col-2'));
         }
     };
+//     root.ideapark_init_product_layout = function() {
+//     var $layout_1 = $('.c-product--layout-1');
+//     if ($layout_1.length) {
+//         // Проверяем, существует ли уже мобильная версия вкладок
+//         if (!$('.c-product__tabs--mobile').length) {
+//             $('.c-product__tabs:not(.c-product__tabs--wide)').clone().removeClass('c-product__tabs--desktop').addClass('c-product__tabs--mobile').insertAfter($('.c-product__col-2'));
+//         }
+//     }
+// };
     root.ideapark_get_notice_offset = function() {
         var $notice = $('.woocommerce-notices-wrapper--ajax');
         var offset = 0;
@@ -3977,7 +3986,7 @@ IdeaparkQueue.init();
                 items++;
             });
             if (items_width >= container_width && items > 1) {
-                if (!$this.hasClass('owl-carousel')) {
+                if (!$this.hasClass('d-carousel')) {
                     $this.addClass('owl-carousel').owlCarousel({
                         center: false,
                         margin: 0,

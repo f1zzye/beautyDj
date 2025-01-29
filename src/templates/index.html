@@ -71,7 +71,7 @@
                                                 <div class="c-ip-image-list-1__list c-ip-image-list-1__list--carousel  js-image-list-1 h-carousel h-carousel--dots-hide h-carousel--nav-hide">
                                                 {% for category in categories %}
                                                     <div class="c-ip-image-list-1__item c-ip-image-list-1__item--carousel">
-                                                        <a href="product-category/dlya_volossya/index.htm" class="c-ip-image-list-1__link">
+                                                        <a href="{% url 'core:category-product-list' category.cid %}" class="c-ip-image-list-1__link">
                                                             <div class="c-ip-image-list-1__thumb">
                                                                 <img loading="lazy" decoding="async" class="c-ip-image-list-1__image" width="115" height="115" src="{{ category.image.url }}" srcset="{{ category.image.url }}" sizes="auto, (max-width: 115px) 100vw, 115px" alt="photo_2024-11-15_12-24-26" loading="lazy"> </div>
                                                             <div class="c-ip-image-list-1__title">{{ category.title }}</div>
@@ -119,10 +119,7 @@
                                             <div class="c-ip-product-tabs__wrap js-ip-tabs-wrap">
                                                 <div class="c-ip-product-tabs__menu js-ip-tabs-list h-carousel h-carousel--small h-carousel--hover h-carousel--mobile-arrows h-carousel--dots-hide">
                                                     <div class="c-ip-product-tabs__menu-item js-ip-tabs-menu-item active">
-                                                        <a class="c-ip-product-tabs__menu-link js-ip-tabs-link" href="#tab-01406ee-1-1" data-index="0" onclick="return false;">Новинки</a>
-                                                    </div>
-                                                    <div class="c-ip-product-tabs__menu-item js-ip-tabs-menu-item ">
-                                                        <a class="c-ip-product-tabs__menu-link js-ip-tabs-link" href="#tab-01406ee-1-2" data-index="1" onclick="return false;">Популярні</a>
+                                                        <a class="c-ip-product-tabs__menu-link js-ip-tabs-link" href="#tab-01406ee-1-1" data-index="0" onclick="return false;">Популярні</a>
                                                     </div>
                                                     <div class="c-ip-product-tabs__menu-item js-ip-tabs-menu-item ">
                                                         <a class="c-ip-product-tabs__menu-link js-ip-tabs-link" href="#tab-01406ee-1-3" data-index="2" onclick="return false;">Знижки</a>
@@ -144,12 +141,12 @@
                                                                                 <i class="ip-eye c-product-grid__icon c-product-grid__icon--normal c-product-grid__icon--quickview"></i><i class="ip-eye_hover c-product-grid__icon c-product-grid__icon--hover"></i>
                                                                             </button>
                                                                             <button class="js-wishlist-btn c-wishlist__btn c-wishlist__item-5516-btn h-cb c-product-grid__thumb-button" data-product-id="5516" data-title="Wishlist"><i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i><i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i></button> </div>
-                                                                    </div><!-- .c-product-grid__thumb-wrap --><a href="shop/insight-rebalancing-shampoo-%D1%88%D0%B0%D0%BC%D0%BF%D1%83%D0%BD%D1%8C-%D0%B4%D0%BB%D1%8F-%D0%B6%D0%B8%D1%80%D0%BD%D0%BE%D1%97-%D1%88%D0%BA%D1%96%D1%80%D0%B8-%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%B8/index.htm" data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add_to_cart_button" data-product_id="5516" data-product_sku="" aria-label="Виберіть опції для &quot; Insight Rebalancing Shampoo Шампунь для жирної шкіри голови&quot;" aria-describedby="Цей товар має кілька варіантів. Параметри можна вибрати на сторінці товару" rel="nofollow"><span class="c-product-grid__atc-text">Оберіть опції</span><i class="ip-button-more c-product-grid__atc-icon"></i></a>
+                                                                    </div><!-- .c-product-grid__thumb-wrap --><a href="{% url 'core:product-detail' product.pid %}" data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add_to_cart_button" data-product_id="5516" data-product_sku="" aria-label="Виберіть опції для &quot; Insight Rebalancing Shampoo Шампунь для жирної шкіри голови&quot;" aria-describedby="Цей товар має кілька варіантів. Параметри можна вибрати на сторінці товару" rel="nofollow"><span class="c-product-grid__atc-text">Оберіть опції</span><i class="ip-button-more c-product-grid__atc-icon"></i></a>
                                                                     <div class="c-product-grid__details">
-                                                                        <div class="c-product-grid__title-wrap"><a href="shop/insight-rebalancing-shampoo-%D1%88%D0%B0%D0%BC%D0%BF%D1%83%D0%BD%D1%8C-%D0%B4%D0%BB%D1%8F-%D0%B6%D0%B8%D1%80%D0%BD%D0%BE%D1%97-%D1%88%D0%BA%D1%96%D1%80%D0%B8-%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%B8/index.htm" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                                        <div class="c-product-grid__title-wrap"><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                                                 <h2 class="woocommerce-loop-product__title">
                                                                                     {{ product.title }}</h2>
-                                                                            </a><a href="shop/insight-rebalancing-shampoo-%D1%88%D0%B0%D0%BC%D0%BF%D1%83%D0%BD%D1%8C-%D0%B4%D0%BB%D1%8F-%D0%B6%D0%B8%D1%80%D0%BD%D0%BE%D1%97-%D1%88%D0%BA%D1%96%D1%80%D0%B8-%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%B8/index.htm" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                                            </a><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                                                 <div class="c-product-grid__short-desc">
                                                                                     <p>{{ product.mini_description }}</p>
                                                                                 </div>
@@ -168,7 +165,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="c-ip-product-tabs__button-wrap"><a href="shop/index.htm" class="c-button c-button--outline c-ip-product-tabs__button">Переглянути усі</a></div>
+                                                    <div class="c-ip-product-tabs__button-wrap"><a href="{% url 'core:product-list' %}" class="c-button c-button--outline c-ip-product-tabs__button">Переглянути усі</a></div>
                                                 </div>
                                                 <div class="c-ip-product-tabs__item " id="tab-01406ee-1-3">
                                                     <div class="woocommerce columns-4 ">
