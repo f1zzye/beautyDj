@@ -3560,21 +3560,51 @@ IdeaparkQueue.init();
             }
         }
     };
+    // root.ideapark_init_product_layout = function() {
+    //     var $layout_1 = $('.c-product--layout-1');
+    //     if ($layout_1.length) {
+    //         $('.c-product__tabs:not(.c-product__tabs--wide)').clone().removeClass('c-product__tabs--desktop').addClass('c-product__tabs--mobile').insertAfter($('.c-product__col-2'));
+    //     }
+    // };
+
     root.ideapark_init_product_layout = function() {
-        var $layout_1 = $('.c-product--layout-1');
-        if ($layout_1.length) {
-            $('.c-product__tabs:not(.c-product__tabs--wide)').clone().removeClass('c-product__tabs--desktop').addClass('c-product__tabs--mobile').insertAfter($('.c-product__col-2'));
+    var $layout_1 = $('.c-product--layout-1');
+    if ($layout_1.length) {
+        if (!$('.c-product__tabs--mobile').length) {
+            console.log($('.c-product__tabs--mobile'));
+            $('.c-product__tabs:not(.c-product__tabs--wide)').clone(true, true).removeClass('c-product__tabs--desktop').addClass('c-product__tabs--mobile').insertAfter($('.c-product__col-2'));
+            if ($('.c-product__tabs--mobile').is(":visible")){
+            $('.c-product__tabs--desktop').remove();
+
+            }
+            const tabs = document.querySelectorAll('.c-product__tabs-item-link');
+            const tabContents = document.querySelectorAll('.wc-tab');
+
+            function switchTab(event) {
+                event.preventDefault();
+
+
+                tabs.forEach(tab => tab.parentElement.classList.remove('active'));
+                tabContents.forEach(content => {
+                    content.style.display = 'none';
+                    content.classList.remove('current', 'visible');
+                });
+
+                const targetTab = document.querySelector(this.getAttribute('href'));
+                console.log(this.parentElement);
+                this.parentElement.classList.add('active');
+                targetTab.style.display = '';
+                targetTab.classList.add('current', 'visible');
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', switchTab);
+                console.log(tab);
+            });
         }
-    };
-//     root.ideapark_init_product_layout = function() {
-//     var $layout_1 = $('.c-product--layout-1');
-//     if ($layout_1.length) {
-//         // Проверяем, существует ли уже мобильная версия вкладок
-//         if (!$('.c-product__tabs--mobile').length) {
-//             $('.c-product__tabs:not(.c-product__tabs--wide)').clone().removeClass('c-product__tabs--desktop').addClass('c-product__tabs--mobile').insertAfter($('.c-product__col-2'));
-//         }
-//     }
-// };
+    }
+};
+
     root.ideapark_get_notice_offset = function() {
         var $notice = $('.woocommerce-notices-wrapper--ajax');
         var offset = 0;
@@ -4974,3 +5004,4 @@ document.getElementById('togglePassword').addEventListener('click', function () 
     this.classList.toggle('fa-lock');
     this.classList.toggle('fa-unlock');
 });
+

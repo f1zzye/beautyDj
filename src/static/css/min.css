@@ -18850,4 +18850,14 @@ a.woocommerce-store-notice__dismiss-link {
     overflow: visible;
 }
 
+/*@media (max-width: 767px) {*/
+/*  .c-product__tabs--desktop {*/
+/*    display: none;*/
+/*  }*/
+/*}*/
 
+/*@media (min-width: 768px) {*/
+/*  .c-product__tabs--mobile {*/
+/*    display: none;*/
+/*  }*/
+/*}*/
