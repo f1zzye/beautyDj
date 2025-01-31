@@ -331,10 +331,29 @@
                         </div>
                         <div class="c-header__col-mobile-buttons c-header__col-mobile-buttons--4">
                             <div class="c-header__search-button">
-                                <a class="c-header__button-link c-header__button-link--search js-search-button" type="button" href="https://www.onlyone.beauty/search/" onclick="return false;"><i class="ip-search">
-                                        <!-- --></i>
+                                <a class="c-header__button-link c-header__button-link--search js-search-button-mobile" type="button">
+                                    <i class="ip-search"><!-- --></i>
                                 </a>
                             </div>
+                            <div class="search-modal" id="searchModalMobile">
+                                <div class="search-modal__content">
+                                    <div class="search-modal__header">
+                                        <h3>Введіть назву для пошуку</h3>
+                                        <button class="search-modal__close">&times;</button>
+                                    </div>
+                                    <div class="search-modal__body">
+                                        <form class="search-modal__form" action="{% url 'core:search' %}" method="GET">
+                                            <div class="search-modal__input-wrap">
+                                                <input type="text" class="search-modal__input" placeholder="Введіть назву товару..." name="query"/>
+                                                <button type="submit" class="search-modal__submit">
+                                                    <i class="ip-search"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="c-header__auth-button">
                                 <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow"><i class="ip-user">
                                         <!-- --></i></a> </div>
@@ -432,11 +451,6 @@
                     </nav>
                 </div>
                 <div class="c-header__menu-bottom">
-                    <div class="c-header__search-button">
-                        <a class="c-header__button-link c-header__button-link--search js-search-button" type="button" href="https://www.onlyone.beauty/search/" onclick="return false;"><i class="ip-search">
-                                <!-- --></i>
-                        </a>
-                    </div>
                     <div class="c-header__auth-button">
                         <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow"><i class="ip-user">
                                 <!-- --></i></a> </div>
@@ -542,10 +556,30 @@
                         <div class="c-header__col-right">
                             <div class="c-header__col-right-wrap">
                                 <div class="c-header__search-button">
-                                    <a class="c-header__button-link c-header__button-link--search js-search-button" type="button" href="https://www.onlyone.beauty/search/" onclick="return false;"><i class="ip-search">
-                                            <!-- --></i>
+                                    <a class="c-header__button-link c-header__button-link--search js-search-button-desktop" type="button">
+                                        <i class="ip-search"><!-- --></i>
                                     </a>
                                 </div>
+
+                                <div class="search-modal" id="searchModalDesktop">
+                                    <div class="search-modal__content">
+                                        <div class="search-modal__header">
+                                            <h3>Введіть назву для пошуку</h3>
+                                            <button class="search-modal__close">&times;</button>
+                                        </div>
+                                        <div class="search-modal__body">
+                                            <form class="search-modal__form" action="{% url 'core:search' %}" method="GET">
+                                                <div class="search-modal__input-wrap">
+                                                    <input type="text" class="search-modal__input" placeholder="Введіть назву товару..." name="query"/>
+                                                    <button type="submit" class="search-modal__submit">
+                                                        <i class="ip-search"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="c-header__auth-button">
                                     <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow"><i class="ip-user">
                                             <!-- --></i></a> </div>
@@ -795,6 +829,127 @@
         window.RS_MODULES.defered = true;
         window.RS_MODULES.moduleWaiting = window.RS_MODULES.moduleWaiting || {};
         window.RS_MODULES.type = 'compiled';
+    </script>
+    <script>
+        (function($) {
+    'use strict';
+
+    $(document).ready(function() {
+        // Desktop версия
+        const $searchBtnsDesktop = $('.js-search-button-desktop');
+        const $modalDesktop = $('#searchModalDesktop');
+        const $closeBtnDesktop = $modalDesktop.find('.search-modal__close');
+        const $inputDesktop = $modalDesktop.find('.search-modal__input');
+        const $modalContentDesktop = $modalDesktop.find('.search-modal__content');
+
+        // Mobile версия
+        const $searchBtnsMobile = $('.js-search-button-mobile');
+        const $modalMobile = $('#searchModalMobile');
+        const $closeBtnMobile = $modalMobile.find('.search-modal__close');
+        const $inputMobile = $modalMobile.find('.search-modal__input');
+        const $modalContentMobile = $modalMobile.find('.search-modal__content');
+
+        // Функция открытия модального окна
+        function openModal($modal, $input) {
+            console.log('Opening modal');
+            $modal.addClass('show');
+            $('body').addClass('modal-open');
+
+            // Блокировка прокрутки
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+
+            // Фокус на поле ввода с задержкой
+            setTimeout(() => {
+                $input.focus();
+            }, 300);
+        }
+
+        // Функция закрытия модального окна
+        function closeModal($modal, $input) {
+            console.log('Closing modal');
+            $modal.removeClass('show');
+            $('body').removeClass('modal-open');
+
+            // Возвращаем прокрутку
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+
+            $input.val('');
+        }
+
+        // Desktop обработчики
+        $searchBtnsDesktop.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Desktop search button clicked');
+            openModal($modalDesktop, $inputDesktop);
+        });
+
+        $closeBtnDesktop.on('click', function(e) {
+            e.preventDefault();
+            closeModal($modalDesktop, $inputDesktop);
+        });
+
+        $modalDesktop.on('click', function(e) {
+            if ($(e.target).is($modalDesktop)) {
+                closeModal($modalDesktop, $inputDesktop);
+            }
+        });
+
+        $modalContentDesktop.on('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // Mobile обработчики
+        $searchBtnsMobile.on('click touchstart', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Mobile search button clicked');
+            openModal($modalMobile, $inputMobile);
+        });
+
+        $searchBtnsMobile.on('touchend', function(e) {
+            e.preventDefault();
+        });
+
+        $closeBtnMobile.on('click touchstart', function(e) {
+            e.preventDefault();
+            closeModal($modalMobile, $inputMobile);
+        });
+
+        $modalMobile.on('click touchstart', function(e) {
+            if ($(e.target).is($modalMobile)) {
+                closeModal($modalMobile, $inputMobile);
+            }
+        });
+
+        $modalContentMobile.on('click touchstart', function(e) {
+            e.stopPropagation();
+        });
+
+        // Отключаем прокрутку на мобильном модальном окне
+        $modalMobile.on('touchmove', function(e) {
+            if ($(e.target).is($modalMobile)) {
+                e.preventDefault();
+            }
+        });
+
+        // Закрытие по Escape (общее для обеих версий)
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if ($modalDesktop.hasClass('show')) {
+                    closeModal($modalDesktop, $inputDesktop);
+                }
+                if ($modalMobile.hasClass('show')) {
+                    closeModal($modalMobile, $inputMobile);
+                }
+            }
+        });
+    });
+})(jQuery);
     </script>
     <style>
         .products .acoplw-badge-icon {

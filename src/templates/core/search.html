@@ -59,22 +59,16 @@
 
 	                <div class="c-catalog-ordering ">
 	                    <div class="c-catalog-ordering__col c-catalog-ordering__col--result">
-							<p class="woocommerce-result-count">
-	                            Ми знайшли для вас <strong>{{ products.count }}</strong> товар{% if products.count == 1 %}{% elif products.count == 2 or products.count == 3 or products.count == 4 %}и{% else %}ів{% endif %}!</p>
+<!--	                        <p class="woocommerce-result-count">-->
+<!--	                            Показано 1&ndash;16 із 175</p>-->
+                            <p class="woocommerce-result-count">
+	                           Ми знайшли для вас <strong>{{ products.count }}</strong> товар{% if products.count == 1 %}{% elif products.count == 2 or products.count == 3 or products.count == 4 %}и{% else %}ів{% endif %}!</p>
 	                    </div>
 	                    <div class="c-catalog-ordering__col c-catalog-ordering__col--ordering">
-	                        <form class="woocommerce-ordering" method="get">
-	                            <select name="orderby" class="orderby" aria-label="Замовлення магазину">
-	                                <option value="menu_order" selected='selected'>Сортування за замовчуванням</option>
-	                                <option value="popularity">Сортувати за популярністю</option>
-	                                <option value="rating">Сортувати за оцінкою</option>
-	                                <option value="date">Сортувати за останніми</option>
-	                                <option value="price">Сортувати за ціною: від нижчої до вищої</option>
-	                                <option value="price-desc">Сортувати за ціною: від вищої до нижчої</option>
-	                            </select>
-	                            <input type="hidden" name="paged" value="1">
-	                        </form>
-	                    </div>
+                            <form class="woocommerce-ordering" method="get">
+                                <span>{{ query }}</span>
+                            </form>
+                        </div>
 	                    <button class="h-cb c-catalog-ordering__filter-show-button c-catalog-ordering__filter-show-button--mobile js-filter-show-button" type="button">
 	                        Filter<i class="ip-filter c-catalog-ordering__filter-ico"></i>
 	                    </button>
@@ -82,6 +76,7 @@
 	                <div class="c-product-grid">
 	                    <div class="c-product-grid__wrap c-product-grid__wrap--4-per-row  c-product-grid__wrap--2-per-row  c-product-grid__wrap--sidebar ">
 	                        <div class="c-product-grid__list c-product-grid__list--4-per-row ">
+
 							{% for product in products %}
 	                            <div class="c-product-grid__item c-product-grid__item--sidebar c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product post-4592 status-publish first instock product_cat-daeng-gi-meo-ri product_cat-brands product_cat-dlya_volossya product_cat-conditioner has-post-thumbnail sale shipping-taxable purchasable product-type-variable">
 <!--	                                <div class="c-product-grid__badges c-badge__list"> <span class="c-badge c-badge&#45;&#45;sale">Розпродаж</span>-->
@@ -109,6 +104,7 @@
 	                                </div><!-- .c-product-grid__details -->
 	                            </div>
 							{% endfor %}
+
 	                        </div>
 	                    </div>
 	                </div>

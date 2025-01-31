@@ -51,3 +51,16 @@ def products_detail(request, pid):
         "products": products,
     }
     return render(request, "core/product-detail.html", context)
+
+
+def search(request):
+    query = request.GET.get("query")
+    categories = Category.objects.all().annotate(product_count=Count("category"))
+    products = Product.objects.filter(title__icontains=query).order_by("-date")
+
+    context = {
+        "products": products,
+        "query": query,
+        "categories": categories,
+    }
+    return render(request, "core/search.html", context)

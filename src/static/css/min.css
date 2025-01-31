@@ -18850,14 +18850,225 @@ a.woocommerce-store-notice__dismiss-link {
     overflow: visible;
 }
 
-/*@media (max-width: 767px) {*/
-/*  .c-product__tabs--desktop {*/
-/*    display: none;*/
-/*  }*/
-/*}*/
+.search-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;          /* Изменено с 100vw на 100% */
+    height: 100%;         /* Изменено с 100vh на 100% */
+    min-width: 100vw;     /* Добавлено */
+    min-height: 100vh;    /* Добавлено */
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 99999;
+    font-family: var(--font-text);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    margin: 0;            /* Добавлено */
+    padding: 0;           /* Добавлено */
+    -webkit-transform: translate3d(0,0,0); /* Добавлено для фикса на iOS */
+}
 
-/*@media (min-width: 768px) {*/
-/*  .c-product__tabs--mobile {*/
-/*    display: none;*/
-/*  }*/
-/*}*/
+.search-modal.show {
+    display: block !important;
+    opacity: 1;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.search-modal__content {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    margin: 100px auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.search-modal__header {
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.search-modal__header h3 {
+    font-family: var(--font-text);
+    font-weight: normal;
+    font-size: 32px;
+    margin: 0;
+}
+
+.search-modal__close {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    background: none;
+    border: none;
+    font-size: 32px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-text);
+    transition: transform 0.3s ease;
+    z-index: 100000;
+}
+
+.search-modal__close:hover {
+    transform: rotate(90deg);
+}
+
+.search-modal__input-wrap {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.search-modal__input {
+    width: 100%;
+    padding: 20px 50px 20px 0;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    font-size: 20px;
+    font-family: var(--font-text);
+    transition: border-color 0.3s ease;
+    background: transparent;
+    border-radius: 0;
+}
+
+.search-modal__input:focus {
+    outline: none;
+    border-bottom-color: #333;
+}
+
+.search-modal__input::placeholder {
+    font-family: var(--font-text);
+    color: #999;
+}
+
+.search-modal__submit {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-text);
+    padding: 10px;
+}
+
+.search-modal__submit i {
+    font-size: 24px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .search-modal {
+        width: 100%;      /* Изменено с 100vw на 100% */
+        min-width: 100vw; /* Добавлено */
+        margin: 0;
+        padding: 0;
+        left: 0;
+        right: 0;
+        -webkit-backface-visibility: hidden; /* Добавлено */
+        -webkit-transform: translateZ(0);    /* Добавлено */
+    }
+
+    .search-modal__content {
+        width: 100%;
+        margin: 50px auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .search-modal__header {
+        margin: 40px 0 30px 0;
+    }
+
+    .search-modal__header h3 {
+        font-size: 24px; /* Уменьшено с 28px */
+        padding: 0 15px;
+    }
+
+    .search-modal__close {
+        top: 25px;
+        right: 25px;
+        font-size: 32px; /* Уменьшено с 38px */
+        width: 40px; /* Уменьшено с 45px */
+        height: 40px; /* Уменьшено с 45px */
+    }
+
+    .search-modal__input-wrap {
+        padding: 0 15px;
+    }
+
+    .search-modal__input {
+        font-size: 20px; /* Уменьшено с 22px */
+        padding: 15px 40px 15px 0;
+    }
+
+    .search-modal__submit {
+        right: 15px;
+    }
+
+    .search-modal__submit i {
+        font-size: 24px; /* Уменьшено с 26px */
+    }
+}
+
+@media (max-width: 375px) {
+    .search-modal__header h3 {
+        font-size: 20px; /* Уменьшено с 24px */
+    }
+
+    .search-modal__input {
+        font-size: 18px; /* Уменьшено с 20px */
+    }
+
+    .search-modal__close {
+        top: 20px;
+        right: 20px;
+        font-size: 30px; /* Уменьшено с 34px */
+        width: 35px; /* Уменьшено с 40px */
+        height: 35px; /* Уменьшено с 40px */
+    }
+}
+
+/* Стили для предотвращения прокрутки и iOS */
+html.modal-open,
+body.modal-open {
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+}
+
+@supports (-webkit-touch-callout: none) {
+    .search-modal {
+        width: 100vw;
+        min-height: -webkit-fill-available;
+        height: -webkit-fill-available;
+    }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
