@@ -1,5 +1,7 @@
 from django.db.models import Avg, Count
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.template.loader import render_to_string
 
 from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
                          Product, ProductImages, WishList)
@@ -7,9 +9,11 @@ from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
 
 def index(request):
     products = Product.objects.filter(product_status="опубліковано", featured=True)
+    extra_products = Product.objects.filter(product_status="опубліковано", extra_products=True)
 
     context = {
         "products": products,
+        "extra_products": extra_products,
     }
     return render(request, "index.html", context)
 
@@ -36,7 +40,7 @@ def category_product_list(request, cid):
 
 def products_detail(request, pid):
     product = Product.objects.get(pid=pid)
-    products = Product.objects.filter(category=product.category).exclude(pid=pid)[:4]
+    products = Product.objects.filter(category=product.category).exclude(pid=pid)
     p_image = product.p_images.all()
 
     context = {
@@ -49,12 +53,11 @@ def products_detail(request, pid):
 
 def search(request):
     query = request.GET.get("query")
-    categories = Category.objects.all().annotate(product_count=Count("category"))
     products = Product.objects.filter(title__icontains=query).order_by("-date")
 
     context = {
         "products": products,
         "query": query,
-        "categories": categories,
     }
     return render(request, "core/search.html", context)
+

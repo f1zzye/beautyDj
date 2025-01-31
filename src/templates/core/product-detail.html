@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 
+
 <div class="l-inner">
   <div class="woocommerce-notices-wrapper woocommerce-notices-wrapper--ajax" style="transform: translateY(0px);"></div>
 
@@ -214,67 +215,77 @@
 <!--        </div>-->
 
 <!--      </div>-->
-      <!-- .js-sticky-sidebar -->
+
 
     </div>
     <!-- .c-product__wrap -->
-    <section class="c-product__products c-product__products--related">
-
-      <div class="c-product__products-title">Схожі товари</div>
-
-      <div class="c-product-grid__wrap c-product-grid__wrap--4-per-row  c-product-grid__wrap--2-per-row ">
-        <div class="c-product-grid__list c-product-grid__list--4-per-row c-ip-woocommerce-carousel__list c-ip-woocommerce-carousel__list--4-per-row c-ip-woocommerce-carousel__list--10 js-woocommerce-carousel h-carousel h-carousel--default-dots h-carousel--flex h-carousel--round-light h-carousel--outside h-carousel--dots-hide owl-carousel owl-loaded owl-drag">
-
-          <div class="owl-stage-outer">
-            <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all; width: 3000px;">
-
-              {% for product in products %}
-                <div class="owl-item active" style="width: auto;">
-                  <div class="c-product-grid__item c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product post-3130 status-publish first instock product_cat-raywell product_cat-dlya_volossya product_cat-shampoo has-post-thumbnail shipping-taxable purchasable product-type-variable has-default-attributes">
-                    <div class="c-product-grid__badges c-badge__list"></div>
-                    <!-- .c-product-grid__badges -->
-                    <div class="c-product-grid__thumb-wrap c-product-grid__thumb-wrap--buttons">
-                      <a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img loading="lazy" width="260" height="260" src="{{ product.image.url }}" class="c-product-grid__thumb c-product-grid__thumb--cover" alt="" decoding="async" srcset="{{ product.image.url }}" sizes="(max-width: 260px) 100vw, 260px"></a>
-                      <div class="c-product-grid__thumb-button-list ">
-                        <button class="h-cb c-product-grid__thumb-button js-grid-zoom" type="button" data-lang="" data-product-id="3130">
-                          <i class="ip-eye c-product-grid__icon c-product-grid__icon--normal c-product-grid__icon--quickview"></i><i class="ip-eye_hover c-product-grid__icon c-product-grid__icon--hover"></i>
-                        </button>
-                        <button class="js-wishlist-btn c-wishlist__btn c-wishlist__item-3130-btn h-cb c-product-grid__thumb-button" data-product-id="3130" data-title="Wishlist"><i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i><i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i></button>
-                      </div>
+    <section class="elementor-section elementor-top-section elementor-element elementor-section-boxed elementor-section-height-default">
+        <div class="elementor-container elementor-column-gap-default">
+            <div class="elementor-column elementor-col-100 elementor-top-column elementor-element">
+                <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-element elementor-widget elementor-widget-ideapark-woocommerce-carousel">
+                        <div class="elementor-widget-container">
+                            <div class="c-ip-woocommerce-carousel">
+                                <div class="c-ip-woocommerce-carousel__wrap">
+                                    <div class="woocommerce columns-4">
+                                        <div class="c-product__products-title">Схожі товари</div>
+                                        <div class="c-product-grid__wrap c-product-grid__wrap--4-per-row c-product-grid__wrap--2-per-row">
+                                            <div data-autoplay="yes" data-animation-timeout="5000" class="c-product-grid__list c-ip-woocommerce-carousel__list c-ip-woocommerce-carousel__list--4-per-row js-woocommerce-carousel h-carousel h-carousel--default-dots h-carousel--flex h-carousel--round h-carousel--border c-ip-woocommerce-carousel__list--dots h-carousel--loop">
+                                                {% for product in products %}
+                                                    <div class="c-product-grid__item c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--2-per-row product type-product">
+                                                        <div class="c-product-grid__badges c-badge__list"></div>
+                                                        <div class="c-product-grid__thumb-wrap c-product-grid__thumb-wrap--buttons">
+                                                            <a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                                <img loading="lazy" width="260" height="260" src="{{ product.image.url }}" class="c-product-grid__thumb c-product-grid__thumb--cover" alt="" decoding="async" srcset="{{ product.image.url }}" sizes="(max-width: 260px) 100vw, 260px">
+                                                            </a>
+                                                            <div class="c-product-grid__thumb-button-list">
+                                                                <button class="h-cb c-product-grid__thumb-button js-grid-zoom" type="button" data-lang="" data-product-id="3130">
+                                                                    <i class="ip-eye c-product-grid__icon c-product-grid__icon--normal c-product-grid__icon--quickview"></i>
+                                                                    <i class="ip-eye_hover c-product-grid__icon c-product-grid__icon--hover"></i>
+                                                                </button>
+                                                                <button class="js-wishlist-btn c-wishlist__btn c-wishlist__item-3130-btn h-cb c-product-grid__thumb-button" data-product-id="3130" data-title="Wishlist">
+                                                                    <i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i>
+                                                                    <i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <a href="{% url 'core:product-detail' product.pid %}" data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add_to_cart_button" data-product_id="3130" data-product_sku="" rel="nofollow">
+                                                            <span class="c-product-grid__atc-text">Оберіть опції</span>
+                                                            <i class="ip-button-more c-product-grid__atc-icon"></i>
+                                                        </a>
+                                                        <div class="c-product-grid__details">
+                                                            <div class="c-product-grid__title-wrap">
+                                                                <a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                                    <h2 class="woocommerce-loop-product__title">{{ product.title }}</h2>
+                                                                </a>
+                                                                <a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                                    <div class="c-product-grid__short-desc">
+                                                                        <p>{{ product.brand }}</p>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                            <div class="c-product-grid__price-wrap">
+                                                                <span class="price">
+                                                                    <span class="woocommerce-Price-amount amount">
+                                                                        <bdi>
+                                                                            <span class="woocommerce-Price-currencySymbol">₴</span>{{ product.price }}
+                                                                        </bdi>
+                                                                    </span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- .c-product-grid__thumb-wrap --><a href="{% url 'core:product-detail' product.pid %}" data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add_to_cart_button" data-product_id="3130" data-product_sku="" aria-label="Виберіть опції для &quot; Raywell BIO HIDRA Шампунь зволожуючий&quot;" aria-describedby="Цей товар має кілька варіантів. Параметри можна вибрати на сторінці товару" rel="nofollow"><span class="c-product-grid__atc-text">Оберіть опції</span><i class="ip-button-more c-product-grid__atc-icon"></i></a>
-                    <div class="c-product-grid__details">
-                      <div class="c-product-grid__title-wrap"><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                        <h2 href="{% url 'core:product-detail' product.pid %}" class="woocommerce-loop-product__title">{{ product.title }}</h2></a>
-                        <a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                          <div class="c-product-grid__short-desc">
-                            <p>{{ product.mini_description }}</p>
-                          </div>
-                        </a>
-                      </div>
-                      <!-- .c-product-grid__title-wrap -->
-                      <div class="c-product-grid__price-wrap">
-                        <span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>{{ product.price }}</bdi>
-<!--                        </span> – <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>1,314.00</bdi>-->
-                        </span>
-                        </span>
-                      </div>
-                      <!-- .c-product-grid__price-wrap -->
-                    </div>
-                    <!-- .c-product-grid__details -->
-                  </div>
                 </div>
-              {% endfor %}
-
             </div>
-          </div>
-          <div class="owl-nav">
-            <button type="button" role="presentation" class="owl-prev disabled"><i class="ip-right h-carousel__prev"></i></button>
-            <button type="button" role="presentation" class="owl-next"><i class="ip-right h-carousel__next"></i></button>
-          </div>
-          <div class="owl-dots disabled"></div>
         </div>
-      </div>
     </section>
 
   </div>

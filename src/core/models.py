@@ -67,7 +67,7 @@ class Product(models.Model):
     status = models.BooleanField(_("Активний"), default=True)
     in_stock = models.BooleanField(_("В наявності"), default=True)
     featured = models.BooleanField(_("Рекомендований"), default=False)
-    # digital = models.BooleanField(_("Цифровий"), default=False)
+    extra_products = models.BooleanField(_("Додаткові товари для Головоної сторінки"), default=False)
 
     sku = ShortUUIDField(unique=True, length=4, max_length=10, prefix="sku", alphabet="1234567890")
 

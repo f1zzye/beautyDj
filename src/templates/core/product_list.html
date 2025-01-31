@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 
+
 	<div class="l-inner">
 
 	    <div class="woocommerce-notices-wrapper">
@@ -27,24 +28,36 @@
 								{% endfor %}
 	                            </ul>
 	                        </aside>
-	                        <aside id="woocommerce_price_filter-2" class="widget woocommerce widget_price_filter">
-	                            <div class="widget-title">Ціна</div>
-	                            <form method="get" action="https://www.onlyone.beauty/shop/">
-	                                <div class="price_slider_wrapper">
-	                                    <div class="price_slider" style="display:none;"></div>
-	                                    <div class="price_slider_amount" data-step="10">
-	                                        <label class="screen-reader-text" for="min_price">Мінімальна ціна</label>
-	                                        <input type="text" id="min_price" name="min_price" value="150" data-min="150" placeholder="Мінімальна ціна">
-	                                        <label class="screen-reader-text" for="max_price">Найбільша ціна</label>
-	                                        <input type="text" id="max_price" name="max_price" value="2940" data-max="2940" placeholder="Найбільша ціна">
+	                        <aside id="woocommerce_price_filter-2" class="widget woocommerce ">
+								<div class="widget-title">Ціна</div>
+								<input
+									type="range"
+									name="ranDge"
+									class="slider-range"
+									id="range"
+									min="{{ min_max_price.price__min }}"
+									max="{{ min_max_price.price__max }}"
+								>
+								<div class="price_label">
+									Ціна: <span class="from">{{ min_max_price.price__min|floatformat:2 }}</span> — <span class="to">{{ min_max_price.price__max|floatformat:2 }}</span> грн
+								</div>
+
+<!--	                            <form method="get" action="#">-->
+<!--	                                <div class="price_slider_wrapper">-->
+<!--	                                    <div class="price_slider" style="display:none;"></div>-->
+<!--	                                    <div class="price_slider_amount" data-step="10">-->
+<!--	                                        <label class="screen-reader-text" for="min_price">Мінімальна ціна</label>-->
+<!--	                                        <input type="text" id="min_price" name="min_price" value="150" data-min="150" placeholder="Мінімальна ціна">-->
+<!--	                                        <label class="screen-reader-text" for="max_price">Найбільша ціна</label>-->
+<!--	                                        <input type="text" id="max_price" name="max_price" value="2940" data-max="2940" placeholder="Найбільша ціна">-->
 	                                        <button type="submit" class="button">Фільтр</button>
-	                                        <div class="price_label" style="display:none;">
-	                                            Ціна: <span class="from"></span> &mdash; <span class="to"></span>
-	                                        </div>
-	                                        <div class="clear"></div>
-	                                    </div>
-	                                </div>
-	                            </form>
+<!--	                                        <div class="price_label" style="display:none;">-->
+<!--	                                            Ціна: <span class="from"></span> &mdash; <span class="to"></span>-->
+<!--	                                        </div>-->
+<!--	                                        <div class="clear"></div>-->
+<!--	                                    </div>-->
+<!--	                                </div>-->
+<!--	                            </form>-->
 
 	                        </aside>
 	                    </div>
@@ -98,7 +111,7 @@
 	                                            <h2 class="woocommerce-loop-product__title">{{ product.title }}</h2>
 	                                        </a><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
 	                                            <div class="c-product-grid__short-desc">
-	                                                <p>{{ product.mini_description }}</p>
+	                                                <p>{{ product.brand }}</p>
 	                                            </div>
 	                                        </a></div>
 	                                    <!-- .c-product-grid__title-wrap -->

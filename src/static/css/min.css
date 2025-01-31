@@ -10234,6 +10234,7 @@ input[type=number].c-product__quantity-value::-webkit-inner-spin-button {
     letter-spacing: 0.14em;
     text-transform: uppercase;
     margin-bottom: 60px;
+    margin-top: 50px;
 }
 
 .c-product__col-1 {
@@ -19072,3 +19073,7 @@ body {
     width: 100%;
     overflow-x: hidden;
 }
+
+
+
+
