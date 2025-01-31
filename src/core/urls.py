@@ -10,6 +10,5 @@ urlpatterns = [
     path("products/", product_list, name="product-list"),
     path("product/<pid>/", products_detail, name="product-detail"),
     path("category/<cid>/", category_product_list, name="category-product-list"),
-
-    path('search/', search, name='search'),
+    path("search/", search, name="search"),
 ]

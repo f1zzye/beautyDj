@@ -13,9 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="product",
             name="description",
-            field=models.TextField(
-                blank=True, default="Повний опис товару", null=True, verbose_name="Опис"
-            ),
+            field=models.TextField(blank=True, default="Повний опис товару", null=True, verbose_name="Опис"),
         ),
         migrations.AlterField(
             model_name="product",

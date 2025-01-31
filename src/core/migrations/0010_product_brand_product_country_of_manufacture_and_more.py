@@ -13,16 +13,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="product",
             name="brand",
-            field=models.CharField(
-                default="Brand", max_length=100, verbose_name="Бренд"
-            ),
+            field=models.CharField(default="Brand", max_length=100, verbose_name="Бренд"),
         ),
         migrations.AddField(
             model_name="product",
             name="country_of_manufacture",
-            field=models.CharField(
-                default="Ukraine", max_length=100, verbose_name="Країна виробник"
-            ),
+            field=models.CharField(default="Ukraine", max_length=100, verbose_name="Країна виробник"),
         ),
         migrations.AddField(
             model_name="product",
