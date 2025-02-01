@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
-                         Product, ProductImages, WishList)
+                         Product, ProductImages, WishList, Brand)
 
 
 class ProductImagesAdmin(admin.TabularInline):
@@ -13,6 +13,12 @@ class ProductsAdmin(admin.ModelAdmin):
     inlines = [ProductImagesAdmin]
     list_display = ["user", "title", "products_image", "price", "category", "featured", "product_status", "pid"]
     readonly_fields = ["pid", "sku"]
+
+
+@admin.register(Brand)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ["title"]
+    readonly_fields = ["bid"]
 
 
 @admin.register(Category)

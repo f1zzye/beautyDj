@@ -19074,6 +19074,16 @@ body {
     overflow-x: hidden;
 }
 
+@media (max-width: 767px) {
+  .c-ip-woocommerce-carousel__list {
+    width: 100vw !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -44vw !important;
+    margin-right: -50vw !important;
+  }
+}
+
 
 
 

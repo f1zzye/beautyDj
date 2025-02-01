@@ -43,6 +43,18 @@ class Category(models.Model):
         return self.title
 
 
+class Brand(models.Model):
+    bid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="bid", alphabet="abcdefgh12345")
+    title = models.CharField(_("Назва"), max_length=100, default="Brand")
+
+    class Meta:
+        verbose_name = _("Бренд")
+        verbose_name_plural = _("Бренди")
+
+    def __str__(self):
+        return self.title
+
+
 class Product(models.Model):
     pid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="pid", alphabet="abcdefgh12345")
 
@@ -58,7 +70,9 @@ class Product(models.Model):
 
     country_of_manufacture = models.CharField(_("Країна виробник"), max_length=100, default="Ukraine")
     usage = models.TextField(_("Використання"), max_length=300, default="Як використовувати продукт")
-    brand = models.CharField(_("Бренд"), max_length=100, default="Brand")
+    brand = models.ForeignKey(
+        Brand, on_delete=models.SET_NULL, null=True, related_name="brand", verbose_name=_("Бренд")
+    )
 
     price = models.DecimalField(_("Ціна"), max_digits=99, decimal_places=2, default="1.99")
     old_price = models.DecimalField(_("Стара ціна"), max_digits=99, decimal_places=2, default="2.99")

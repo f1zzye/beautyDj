@@ -40,7 +40,7 @@ def category_product_list(request, cid):
 
 def products_detail(request, pid):
     product = Product.objects.get(pid=pid)
-    products = Product.objects.filter(category=product.category).exclude(pid=pid)
+    products = Product.objects.filter(category=product.category).exclude(pid=pid)[:5]
     p_image = product.p_images.all()
 
     context = {

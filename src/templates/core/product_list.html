@@ -28,6 +28,14 @@
 								{% endfor %}
 	                            </ul>
 	                        </aside>
+							<aside id="woocommerce_product_categories-2" class="widget woocommerce widget_product_categories">
+	                            <div class="widget-title">Бренди</div>
+	                            <ul class="product-categories">
+								{% for brand in brands %}
+									<li class="cat-item"><a href="#">{{ brand }}</a></li>
+								{% endfor %}
+	                            </ul>
+	                        </aside>
 	                        <aside id="woocommerce_price_filter-2" class="widget woocommerce ">
 								<div class="widget-title">Ціна</div>
 								<input
@@ -89,7 +97,7 @@
 	                        </form>
 	                    </div>
 	                    <button class="h-cb c-catalog-ordering__filter-show-button c-catalog-ordering__filter-show-button--mobile js-filter-show-button" type="button">
-	                        Filter<i class="ip-filter c-catalog-ordering__filter-ico"></i>
+	                        Фільтри<i class="ip-filter c-catalog-ordering__filter-ico"></i>
 	                    </button>
 	                </div>
 	                <div class="c-product-grid">
@@ -97,30 +105,27 @@
 	                        <div class="c-product-grid__list c-product-grid__list--4-per-row ">
 							{% for product in products %}
 	                            <div class="c-product-grid__item c-product-grid__item--sidebar c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product post-4592 status-publish first instock product_cat-daeng-gi-meo-ri product_cat-brands product_cat-dlya_volossya product_cat-conditioner has-post-thumbnail sale shipping-taxable purchasable product-type-variable">
-<!--	                                <div class="c-product-grid__badges c-badge__list"> <span class="c-badge c-badge&#45;&#45;sale">Розпродаж</span>-->
-<!--	                                </div>&lt;!&ndash; .c-product-grid__badges &ndash;&gt;-->
-	                                <div class="c-product-grid__thumb-wrap c-product-grid__thumb-wrap--buttons"><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img width="260" height="260" src="{{ product.image.url }}" class="c-product-grid__thumb c-product-grid__thumb--cover" alt="" decoding="async" srcset="{{ product.image.url }}" sizes="(max-width: 260px) 100vw, 260px"></span></a>
-	                                    <div class="c-product-grid__thumb-button-list ">
-	                                        <button class="h-cb c-product-grid__thumb-button js-grid-zoom" type="button" data-lang="" data-product-id="4592">
-	                                            <i class="ip-eye c-product-grid__icon c-product-grid__icon--normal c-product-grid__icon--quickview"></i><i class="ip-eye_hover c-product-grid__icon c-product-grid__icon--hover"></i>
-	                                        </button>
-	                                        <button class="js-wishlist-btn c-wishlist__btn c-wishlist__item-4592-btn h-cb c-product-grid__thumb-button" data-product-id="4592" data-title="Wishlist"><i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i><i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i></button> </div>
-	                                </div><!-- .c-product-grid__thumb-wrap --><a href="{% url 'core:product-detail' product.pid %}" data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add_to_cart_button" data-product_id="4592" data-product_sku="" aria-label="Виберіть опції для &quot; Daeng Gi Meo Ri Vitalizing Treatment Кондиціонер регенеруючий інтенсивний&quot;" aria-describedby="Цей товар має кілька варіантів. Параметри можна вибрати на сторінці товару" rel="nofollow"><span class="c-product-grid__atc-text">Оберіть опції</span><i class="ip-button-more c-product-grid__atc-icon"></i></a>
-	                                <div class="c-product-grid__details">
-	                                    <div class="c-product-grid__title-wrap"><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-	                                            <h2 class="woocommerce-loop-product__title">{{ product.title }}</h2>
-	                                        </a><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-	                                            <div class="c-product-grid__short-desc">
-	                                                <p>{{ product.brand }}</p>
-	                                            </div>
-	                                        </a></div>
-	                                    <!-- .c-product-grid__title-wrap -->
-	                                    <div class="c-product-grid__price-wrap">
-	                                        <span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ product.price }}
-	                                    </div>
-	                                    <!-- .c-product-grid__price-wrap -->
-	                                </div><!-- .c-product-grid__details -->
-	                            </div>
+									<div class="c-product-grid__thumb-wrap c-product-grid__thumb-wrap--buttons"><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img width="260" height="260" src="{{ product.image.url }}" class="c-product-grid__thumb c-product-grid__thumb--cover" alt="" decoding="async" srcset="{{ product.image.url }}" sizes="(max-width: 260px) 100vw, 260px"></span></a>
+										<div class="c-product-grid__thumb-button-list ">
+											<button class="js-wishlist-btn c-wishlist__btn c-wishlist__item-4592-btn h-cb c-product-grid__thumb-button" data-product-id="4592" data-title="Wishlist"><i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i><i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i></button> </div>
+									</div><!-- .c-product-grid__thumb-wrap --><a href="" data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add_to_cart_button" data-product_id="4592" data-product_sku="" aria-label="Виберіть опції для &quot; Daeng Gi Meo Ri Vitalizing Treatment Кондиціонер регенеруючий інтенсивний&quot;" aria-describedby="Цей товар має кілька варіантів. Параметри можна вибрати на сторінці товару" rel="nofollow">
+										<i class="ip-cart c-product-grid__icon c-product-grid__icon--cart"></i>
+									</a>
+									<div class="c-product-grid__details">
+										<div class="c-product-grid__title-wrap"><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+												<h2 class="woocommerce-loop-product__title">{{ product.title }}</h2>
+											</a><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+												<div class="c-product-grid__short-desc">
+													<p>{{ product.brand }}</p>
+												</div>
+											</a></div>
+										<!-- .c-product-grid__title-wrap -->
+										<div class="c-product-grid__price-wrap">
+											<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ product.price }}
+										</div>
+										<!-- .c-product-grid__price-wrap -->
+									</div><!-- .c-product-grid__details -->
+								</div>
 							{% endfor %}
 	                        </div>
 	                    </div>
