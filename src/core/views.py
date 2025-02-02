@@ -31,9 +31,11 @@ def category_product_list(request, cid):
     category = Category.objects.get(cid=cid)
     products = Product.objects.filter(product_status="опубліковано", category=category)
 
+    # Добавляем выбранную категорию в контекст
     context = {
         "category": category,
         "products": products,
+        "selected_category": category.id,  # Добавляем ID выбранной категории
     }
     return render(request, "core/category-product-list.html", context)
 
@@ -61,3 +63,31 @@ def search(request):
     }
     return render(request, "core/search.html", context)
 
+
+def filter_products(request):
+    categories = request.GET.getlist('category[]')
+    brands = request.GET.getlist('brand[]')
+
+    products = Product.objects.filter(product_status="опубліковано").order_by('-date').distinct()
+
+    if len(categories) > 0:
+        products = products.filter(category__id__in=categories).distinct()
+
+    if len(brands) > 0:
+        products = products.filter(brand__id__in=brands).distinct()
+
+    products_count = products.count()
+
+    word_ending = 'ів'
+    if products_count == 1:
+        word_ending = ''
+    elif products_count in [2, 3, 4]:
+        word_ending = 'и'
+
+    data = render_to_string('core/async/product-list.html', {'products': products})
+    count_text = f'Ми знайшли для вас <strong>{products_count}</strong> товар{word_ending}!'
+
+    return JsonResponse({
+        'data': data,
+        'count_text': count_text
+    })

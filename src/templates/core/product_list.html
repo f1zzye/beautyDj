@@ -24,15 +24,37 @@
 	                            <div class="widget-title">Категорії товару</div>
 	                            <ul class="product-categories">
 								{% for category in categories %}
-	                                <li class="cat-item cat-item-131"><a href="{% url 'core:category-product-list' category.cid %}">{{ category.title }}</a></li>
+									<li class="cat-item cat-item-131">
+										<label style="display: flex; align-items: center; cursor: pointer;">
+											<input class="form-check-input filter-checkbox"
+												   type="checkbox"
+												   name="checkbox"
+												   data-filter="category"
+												   id="exampleCheckbox2"
+												   value="{{ category.id }}" />
+											&nbsp;
+											<a>{{ category.title }}</a>
+										</label>
+									</li>
 								{% endfor %}
 	                            </ul>
 	                        </aside>
-							<aside id="woocommerce_product_categories-2" class="widget woocommerce widget_product_categories">
+							<aside id="woocommerce_product_categories-3" class="widget woocommerce widget_product_categories">
 	                            <div class="widget-title">Бренди</div>
 	                            <ul class="product-categories">
 								{% for brand in brands %}
-									<li class="cat-item"><a href="#">{{ brand }}</a></li>
+									<li class="cat-item cat-item-131">
+										<label style="display: flex; align-items: center; cursor: pointer;">
+											<input class="form-check-input filter-checkbox"
+												   type="checkbox"
+												   name="checkbox"
+												   data-filter="brand"
+												   id="exampleCheckbox1"
+												   value="{{ brand.id }}" />
+											&nbsp;
+											<a href="">{{ brand.title }}</a>
+										</label>
+									</li>
 								{% endfor %}
 	                            </ul>
 	                        </aside>
@@ -80,8 +102,7 @@
 
 	                <div class="c-catalog-ordering ">
 	                    <div class="c-catalog-ordering__col c-catalog-ordering__col--result">
-							<p class="woocommerce-result-count">
-	                            Ми знайшли для вас <strong>{{ products.count }}</strong> товар{% if products.count == 1 %}{% elif products.count == 2 or products.count == 3 or products.count == 4 %}и{% else %}ів{% endif %}!</p>
+							<p class="woocommerce-result-count" id="products-count">Ми знайшли для вас <strong>{{ products.count }}</strong> товар{% if products.count == 1 %}{% elif products.count == 2 or products.count == 3 or products.count == 4 %}и{% else %}ів{% endif %}!</p>
 	                    </div>
 	                    <div class="c-catalog-ordering__col c-catalog-ordering__col--ordering">
 	                        <form class="woocommerce-ordering" method="get">
@@ -102,7 +123,7 @@
 	                </div>
 	                <div class="c-product-grid">
 	                    <div class="c-product-grid__wrap c-product-grid__wrap--4-per-row  c-product-grid__wrap--2-per-row  c-product-grid__wrap--sidebar ">
-	                        <div class="c-product-grid__list c-product-grid__list--4-per-row ">
+	                        <div class="c-product-grid__list c-product-grid__list--4-per-row" id="filtered-products">
 							{% for product in products %}
 	                            <div class="c-product-grid__item c-product-grid__item--sidebar c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product post-4592 status-publish first instock product_cat-daeng-gi-meo-ri product_cat-brands product_cat-dlya_volossya product_cat-conditioner has-post-thumbnail sale shipping-taxable purchasable product-type-variable">
 									<div class="c-product-grid__thumb-wrap c-product-grid__thumb-wrap--buttons"><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img width="260" height="260" src="{{ product.image.url }}" class="c-product-grid__thumb c-product-grid__thumb--cover" alt="" decoding="async" srcset="{{ product.image.url }}" sizes="(max-width: 260px) 100vw, 260px"></span></a>

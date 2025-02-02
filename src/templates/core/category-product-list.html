@@ -23,28 +23,70 @@
 	                            <div class="widget-title">Категорії товару</div>
 	                            <ul class="product-categories">
 								{% for category in categories %}
-	                                <li class="cat-item cat-item-131"><a href="{% url 'core:category-product-list' category.cid %}">{{ category.title }}</a></li>
+									<li class="cat-item cat-item-131">
+										<label style="display: flex; align-items: center; cursor: pointer;">
+											<input class="form-check-input filter-checkbox"
+												   type="checkbox"
+												   name="checkbox"
+												   data-filter="category"
+												   id="exampleCheckbox2"
+												   value="{{ category.id }}" />
+											&nbsp;
+											<a>{{ category.title }}</a>
+										</label>
+									</li>
 								{% endfor %}
 	                            </ul>
 	                        </aside>
-	                        <aside id="woocommerce_price_filter-2" class="widget woocommerce widget_price_filter">
-	                            <div class="widget-title">Ціна</div>
-	                            <form method="get" action="https://www.onlyone.beauty/shop/">
-	                                <div class="price_slider_wrapper">
-	                                    <div class="price_slider" style="display:none;"></div>
-	                                    <div class="price_slider_amount" data-step="10">
-	                                        <label class="screen-reader-text" for="min_price">Мінімальна ціна</label>
-	                                        <input type="text" id="min_price" name="min_price" value="150" data-min="150" placeholder="Мінімальна ціна">
-	                                        <label class="screen-reader-text" for="max_price">Найбільша ціна</label>
-	                                        <input type="text" id="max_price" name="max_price" value="2940" data-max="2940" placeholder="Найбільша ціна">
+							<aside id="woocommerce_product_categories-3" class="widget woocommerce widget_product_categories">
+	                            <div class="widget-title">Бренди</div>
+	                            <ul class="product-categories">
+								{% for brand in brands %}
+									<li class="cat-item cat-item-131">
+										<label style="display: flex; align-items: center; cursor: pointer;">
+											<input class="form-check-input filter-checkbox"
+												   type="checkbox"
+												   name="checkbox"
+												   data-filter="brand"
+												   id="exampleCheckbox1"
+												   value="{{ brand.id }}" />
+											&nbsp;
+											<a href="">{{ brand.title }}</a>
+										</label>
+									</li>
+								{% endfor %}
+	                            </ul>
+	                        </aside>
+	                        <aside id="woocommerce_price_filter-2" class="widget woocommerce ">
+								<div class="widget-title">Ціна</div>
+								<input
+									type="range"
+									name="ranDge"
+									class="slider-range"
+									id="range"
+									min="{{ min_max_price.price__min }}"
+									max="{{ min_max_price.price__max }}"
+								>
+								<div class="price_label">
+									Ціна: <span class="from">{{ min_max_price.price__min|floatformat:2 }}</span> — <span class="to">{{ min_max_price.price__max|floatformat:2 }}</span> грн
+								</div>
+
+<!--	                            <form method="get" action="#">-->
+<!--	                                <div class="price_slider_wrapper">-->
+<!--	                                    <div class="price_slider" style="display:none;"></div>-->
+<!--	                                    <div class="price_slider_amount" data-step="10">-->
+<!--	                                        <label class="screen-reader-text" for="min_price">Мінімальна ціна</label>-->
+<!--	                                        <input type="text" id="min_price" name="min_price" value="150" data-min="150" placeholder="Мінімальна ціна">-->
+<!--	                                        <label class="screen-reader-text" for="max_price">Найбільша ціна</label>-->
+<!--	                                        <input type="text" id="max_price" name="max_price" value="2940" data-max="2940" placeholder="Найбільша ціна">-->
 	                                        <button type="submit" class="button">Фільтр</button>
-	                                        <div class="price_label" style="display:none;">
-	                                            Ціна: <span class="from"></span> &mdash; <span class="to"></span>
-	                                        </div>
-	                                        <div class="clear"></div>
-	                                    </div>
-	                                </div>
-	                            </form>
+<!--	                                        <div class="price_label" style="display:none;">-->
+<!--	                                            Ціна: <span class="from"></span> &mdash; <span class="to"></span>-->
+<!--	                                        </div>-->
+<!--	                                        <div class="clear"></div>-->
+<!--	                                    </div>-->
+<!--	                                </div>-->
+<!--	                            </form>-->
 
 	                        </aside>
 	                    </div>
@@ -61,8 +103,7 @@
 	                    <div class="c-catalog-ordering__col c-catalog-ordering__col--result">
 <!--	                        <p class="woocommerce-result-count">-->
 <!--	                            Показано 1&ndash;16 із 175</p>-->
-                            <p class="woocommerce-result-count">
-	                           Ми знайшли для вас <strong>{{ products.count }}</strong> товар{% if products.count == 1 %}{% elif products.count == 2 or products.count == 3 or products.count == 4 %}и{% else %}ів{% endif %}!</p>
+                            <p class="woocommerce-result-count" id="products-count">Ми знайшли для вас <strong>{{ products.count }}</strong> товар{% if products.count == 1 %}{% elif products.count == 2 or products.count == 3 or products.count == 4 %}и{% else %}ів{% endif %}!</p>
 	                    </div>
 	                    <div class="c-catalog-ordering__col c-catalog-ordering__col--ordering">
                             <form class="woocommerce-ordering" method="get">
@@ -75,7 +116,7 @@
 	                </div>
 	                <div class="c-product-grid">
 	                    <div class="c-product-grid__wrap c-product-grid__wrap--4-per-row  c-product-grid__wrap--2-per-row  c-product-grid__wrap--sidebar ">
-	                        <div class="c-product-grid__list c-product-grid__list--4-per-row ">
+	                        <div class="c-product-grid__list c-product-grid__list--4-per-row" id="filtered-products">
 
 							{% for product in products %}
 	                            <div class="c-product-grid__item c-product-grid__item--sidebar c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product post-4592 status-publish first instock product_cat-daeng-gi-meo-ri product_cat-brands product_cat-dlya_volossya product_cat-conditioner has-post-thumbnail sale shipping-taxable purchasable product-type-variable">

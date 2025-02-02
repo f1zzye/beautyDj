@@ -7,7 +7,7 @@ from core.models import (Address, CartOrder, CartOrderItems, Category, Product,
 
 def default(request):
     categories = Category.objects.all()
-    brands = Brand.objects.values_list('title', flat=True)
+    brands = Brand.objects.all()
 
     min_max_price = Product.objects.aggregate(Min('price'), Max('price'))
 
