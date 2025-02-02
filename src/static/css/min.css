@@ -19096,4 +19096,76 @@ body {
     vertical-align: middle;
 }
 
+.range-slider {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    margin: 20px 0;
+}
 
+.range-slider .range-track {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 2px;
+    background: #ddd;
+    z-index: 1;
+}
+
+.range-slider input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 0;
+    background: none;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.range-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #000;
+    border: 2px solid #fff;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 3;
+}
+
+.range-slider input[type="range"]::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #000;
+    border: 2px solid #fff;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 3;
+}
+
+.range-slider input[type="range"]:focus {
+    outline: none;
+}
+
+.range-slider .range-track.active {
+    background: #000;
+}
+
+.price_label {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#price-filter-btn {
+    margin-top: 15px;
+    width: 100%;
+}

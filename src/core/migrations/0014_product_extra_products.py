@@ -13,8 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="product",
             name="extra_products",
-            field=models.BooleanField(
-                default=False, verbose_name="Додаткові товари для Головоної сторінки"
-            ),
+            field=models.BooleanField(default=False, verbose_name="Додаткові товари для Головоної сторінки"),
         ),
     ]

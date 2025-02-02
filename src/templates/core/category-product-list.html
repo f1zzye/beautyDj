@@ -57,38 +57,39 @@
 								{% endfor %}
 	                            </ul>
 	                        </aside>
-	                        <aside id="woocommerce_price_filter-2" class="widget woocommerce ">
+	                        <aside class="widget woocommerce">
 								<div class="widget-title">Ціна</div>
-								<input
-									type="range"
-									name="ranDge"
-									class="slider-range"
-									id="range"
-									min="{{ min_max_price.price__min }}"
-									max="{{ min_max_price.price__max }}"
-								>
-								<div class="price_label">
-									Ціна: <span class="from">{{ min_max_price.price__min|floatformat:2 }}</span> — <span class="to">{{ min_max_price.price__max|floatformat:2 }}</span> грн
+								<div class="price-filter">
+									<div class="double-range">
+										<div class="range-slider">
+											<input
+												type="range"
+												name="min_range"
+												value="{{ min_max_price.price__min }}"
+												id="min_range"
+												class="slider-range"
+												min="{{ min_max_price.price__min }}"
+												max="{{ min_max_price.price__max }}"
+												step="1">
+											<input
+												type="range"
+												name="max_range"
+												value="{{ min_max_price.price__max }}"
+												id="max_range"
+												class="slider-range"
+												min="{{ min_max_price.price__min }}"
+												max="{{ min_max_price.price__max }}"
+												step="1">
+											<div class="range-track"></div>
+										</div>
+									</div>
+									<div class="price_label">
+										Ціна: <span id="min_price_label">{{ min_max_price.price__min|floatformat:2 }}</span> —
+										<span id="max_price_label">{{ min_max_price.price__max|floatformat:2 }}</span> грн
+									</div>
+									<button id="price-filter-btn" type="button" class="btn button">Фільтр</button>
 								</div>
-
-<!--	                            <form method="get" action="#">-->
-<!--	                                <div class="price_slider_wrapper">-->
-<!--	                                    <div class="price_slider" style="display:none;"></div>-->
-<!--	                                    <div class="price_slider_amount" data-step="10">-->
-<!--	                                        <label class="screen-reader-text" for="min_price">Мінімальна ціна</label>-->
-<!--	                                        <input type="text" id="min_price" name="min_price" value="150" data-min="150" placeholder="Мінімальна ціна">-->
-<!--	                                        <label class="screen-reader-text" for="max_price">Найбільша ціна</label>-->
-<!--	                                        <input type="text" id="max_price" name="max_price" value="2940" data-max="2940" placeholder="Найбільша ціна">-->
-	                                        <button type="submit" class="button">Фільтр</button>
-<!--	                                        <div class="price_label" style="display:none;">-->
-<!--	                                            Ціна: <span class="from"></span> &mdash; <span class="to"></span>-->
-<!--	                                        </div>-->
-<!--	                                        <div class="clear"></div>-->
-<!--	                                    </div>-->
-<!--	                                </div>-->
-<!--	                            </form>-->
-
-	                        </aside>
+							</aside>
 	                    </div>
 	                </div>
 	            </div>

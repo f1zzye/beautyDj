@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
-                         Product, ProductImages, WishList, Brand)
+from core.models import (Address, Brand, CartOrder, CartOrderItems, Category,
+                         Coupon, Product, ProductImages, WishList)
 
 
 class ProductImagesAdmin(admin.TabularInline):

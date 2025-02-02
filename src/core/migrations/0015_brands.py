@@ -35,9 +35,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "title",
-                    models.CharField(
-                        default="Brand", max_length=100, verbose_name="Назва"
-                    ),
+                    models.CharField(default="Brand", max_length=100, verbose_name="Назва"),
                 ),
             ],
             options={
