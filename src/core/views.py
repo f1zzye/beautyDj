@@ -67,8 +67,8 @@ def filter_products(request):
     categories = request.GET.getlist("category[]")
     brands = request.GET.getlist("brand[]")
 
-    min_price = request.GET['min_price']
-    max_price = request.GET['max_price']
+    min_price = request.GET["min_price"]
+    max_price = request.GET["max_price"]
 
     products = Product.objects.filter(product_status="опубліковано").order_by("-date").distinct()
 
