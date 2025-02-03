@@ -141,30 +141,13 @@
 	                        <div class="c-product-grid__list c-product-grid__list--4-per-row" id="filtered-products">
 							{% for product in products %}
 								{% if product.old_price > product.price %}
-								<!-- Товар со скидкой -->
 								<div class="c-product-grid__item c-product-grid__item--sidebar c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product">
 									<div class="c-product-grid__badges c-badge__list">
-										<span class="c-badge c-badge--sale">Розпродаж</span>
+										<span class="c-badge c-badge--sale">-{{ product.get_percentage| floatformat:1 }}%</span>
 									</div>
 									<div class="c-product-grid__thumb-wrap c-product-grid__thumb-wrap--buttons">
 										<a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
 											<span class="acoplw-badge">
-												<span class="acoplw-badge-icon acoplw-bsfive acoplwRightAlign acoplwPosBtm acoplw-custom-badge-6671"
-													  style="opacity:1;width:50px;font-size:7px;line-height:px;font-weight: 700;transform:rotateX(360deg) rotateY(0deg) rotateZ(90deg);bottom:0px;top:auto;height:50px;">
-													<span class="acoplw-blockOne"></span>
-													<span class="acoplw-blockTwo"></span>
-													<span class="acoplw-blockText"
-														  style="color:rgba(255, 255, 255, 1);
-														  transform: scaleX(-1) scaleY(-1) rotate(45deg);
-														  top: auto;
-														  background:rgba(150, 24, 24, 1);
-														  width:75px;top:5.5px;
-														  left:auto;
-														  font-size: 12px;
-														  right:-21.5px;">
-														-{{ product.get_percentage| floatformat:1 }}%
-													</span>
-												</span>
 												<img width="260" height="260"
 													 src="{{ product.image.url }}"
 													 class="c-product-grid__thumb c-product-grid__thumb--cover"

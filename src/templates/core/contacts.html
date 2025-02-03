@@ -1,0 +1,38 @@
+{%  extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="page-title">
+    <h1>Наші Контакти</h1>
+</div>
+
+<div class="contact-container">
+    <!-- Левая колонка с изображением -->
+    <div class="contact-image">
+        <img src="{% static 'imgs/EmailLogo.png' %}" alt="Contact us">
+    </div>
+
+    <!-- Правая колонка с формой -->
+    <div class="contact-form-section">
+        <h2 class="form-title">Ваше запитання</h2>
+        <div class="contact-form">
+            <form action="/contact/" method="post" class="contact-form-inner">
+                <div class="form-control-wrap">
+                    <input type="text" class="form-input" placeholder="Ваше імʼя" name="your-name" required>
+                </div>
+                <div class="form-control-wrap">
+                    <input type="email" class="form-input" placeholder="Ваш email" name="your-email" required>
+                </div>
+                <div class="form-control-wrap">
+                    <textarea class="form-textarea" placeholder="Ваше повідомлення" name="your-message"></textarea>
+                </div>
+                <div class="form-control-wrap">
+                    <input class="form-submit" type="submit" value="Надіслати">
+                </div>
+                <div class="form-response" aria-hidden="true"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

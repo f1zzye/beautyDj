@@ -1,4 +1,4 @@
-from django.db.models import Avg, Count, Q
+from django.db.models import F, Q
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -11,9 +11,12 @@ def index(request):
     products = Product.objects.filter(product_status="опубліковано", featured=True)
     extra_products = Product.objects.filter(product_status="опубліковано", extra_products=True)
 
+    sale_products = Product.objects.filter(product_status="опубліковано", old_price__gt=F("price")).order_by("-date")
+
     context = {
         "products": products,
         "extra_products": extra_products,
+        "sale_products": sale_products,
     }
     return render(request, "index.html", context)
 
@@ -56,12 +59,16 @@ def search(request):
     query = request.GET.get("query", "")
 
     if query:
-        products = Product.objects.filter(
-            Q(title__icontains=query) |
-            Q(title__icontains=query.lower()) |
-            Q(title__icontains=query.upper()) |
-            Q(title__iregex=query)
-        ).distinct().order_by("-date")
+        products = (
+            Product.objects.filter(
+                Q(title__icontains=query)
+                | Q(title__icontains=query.lower())
+                | Q(title__icontains=query.upper())
+                | Q(title__iregex=query)
+            )
+            .distinct()
+            .order_by("-date")
+        )
 
     else:
         products = Product.objects.none()
@@ -103,3 +110,7 @@ def filter_products(request):
     count_text = f"Ми знайшли для вас <strong>{products_count}</strong> товар{word_ending}!"
 
     return JsonResponse({"data": data, "count_text": count_text})
+
+
+def contacts(request):
+    return render(request, 'core/contacts.html')

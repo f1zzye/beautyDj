@@ -1,7 +1,7 @@
 from django.urls import include, path
 
 from core.views import (category_product_list, filter_products, index,
-                        product_list, products_detail, search)
+                        product_list, products_detail, search, contacts)
 
 app_name = "core"
 
@@ -12,4 +12,5 @@ urlpatterns = [
     path("category/<cid>/", category_product_list, name="category-product-list"),
     path("search/", search, name="search"),
     path("filter-products/", filter_products, name="filter-products"),
+    path("contacts/", contacts, name="contacts"),
 ]
