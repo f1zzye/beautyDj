@@ -140,7 +140,83 @@
 	                    <div class="c-product-grid__wrap c-product-grid__wrap--4-per-row  c-product-grid__wrap--2-per-row  c-product-grid__wrap--sidebar ">
 	                        <div class="c-product-grid__list c-product-grid__list--4-per-row" id="filtered-products">
 							{% for product in products %}
-	                            <div class="c-product-grid__item c-product-grid__item--sidebar c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product post-4592 status-publish first instock product_cat-daeng-gi-meo-ri product_cat-brands product_cat-dlya_volossya product_cat-conditioner has-post-thumbnail sale shipping-taxable purchasable product-type-variable">
+								{% if product.old_price > product.price %}
+								<!-- Товар со скидкой -->
+								<div class="c-product-grid__item c-product-grid__item--sidebar c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product">
+									<div class="c-product-grid__badges c-badge__list">
+										<span class="c-badge c-badge--sale">Розпродаж</span>
+									</div>
+									<div class="c-product-grid__thumb-wrap c-product-grid__thumb-wrap--buttons">
+										<a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+											<span class="acoplw-badge">
+												<span class="acoplw-badge-icon acoplw-bsfive acoplwRightAlign acoplwPosBtm acoplw-custom-badge-6671"
+													  style="opacity:1;width:50px;font-size:7px;line-height:px;font-weight: 700;transform:rotateX(360deg) rotateY(0deg) rotateZ(90deg);bottom:0px;top:auto;height:50px;">
+													<span class="acoplw-blockOne"></span>
+													<span class="acoplw-blockTwo"></span>
+													<span class="acoplw-blockText"
+														  style="color:rgba(255, 255, 255, 1);
+														  transform: scaleX(-1) scaleY(-1) rotate(45deg);
+														  top: auto;
+														  background:rgba(150, 24, 24, 1);
+														  width:75px;top:5.5px;
+														  left:auto;
+														  font-size: 12px;
+														  right:-21.5px;">
+														-{{ product.get_percentage| floatformat:1 }}%
+													</span>
+												</span>
+												<img width="260" height="260"
+													 src="{{ product.image.url }}"
+													 class="c-product-grid__thumb c-product-grid__thumb--cover"
+													 alt=""
+													 decoding="async">
+											</span>
+										</a>
+										<div class="c-product-grid__thumb-button-list">
+											<button class="js-wishlist-btn c-wishlist__btn h-cb c-product-grid__thumb-button"
+													data-product-id="{{ product.id }}"
+													data-title="Wishlist">
+												<i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i>
+												<i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i>
+											</button>
+										</div>
+									</div>
+									<a href="" data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add_to_cart_button" data-product_id="4592" data-product_sku="" aria-label="Виберіть опції для &quot; Daeng Gi Meo Ri Vitalizing Treatment Кондиціонер регенеруючий інтенсивний&quot;" aria-describedby="Цей товар має кілька варіантів. Параметри можна вибрати на сторінці товару" rel="nofollow">
+										<i class="ip-cart c-product-grid__icon c-product-grid__icon--cart"></i>
+									</a>
+									<div class="c-product-grid__details">
+										<div class="c-product-grid__title-wrap">
+											<a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+												<h2 class="woocommerce-loop-product__title">{{ product.title }}</h2>
+											</a>
+											<a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+												<div class="c-product-grid__short-desc">
+													<p>{{ product.brand }}</p>
+												</div>
+											</a>
+										</div>
+										<div class="c-product-grid__price-wrap">
+											<span class="price">
+												<del aria-hidden="true">
+													<span class="woocommerce-Price-amount amount">
+														<bdi>
+															<span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ product.old_price }}
+														</bdi>
+													</span>
+												</del>
+												<ins>
+													<span class="woocommerce-Price-amount amount">
+														<bdi>
+															<span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ product.price }}
+														</bdi>
+													</span>
+												</ins>
+											</span>
+										</div>
+									</div>
+								</div>
+								{% else %}
+								<div class="c-product-grid__item c-product-grid__item--sidebar c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product post-4592 status-publish first instock product_cat-daeng-gi-meo-ri product_cat-brands product_cat-dlya_volossya product_cat-conditioner has-post-thumbnail sale shipping-taxable purchasable product-type-variable">
 									<div class="c-product-grid__thumb-wrap c-product-grid__thumb-wrap--buttons"><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img width="260" height="260" src="{{ product.image.url }}" class="c-product-grid__thumb c-product-grid__thumb--cover" alt="" decoding="async" srcset="{{ product.image.url }}" sizes="(max-width: 260px) 100vw, 260px"></span></a>
 										<div class="c-product-grid__thumb-button-list ">
 											<button class="js-wishlist-btn c-wishlist__btn c-wishlist__item-4592-btn h-cb c-product-grid__thumb-button" data-product-id="4592" data-title="Wishlist"><i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i><i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i></button> </div>
@@ -162,7 +238,9 @@
 										<!-- .c-product-grid__price-wrap -->
 									</div><!-- .c-product-grid__details -->
 								</div>
+								{% endif %}
 							{% endfor %}
+
 	                        </div>
 	                    </div>
 	                </div>

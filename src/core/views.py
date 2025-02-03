@@ -1,4 +1,4 @@
-from django.db.models import Avg, Count
+from django.db.models import Avg, Count, Q
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -53,8 +53,18 @@ def products_detail(request, pid):
 
 
 def search(request):
-    query = request.GET.get("query")
-    products = Product.objects.filter(title__icontains=query).order_by("-date")
+    query = request.GET.get("query", "")
+
+    if query:
+        products = Product.objects.filter(
+            Q(title__icontains=query) |
+            Q(title__icontains=query.lower()) |
+            Q(title__icontains=query.upper()) |
+            Q(title__iregex=query)
+        ).distinct().order_by("-date")
+
+    else:
+        products = Product.objects.none()
 
     context = {
         "products": products,
