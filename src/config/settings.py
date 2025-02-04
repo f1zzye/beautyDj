@@ -160,6 +160,34 @@ JAZZMIN_SETTINGS = {
     "copyright": "@fizzy_dev",
     "show_ui_builder": False,
     "site_brand": "Админ Панель",
+
+    "icons": {
+        "core.Category": "fas fa-list",
+        "core.Brand": "fas fa-copyright",
+        "core.Product": "fas fa-box",
+        "core.ProductImages": "fas fa-images",
+        "core.CartOrder": "fas fa-shopping-cart",
+        "core.CartOrderItems": "fas fa-shopping-basket",
+        "core.WishList": "fas fa-heart",
+        "core.Address": "fas fa-map-marker-alt",
+        "core.Coupon": "fas fa-ticket-alt",
+
+        "userauths.User": "fas fa-user",
+        "userauths.ContactUs": "fas fa-envelope",
+
+        "auth.Group": "fas fa-users",
+        "auth": "fas fa-users-cog",
+        "auth.Group": "fas fa-users",
+    },
+
+    "custom_icons": {
+        "add": "fas fa-plus",
+        "change": "fas fa-edit",
+        "delete": "fas fa-trash",
+        "view": "fas fa-eye",
+        "submit": "fas fa-save",
+        "return": "fas fa-arrow-left",
+    },
 }
 
 JAZZMIN_UI_TWEAKS = {

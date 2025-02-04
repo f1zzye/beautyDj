@@ -115,6 +115,7 @@ class ProductImages(models.Model):
         verbose_name = _("Зображення продукту")
         verbose_name_plural = _("Зображення продуктів")
 
+
     ################################## Cart, Order, OrderItems and Address ############################
 
 
