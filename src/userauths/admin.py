@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from userauths.models import User
+from userauths.models import ContactUs, User
 
 
 @admin.register(User)
@@ -10,3 +10,8 @@ class UserAdmin(admin.ModelAdmin):
     ordering = [
         "email",
     ]
+
+
+@admin.register(ContactUs)
+class ContactUsAdmin(admin.ModelAdmin):
+    list_display = ["full_name", "email"]

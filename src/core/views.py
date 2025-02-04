@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 
 from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
                          Product, ProductImages, WishList)
+from userauths.models import ContactUs
 
 
 def index(request):
@@ -113,4 +114,21 @@ def filter_products(request):
 
 
 def contacts(request):
-    return render(request, 'core/contacts.html')
+    return render(request, "core/contacts.html")
+
+
+def ajax_contact(request):
+    full_name = request.GET['full_name']
+    email = request.GET['email']
+    message = request.GET['message']
+
+    contact = ContactUs.objects.create(
+        full_name=full_name,
+        email=email,
+        message=message,
+    )
+    context = {
+        'bool': True,
+        'message': 'Your message has been sent successfully.'
+    }
+    return JsonResponse({'context': context})

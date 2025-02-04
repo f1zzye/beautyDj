@@ -1,7 +1,7 @@
 from django.urls import include, path
 
-from core.views import (category_product_list, filter_products, index,
-                        product_list, products_detail, search, contacts)
+from core.views import (category_product_list, contacts, filter_products,
+                        index, product_list, products_detail, search, ajax_contact)
 
 app_name = "core"
 
@@ -13,4 +13,5 @@ urlpatterns = [
     path("search/", search, name="search"),
     path("filter-products/", filter_products, name="filter-products"),
     path("contacts/", contacts, name="contacts"),
+    path("ajax-contact-form/", ajax_contact, name="ajax-contact-form"),
 ]

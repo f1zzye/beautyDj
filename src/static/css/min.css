@@ -19355,8 +19355,11 @@ body {
     animation: focusIn 0.2s ease-out;
 }
 
-/* Эффекты при наведении */
 .form-input:hover,
 .form-textarea:hover {
     border-color: #555;
+}
+
+.text-success {
+    color: #81B13D !important;
 }

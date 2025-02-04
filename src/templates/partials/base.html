@@ -448,7 +448,7 @@
 </ul> -->
                             </li>
                             <li id="menu-item-5402" class="c-mobile-menu__item menu-item-5402"><a href="my-account/index.htm">Мiй аккаунт</a></li>
-                            <li id="menu-item-5404" class="c-mobile-menu__item menu-item-5404"><a href="contact/index.htm">Контакти</a></li>
+                            <li id="menu-item-5404" class="c-mobile-menu__item menu-item-5404"><a href="{% url 'core:contacts' %}">Контакти</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -550,7 +550,7 @@
 
                                     </li>
                                     <li class="c-top-menu__item menu-item-5402 js-menu-item"><a href="my-account/index.htm">Мiй аккаунт</a></li>
-                                    <li class="c-top-menu__item menu-item-5404 js-menu-item"><a href="contact/index.htm">Контакти</a></li>
+                                    <li class="c-top-menu__item menu-item-5404 js-menu-item"><a href="{% url 'core:contacts' %}">Контакти</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -711,7 +711,7 @@
                                                 Оплата та Доставка </a>
                                         </span>
                                         <i class="ip-dot c-ip-inline-menu__separator c-ip-inline-menu__separator--dot"></i> <span class="c-ip-inline-menu__item">
-                                            <a href="contact/index.htm">
+                                            <a href="{% url 'core:contacts' %}">
                                                 Контакти </a>
                                         </span>
                                     </div>

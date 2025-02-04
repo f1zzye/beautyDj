@@ -7,24 +7,24 @@
 </div>
 
 <div class="contact-container">
-    <!-- Левая колонка с изображением -->
     <div class="contact-image">
         <img src="{% static 'imgs/EmailLogo.png' %}" alt="Contact us">
     </div>
 
-    <!-- Правая колонка с формой -->
     <div class="contact-form-section">
         <h2 class="form-title">Ваше запитання</h2>
         <div class="contact-form">
-            <form action="/contact/" method="post" class="contact-form-inner">
+            <h4 class="text-success" id="message-response"></h4>
+            <form id="contact-form-ajax" method="POST" class="contact-form-inner">
+                {% csrf_token %}
                 <div class="form-control-wrap">
-                    <input type="text" class="form-input" placeholder="Ваше імʼя" name="your-name" required>
+                    <input type="text" class="form-input" placeholder="Ваше імʼя" name="full_name" id="full_name" required>
                 </div>
                 <div class="form-control-wrap">
-                    <input type="email" class="form-input" placeholder="Ваш email" name="your-email" required>
+                    <input type="email" class="form-input" placeholder="Ваш email" name="email" id="email" required>
                 </div>
                 <div class="form-control-wrap">
-                    <textarea class="form-textarea" placeholder="Ваше повідомлення" name="your-message"></textarea>
+                    <textarea class="form-textarea" placeholder="Ваше повідомлення" name="message" id="message"></textarea>
                 </div>
                 <div class="form-control-wrap">
                     <input class="form-submit" type="submit" value="Надіслати">
