@@ -76,45 +76,74 @@
       </div>
       <!-- .js-sticky-sidebar-nearby -->
       <div class="c-product__col-2">
-        <div class="js-sticky-sidebar" style="">
-          <div class="summary entry-summary">
-            <h1 class="c-product__title">{{ product.title }}</h1>
-            <div class="c-product__short-description">
-              <p>{{ product.mini_description }}</p>
-            </div>
-            <p class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>{{ product.price }}
-              </span>
-            </p>
-            <div class="c-product__atc-wrap c-product__atc-wrap--hide-stock">
-              <form class="variations_form cart th-var-active init">
+        <div class="js-sticky-sidebar">
+            <div class="summary entry-summary">
+                <h1 class="c-product__title">{{ product.title }}</h1>
+                <div class="c-product__short-description">
+                    <p>{{ product.mini_description }}</p>
+                </div>
+                <p class="price">
+                    <span class="woocommerce-Price-amount amount">
+                        <bdi>
+                            <span class="woocommerce-Price-currencySymbol">₴</span>{{ product.price }}
+                        </bdi>
+                    </span>
+                </p>
+                <div class="c-product__atc-wrap c-product__atc-wrap--hide-stock">
+                    <form class="variations_form cart th-var-active init">
+                        <table class="variations" cellspacing="0" role="presentation">
+                            <tbody>
+                                <tr>
+                                    {% if product.volume or variants %}
+                                        <th class="label">
+                                            <label>Об`єм:</label>
+                                        </th>
+                                        <td class="value">
+                                            <div class="thwvsf_fields">
+                                                <select id="pa_%d0%be%d0%b1%d1%94%d0%bc"
+                                                        class="thwvs-select"
+                                                        name="attribute_pa_%d0%be%d0%b1%d1%94%d0%bc"
+                                                        data-attribute_name="attribute_pa_%d0%be%d0%b1%d1%94%d0%bc"
+                                                        data-design_type="swatch_design_1"
+                                                        style="display:none"
+                                                        data-show_option_none="yes">
+                                                    <option value="">Виберіть опцію</option>
+                                                    {% for variant in variants %}
+                                                    <option value="{{ variant.volume }}-мл" class="attached enabled">{{ variant.volume }} мл</option>
+                                                    {% endfor %}
+                                                </select>
 
-                <table class="variations" cellspacing="0" role="presentation">
-                  <tbody>
-                    <tr>
-                      <th class="label">
-                        <label for="pa_%d0%be%d0%b1%d1%94%d0%bc">Об`єм</label>
-                      </th>
-                      <td class="value">
-                        <div class="thwvsf_fields">
-                          <select id="pa_%d0%be%d0%b1%d1%94%d0%bc" class="thwvs-select " name="attribute_pa_%d0%be%d0%b1%d1%94%d0%bc" data-attribute_name="attribute_pa_%d0%be%d0%b1%d1%94%d0%bc" data-design_type="swatch_design_1" style="display:none" data-show_option_none="yes">
-                            <option value="">Виберіть опцію</option>
-                            <option value="300-%d0%bc%d0%bb" class="attached enabled">300 мл</option>
-                            <option value="500-%d0%bc%d0%bb" class="attached enabled">500 мл</option>
-                          </select>
-                          <ul class="thwvsf-wrapper-ul">
-                            <li class="thwvsf-wrapper-item-li thwvsf-label-li thwvsf-div thwvsf-checkbox attribute_pa_d0bed0b1d194d0bc 300-d0bcd0bb attr_swatch_design_1 thwvsf-tooltip" data-attribute_name="attribute_pa_%d0%be%d0%b1%d1%94%d0%bc" data-value="300-%d0%bc%d0%bb" title="300 мл">
+                                                <ul class="thwvsf-wrapper-ul">
+                                                    {% if product.volume %}
+                                                    <li class="thwvsf-wrapper-item-li thwvsf-label-li thwvsf-div thwvsf-checkbox active"
+                                                        data-volume="{{ product.volume }}"
+                                                        data-price="{{ product.price }}"
+                                                        data-image="{{ product.image.url }}"
+                                                        data-is-base="true">
+                                                        <span class="thwvsf-item-span item-span-text">{{ product.volume }} мл</span>
+                                                    </li>
+                                                    {% endif %}
 
-                              <span class=" thwvsf-item-span item-span-text ">300 мл</span>
-                            </li>
-                            <li class="thwvsf-wrapper-item-li thwvsf-label-li thwvsf-div thwvsf-checkbox attribute_pa_d0bed0b1d194d0bc 500-d0bcd0bb attr_swatch_design_1 thwvsf-tooltip" data-attribute_name="attribute_pa_%d0%be%d0%b1%d1%94%d0%bc" data-value="500-%d0%bc%d0%bb" title="500 мл">
-
-                              <span class=" thwvsf-item-span item-span-text ">500 мл</span>
-                            </li>
-                          </ul>
-                        </div><a class="reset_variations" href="#" style="visibility: hidden;">Очистити</a> </td>
-                    </tr>
-                  </tbody>
-                </table>
+                                                    {% for variant in variants %}
+                                                        {% if variant.volume != product.volume %}
+                                                        <li class="thwvsf-wrapper-item-li thwvsf-label-li thwvsf-div thwvsf-checkbox"
+                                                            data-volume="{{ variant.volume }}"
+                                                            data-price="{{ variant.price }}"
+                                                            data-old-price="{{ variant.old_price|default:'' }}"
+                                                            data-image="{% if variant.image %}{{ variant.image.url }}{% else %}{{ product.image.url }}{% endif %}"
+                                                            data-variation-id="{{ variant.id }}">
+                                                            <span class="thwvsf-item-span item-span-text">{{ variant.volume }} мл</span>
+                                                        </li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                            <a class="reset_variations" href="#" style="visibility: hidden;">Очистити</a>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            </tbody>
+                        </table>
 
                 <div class="single_variation_wrap">
                   <div class="woocommerce-variation single_variation" style="display: none;">
@@ -328,7 +357,6 @@
     </section>
 
   </div>
-
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const tabs = document.querySelectorAll('.c-product__tabs-item-link');
@@ -358,6 +386,84 @@
     });
       </script>
 
+    <script>
+        (function($) {
+            $(document).ready(function() {
+                const mainImageElement = $('.c-product__slider-img');
+                const zoomContainer = $('.c-product__image-zoom');
+                const priceDisplay = $('.price');
+                const downloadLink = $('.c-product__image-link');
+
+                const baseVolume = '{{ product.volume }}';
+                const basePrice = '{{ product.price }}';
+                const baseImage = '{{ product.image.url }}';
+
+                function updateImage(imageUrl) {
+
+                    mainImageElement.attr('src', imageUrl);
+                    mainImageElement.attr('srcset', imageUrl);
+                    zoomContainer.attr('data-img', imageUrl);
+                    downloadLink.attr('href', imageUrl);
+
+                    $('.zoomImg').remove();
+
+                    zoomContainer.zoom({
+                        url: imageUrl,
+                        touch: false,
+                        onZoomIn: function() {
+                        }
+                    });
+                }
+
+                function updatePrice(price, oldPrice) {
+                    if (oldPrice && parseFloat(oldPrice) > parseFloat(price)) {
+                        priceDisplay.html(`
+                            <del aria-hidden="true">
+                                <span class="woocommerce-Price-amount amount">
+                                    <bdi><span class="woocommerce-Price-currencySymbol">₴</span>${oldPrice}</bdi>
+                                </span>
+                            </del>
+                            <ins>
+                                <span class="woocommerce-Price-amount amount">
+                                    <bdi><span class="woocommerce-Price-currencySymbol">₴</span>${price}</bdi>
+                                </span>
+                            </ins>
+                        `);
+                    } else {
+                        priceDisplay.html(`
+                            <span class="woocommerce-Price-amount amount">
+                                <bdi><span class="woocommerce-Price-currencySymbol">₴</span>${price}</bdi>
+                            </span>
+                        `);
+                    }
+                }
+
+                $('.thwvsf-wrapper-item-li').on('click', function(e) {
+                    e.preventDefault();
+                    const $this = $(this);
+
+                    if ($this.hasClass('active')) {
+                        $('.thwvsf-wrapper-item-li').removeClass('active');
+                        $('[data-is-base="true"]').addClass('active');
+                        updatePrice(basePrice);
+                        updateImage(baseImage);
+                        $('.variation_id').val('');
+                    } else {
+                        $('.thwvsf-wrapper-item-li').removeClass('active');
+                        $this.addClass('active');
+                        updatePrice($this.data('price'), $this.data('old-price'));
+                        updateImage($this.data('image'));
+                        $('.variation_id').val($this.data('variation-id'));
+                    }
+                });
+
+                zoomContainer.zoom({
+                    url: baseImage,
+                    touch: false
+                });
+            });
+        })(jQuery);
+    </script>
 </div>
 
 {% endblock %}

@@ -18818,13 +18818,21 @@ a.woocommerce-store-notice__dismiss-link {
 }
 
 .thwvsf-wrapper-item-li {
+    cursor: pointer;
     position: relative;
     display: inline-block;
-    padding: 10px;
-    border-radius: 50%; /* Makes the border oval */
-    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
-    border: 1px solid #ccc; /* Softer border color */
+    padding: 5px 10px;
+    margin: 5px;
+    transition: all 0.3s ease;
+    border: 1px solid #ddd;
+    border-radius: 3px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+
+.thwvsf-wrapper-item-li.active {
+    border-color: #000;
+    background-color: #f0f0f0;
 }
 
 .thwvsf-wrapper-item-li:hover {
@@ -19362,4 +19370,18 @@ body {
 
 .text-success {
     color: #81B13D !important;
+}
+
+.c-product__image-zoom {
+    position: relative;
+    overflow: hidden;
+}
+
+.zoomImg {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.c-product__image-zoom:hover .zoomImg {
+    opacity: 1;
 }

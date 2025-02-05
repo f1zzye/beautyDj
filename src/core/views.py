@@ -64,10 +64,17 @@ def products_detail(request, pid):
     ).distinct()[:5]
     p_image = product.p_images.all()
 
+    # Получаем все активные варианты продукта
+    variants = product.variants.filter(status=True).order_by('volume')
+
     context = {
         "product": product,
         "p_image": p_image,
         "products": products,
+        "variants": variants,
+        "default_image": product.image.url,
+        "default_price": product.price,
+        "base_volume": product.volume,  # Добавляем базовый объем из модели Product
     }
     return render(request, "core/product-detail.html", context)
 
