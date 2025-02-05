@@ -74,7 +74,7 @@ def products_detail(request, pid):
         "variants": variants,
         "default_image": product.image.url,
         "default_price": product.price,
-        "base_volume": product.volume,  # Добавляем базовый объем из модели Product
+        "base_volume": product.volume,
     }
     return render(request, "core/product-detail.html", context)
 

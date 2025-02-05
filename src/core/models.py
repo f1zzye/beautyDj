@@ -86,6 +86,7 @@ class Product(models.Model):
     )
     mini_description = models.TextField(_("Короткий опис"), null=True, blank=True, default="Короткий опис товару")
     description = models.TextField(_("Опис"), null=True, blank=True, default="Повний опис товару")
+    skin_type = models.CharField(_("Тип шкіри/волосся:"), max_length=100, null=True, blank=True, default="Тип шкіри")
 
     country_of_manufacture = models.CharField(_("Країна виробник"), max_length=100, default="Ukraine")
     usage = models.TextField(_("Використання"), max_length=300, default="Як використовувати продукт")

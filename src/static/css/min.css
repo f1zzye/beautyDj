@@ -19385,3 +19385,7 @@ body {
 .c-product__image-zoom:hover .zoomImg {
     opacity: 1;
 }
+
+.c-product__tabs-panel strong {
+  font-weight: bold;
+}
