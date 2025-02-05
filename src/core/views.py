@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 
 from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
-                         Product, ProductImages, WishList)
+                         Product, WishList)
 from userauths.models import ContactUs
 
 

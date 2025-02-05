@@ -56,6 +56,19 @@ class Brand(models.Model):
 
 
 class Product(models.Model):
+    VOLUME_CHOICES = [
+        (None, _("Без об'єму")),
+        (50, "50 мл"),
+        (100, "100 мл"),
+        (150, "150 мл"),
+        (200, "200 мл"),
+        (250, "250 мл"),
+        (300, "300 мл"),
+        (400, "400 мл"),
+        (500, "500 мл"),
+        (1000, "1000 мл"),
+    ]
+
     pid = ShortUUIDField(unique=True, length=10, max_length=20, prefix="pid", alphabet="abcdefgh12345")
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name=_("Користувач"))
@@ -64,6 +77,12 @@ class Product(models.Model):
     image = models.ImageField(_("Зображення"), upload_to=user_directory_path, default="product.jpg")
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, related_name="category", verbose_name=_("Категорія")
+    )
+    volume = models.PositiveIntegerField(
+        _("Об'єм (мл)"),
+        choices=VOLUME_CHOICES,
+        null=True,
+        blank=True,
     )
     mini_description = models.TextField(_("Короткий опис"), null=True, blank=True, default="Короткий опис товару")
     description = models.TextField(_("Опис"), null=True, blank=True, default="Повний опис товару")
@@ -104,6 +123,55 @@ class Product(models.Model):
         return new_price
 
 
+class ProductVariant(models.Model):
+    """Модель для дополнительных вариантов товара с разными объемами"""
+    product = models.ForeignKey(
+        Product,
+        related_name='variants',
+        on_delete=models.CASCADE,
+        verbose_name=_("Основний товар")
+    )
+    volume = models.PositiveIntegerField(
+        _("Об'єм (мл)"),
+        choices=Product.VOLUME_CHOICES,
+        null=True,
+        blank=True
+    )
+    price = models.DecimalField(
+        _("Ціна"),
+        max_digits=99,
+        decimal_places=2
+    )
+    old_price = models.DecimalField(
+        _("Стара ціна"),
+        max_digits=99,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+    sku = ShortUUIDField(
+        unique=True,
+        length=4,
+        max_length=10,
+        prefix="sku",
+        alphabet="1234567890"
+    )
+    status = models.BooleanField(_("Активний"), default=True)
+
+    class Meta:
+        verbose_name = _("Варіант товару")
+        verbose_name_plural = _("Варіанти товару")
+        unique_together = ['product', 'volume']
+
+    def __str__(self):
+        return f"{self.product.title} - {self.volume}мл" if self.volume else self.product.title
+
+    def get_percentage(self):
+        if self.old_price:
+            return ((self.old_price - self.price) / self.old_price) * 100
+        return 0
+
+
 class ProductImages(models.Model):
     images = models.ImageField(_("Зображення"), upload_to="product-images", default="product.jpg")
     product = models.ForeignKey(
@@ -114,7 +182,6 @@ class ProductImages(models.Model):
     class Meta:
         verbose_name = _("Зображення продукту")
         verbose_name_plural = _("Зображення продуктів")
-
 
     ################################## Cart, Order, OrderItems and Address ############################
 

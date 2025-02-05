@@ -1,17 +1,32 @@
 from django.contrib import admin
-
 from core.models import (Address, Brand, CartOrder, CartOrderItems, Category,
-                         Coupon, Product, ProductImages, WishList)
+                         Coupon, Product, ProductImages, WishList, ProductVariant)
 
 
 class ProductImagesAdmin(admin.TabularInline):
     model = ProductImages
+    extra = 1
+
+
+class ProductVariantInline(admin.TabularInline):
+    model = ProductVariant
+    extra = 1
+    fields = ['volume', 'price', 'old_price', 'status']
+    readonly_fields = ['sku']
 
 
 @admin.register(Product)
 class ProductsAdmin(admin.ModelAdmin):
-    inlines = [ProductImagesAdmin]
+    inlines = [ProductVariantInline, ProductImagesAdmin]
     list_display = ["user", "title", "products_image", "price", "category", "featured", "product_status", "pid"]
+    list_filter = [
+        "category",
+        "brand",
+        "status",
+        "featured",
+        "product_status"
+    ]
+    search_fields = ["title", "description", "mini_description"]
     readonly_fields = ["pid", "sku"]
 
 
