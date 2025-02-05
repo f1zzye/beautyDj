@@ -1,4 +1,4 @@
-from django.db.models import F, Q
+from django.db.models import F, Q, Min, Max
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -9,10 +9,22 @@ from userauths.models import ContactUs
 
 
 def index(request):
-    products = Product.objects.filter(product_status="опубліковано", featured=True)
-    extra_products = Product.objects.filter(product_status="опубліковано", extra_products=True)
+    sale_products = Product.objects.filter(
+        product_status="опубліковано",
+        old_price__gt=F("price")
+    ).order_by("-date")
 
-    sale_products = Product.objects.filter(product_status="опубліковано", old_price__gt=F("price")).order_by("-date")
+    products = Product.objects.filter(
+        product_status="опубліковано",
+        featured=True
+    ).exclude(
+        old_price__gt=F("price")
+    )
+
+    extra_products = Product.objects.filter(
+        product_status="опубліковано",
+        extra_products=True
+    )
 
     context = {
         "products": products,
@@ -45,7 +57,11 @@ def category_product_list(request, cid):
 
 def products_detail(request, pid):
     product = Product.objects.get(pid=pid)
-    products = Product.objects.filter(category=product.category).exclude(pid=pid)[:5]
+    products = Product.objects.filter(
+        category=product.category
+    ).exclude(
+        pid=pid
+    ).distinct()[:5]
     p_image = product.p_images.all()
 
     context = {
@@ -111,6 +127,28 @@ def filter_products(request):
     count_text = f"Ми знайшли для вас <strong>{products_count}</strong> товар{word_ending}!"
 
     return JsonResponse({"data": data, "count_text": count_text})
+
+
+def get_price_range(request):
+    categories = request.GET.getlist("category[]", [])
+    brands = request.GET.getlist("brand[]", [])
+
+    products = Product.objects.filter(product_status="опубліковано")
+
+    if categories:
+        products = products.filter(category__id__in=categories)
+    if brands:
+        products = products.filter(brand__id__in=brands)
+
+    price_range = products.aggregate(
+        min_price=Min('price'),
+        max_price=Max('price')
+    )
+
+    return JsonResponse({
+        'min_price': float(price_range['min_price']) if price_range['min_price'] else 0,
+        'max_price': float(price_range['max_price']) if price_range['max_price'] else 0
+    })
 
 
 def contacts(request):

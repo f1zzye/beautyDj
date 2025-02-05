@@ -149,6 +149,13 @@ class ProductVariant(models.Model):
         null=True,
         blank=True
     )
+    image = models.ImageField(
+        _("Зображення варіанту"),
+        upload_to="product-variants",
+        help_text=_("Зображення для конкретного об'єму товару"),
+        null=True,
+        blank=True
+    )
     sku = ShortUUIDField(
         unique=True,
         length=4,

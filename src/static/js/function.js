@@ -38,9 +38,17 @@ $(document).ready(function () {
     const minLabel = document.getElementById('min_price_label');
     const maxLabel = document.getElementById('max_price_label');
 
-    minRange.value = minRange.min;
-    maxRange.value = maxRange.max;
-    updatePriceLabels();
+    function updateSliderRange(minPrice, maxPrice) {
+        minRange.min = minPrice;
+        minRange.max = maxPrice;
+        maxRange.min = minPrice;
+        maxRange.max = maxPrice;
+
+        minRange.value = minPrice;
+        maxRange.value = maxPrice;
+
+        updatePriceLabels();
+    }
 
     function updatePriceLabels() {
         minLabel.textContent = parseFloat(minRange.value).toFixed(2);
@@ -58,6 +66,26 @@ $(document).ready(function () {
         );
     }
 
+    $(".filter-checkbox").on("change", function() {
+        let filter_object = {};
+
+        $(".filter-checkbox").each(function () {
+            let filter_key = $(this).data("filter");
+            filter_object[filter_key + "[]"] = Array.from(
+                document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')
+            ).map(element => element.value);
+        });
+
+        $.ajax({
+            url: '/get-price-range/',
+            data: filter_object,
+            dataType: 'json',
+            success: function(response) {
+                updateSliderRange(response.min_price, response.max_price);
+            }
+        });
+    });
+
     minRange.addEventListener('input', function() {
         if (parseFloat(minRange.value) > parseFloat(maxRange.value)) {
             minRange.value = maxRange.value;
@@ -73,8 +101,6 @@ $(document).ready(function () {
     });
 
     $(".filter-checkbox, #price-filter-btn").on("click", function () {
-        console.log("Filter triggered");
-
         let filter_object = {
             min_price: minRange.value,
             max_price: maxRange.value
@@ -84,21 +110,19 @@ $(document).ready(function () {
             let filter_value = $(this).val();
             let filter_key = $(this).data("filter");
 
-            filter_object[filter_key] = Array.from(document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')).map(function (element) {
-                return element.value;
-            });
+            filter_object[filter_key] = Array.from(
+                document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')
+            ).map(element => element.value);
         });
 
         $.ajax({
             url: '/filter-products',
             data: filter_object,
             dataType: 'json',
-            beforeSend: function(){
-                console.log('Trying to filter products...');
+            beforeSend: function() {
                 $('#filtered-products').addClass('loading');
             },
-            success: function(response){
-                console.log('Data filtered successfully');
+            success: function(response) {
                 $('#filtered-products').html(response.data);
                 $('#products-count').html(response.count_text);
                 $('#filtered-products').removeClass('loading');
@@ -109,5 +133,4 @@ $(document).ready(function () {
             }
         });
     });
-
 });

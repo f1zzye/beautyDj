@@ -10,8 +10,8 @@ class ProductImagesAdmin(admin.TabularInline):
 
 class ProductVariantInline(admin.TabularInline):
     model = ProductVariant
-    extra = 1
-    fields = ['volume', 'price', 'old_price', 'status']
+    extra = 0
+    fields = ['volume', 'price', 'old_price', 'status', 'image']
     readonly_fields = ['sku']
 
 
