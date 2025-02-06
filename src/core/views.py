@@ -64,7 +64,6 @@ def products_detail(request, pid):
     ).distinct()[:5]
     p_image = product.p_images.all()
 
-    # Получаем все активные варианты продукта
     variants = product.variants.filter(status=True).order_by('volume')
 
     context = {

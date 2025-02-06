@@ -89,13 +89,32 @@
                 <div class="c-product__short-description">
                     <p>{{ product.mini_description }}</p>
                 </div>
-                <p class="price">
-                    <span class="woocommerce-Price-amount amount">
-                        <bdi>
-                            <span class="woocommerce-Price-currencySymbol">₴</span>{{ product.price }}
-                        </bdi>
-                    </span>
-                </p>
+                {% if product.old_price > product.price %}
+                    <p class="price">
+                        <del aria-hidden="true">
+                            <span class="woocommerce-Price-amount amount">
+                                <bdi>
+                                    <span class="woocommerce-Price-currencySymbol">₴</span>{{ product.old_price }}
+                                </bdi>
+                            </span>
+                        </del>
+                        <ins>
+                            <span class="woocommerce-Price-amount amount">
+                                <bdi>
+                                    <span class="woocommerce-Price-currencySymbol">₴</span>{{ product.price }}
+                                </bdi>
+                            </span>
+                        </ins>
+                    </p>
+                {% else %}
+                    <p class="price">
+                        <span class="woocommerce-Price-amount amount">
+                            <bdi>
+                                <span class="woocommerce-Price-currencySymbol">₴</span>{{ product.price }}
+                            </bdi>
+                        </span>
+                    </p>
+                {% endif %}
                 <div class="c-product__atc-wrap c-product__atc-wrap--hide-stock">
                     <form class="variations_form cart th-var-active init">
                         <table class="variations" cellspacing="0" role="presentation">
