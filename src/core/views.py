@@ -64,7 +64,32 @@ def products_detail(request, pid):
     ).distinct()[:5]
     p_image = product.p_images.all()
 
-    variants = product.variants.filter(status=True).order_by('volume')
+    variants = product.variants.filter(status=True)
+
+    all_volumes = []
+
+    if product.volume:
+        all_volumes.append({
+            'volume': product.volume,
+            'price': product.price,
+            'image_url': product.image.url,
+            'is_base': True,
+            'id': None,
+            'old_price': None
+        })
+
+    for variant in variants:
+        if variant.volume != product.volume:
+            all_volumes.append({
+                'volume': variant.volume,
+                'price': variant.price,
+                'image_url': variant.image.url if variant.image else product.image.url,
+                'is_base': False,
+                'id': variant.id,
+                'old_price': getattr(variant, 'old_price', None)
+            })
+
+    all_volumes.sort(key=lambda x: x['volume'])
 
     context = {
         "product": product,
@@ -74,6 +99,7 @@ def products_detail(request, pid):
         "default_image": product.image.url,
         "default_price": product.price,
         "base_volume": product.volume,
+        "all_volumes": all_volumes,
     }
     return render(request, "core/product-detail.html", context)
 

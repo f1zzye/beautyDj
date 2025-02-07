@@ -134,33 +134,22 @@
                                                         style="display:none"
                                                         data-show_option_none="yes">
                                                     <option value="">Виберіть опцію</option>
-                                                    {% for variant in variants %}
-                                                    <option value="{{ variant.volume }}-мл" class="attached enabled">{{ variant.volume }} мл</option>
+                                                    {% for volume_item in all_volumes %}
+                                                    <option value="{{ volume_item.volume }}-мл" class="attached enabled">{{ volume_item.volume }} мл</option>
                                                     {% endfor %}
                                                 </select>
 
                                                 <ul class="thwvsf-wrapper-ul">
-                                                    {% if product.volume %}
-                                                    <li class="thwvsf-wrapper-item-li thwvsf-label-li thwvsf-div thwvsf-checkbox active"
-                                                        data-volume="{{ product.volume }}"
-                                                        data-price="{{ product.price }}"
-                                                        data-image="{{ product.image.url }}"
-                                                        data-is-base="true">
-                                                        <span class="thwvsf-item-span item-span-text">{{ product.volume }} мл</span>
+                                                    {% for volume_item in all_volumes %}
+                                                    <li class="thwvsf-wrapper-item-li thwvsf-label-li thwvsf-div thwvsf-checkbox {% if volume_item.is_base %}active{% endif %}"
+                                                        data-volume="{{ volume_item.volume }}"
+                                                        data-price="{{ volume_item.price }}"
+                                                        data-image="{{ volume_item.image_url }}"
+                                                        {% if volume_item.is_base %}data-is-base="true"{% endif %}
+                                                        {% if not volume_item.is_base %}data-variation-id="{{ volume_item.id }}"{% endif %}
+                                                        {% if volume_item.old_price %}data-old-price="{{ volume_item.old_price }}"{% endif %}>
+                                                        <span class="thwvsf-item-span item-span-text">{{ volume_item.volume }} мл</span>
                                                     </li>
-                                                    {% endif %}
-
-                                                    {% for variant in variants %}
-                                                        {% if variant.volume != product.volume %}
-                                                        <li class="thwvsf-wrapper-item-li thwvsf-label-li thwvsf-div thwvsf-checkbox"
-                                                            data-volume="{{ variant.volume }}"
-                                                            data-price="{{ variant.price }}"
-                                                            data-old-price="{{ variant.old_price|default:'' }}"
-                                                            data-image="{% if variant.image %}{{ variant.image.url }}{% else %}{{ product.image.url }}{% endif %}"
-                                                            data-variation-id="{{ variant.id }}">
-                                                            <span class="thwvsf-item-span item-span-text">{{ variant.volume }} мл</span>
-                                                        </li>
-                                                        {% endif %}
                                                     {% endfor %}
                                                 </ul>
                                             </div>
