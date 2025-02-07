@@ -146,8 +146,12 @@
                                                                             </button>
                                                                         </div>
                                                                     </div>
-                                                                    <a href="" data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add_to_cart_button" data-product_id="5516" data-product_sku="" aria-label="Виберіть опції для &quot; Insight Rebalancing Shampoo Шампунь для жирної шкіри голови&quot;" aria-describedby="Цей товар має кілька варіантів. Параметри можна вибрати на сторінці товару" rel="nofollow">
-                                                                        <span class="c-product-grid__atc-text">Оберіть опції</span>
+                                                                    <a data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add-to-cart-btn" data-index="{{ product.id }}" rel="nofollow">
+                                                                        <input type="hidden" value="1" class="product-quantity-{{ product.id }}">
+                                                                        <input type="hidden" class="product-pid-{{ product.id }}" value="{{ product.pid }}">
+                                                                        <input type="hidden" class="product-image-{{  product.id }}" value="{{ product.image.url }}">
+                                                                        <input type="hidden" class="product-id-{{ product.id }}" value="{{ product.id }}">
+                                                                        <input type="hidden" class="product-title-{{ product.id }}" value="{{ product.title }}">
                                                                         <i class="ip-cart c-product-grid__atc-icon"></i>
                                                                     </a>
                                                                     <div class="c-product-grid__details">
@@ -163,7 +167,7 @@
                                                                         </div>
                                                                         <!-- .c-product-grid__title-wrap -->
                                                                         <div class="c-product-grid__price-wrap">
-                                                                            <span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ product.price }}</bdi></span></span>
+                                                                            <span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span><span class="current-product-price-{{ product.id }}">{{ product.price }}</span></bdi></span></span>
                                                                         </div>
                                                                         <!-- .c-product-grid__price-wrap -->
                                                                     </div><!-- .c-product-grid__details -->
@@ -202,13 +206,12 @@
                                                                                 </button>
                                                                             </div>
                                                                         </div>
-                                                                        <a href="{% url 'core:product-detail' product.pid %}"
-                                                                           data-quantity="1"
-                                                                           class="h-cb c-product-grid__atc button product_type_variable add_to_cart_button"
-                                                                           data-product_id="{{ product.id }}"
-                                                                           data-product_sku=""
-                                                                           rel="nofollow">
-                                                                            <span class="c-product-grid__atc-text">Оберіть опції</span>
+                                                                        <a data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add-to-cart-btn" data-index="{{ product.id }}" rel="nofollow">
+                                                                            <input type="hidden" value="1" class="product-quantity-{{ product.id }}">
+                                                                            <input type="hidden" class="product-pid-{{ product.id }}" value="{{ product.pid }}">
+                                                                            <input type="hidden" class="product-image-{{  product.id }}" value="{{ product.image.url }}">
+                                                                            <input type="hidden" class="product-id-{{ product.id }}" value="{{ product.id }}">
+                                                                            <input type="hidden" class="product-title-{{ product.id }}" value="{{ product.title }}">
                                                                             <i class="ip-cart c-product-grid__atc-icon"></i>
                                                                         </a>
                                                                         <div class="c-product-grid__details">
@@ -317,8 +320,12 @@
                                                                             </button>
                                                                         </div>
                                                                     </div>
-                                                                    <a href="" data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add_to_cart_button" data-product_id="4459" data-product_sku="" aria-label="Виберіть опції для &quot;{{ extra.title }}&quot;" aria-describedby="Цей товар має кілька варіантів. Параметри можна вибрати на сторінці товару" rel="nofollow">
-                                                                        <span class="c-product-grid__atc-text">Додати в кошик</span>
+                                                                    <a data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add-to-cart-btn" data-index="{{ product.id }}" rel="nofollow">
+                                                                        <input type="hidden" value="1" class="product-quantity-{{ product.id }}">
+                                                                        <input type="hidden" class="product-pid-{{ product.id }}" value="{{ product.pid }}">
+                                                                        <input type="hidden" class="product-image-{{  product.id }}" value="{{ product.image.url }}">
+                                                                        <input type="hidden" class="product-id-{{ product.id }}" value="{{ product.id }}">
+                                                                        <input type="hidden" class="product-title-{{ product.id }}" value="{{ product.title }}">
                                                                         <i class="ip-cart c-product-grid__atc-icon"></i>
                                                                     </a>
                                                                     <div class="c-product-grid__details">

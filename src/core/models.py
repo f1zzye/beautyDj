@@ -126,50 +126,27 @@ class Product(models.Model):
 
 class ProductVariant(models.Model):
     """Модель для дополнительных вариантов товара с разными объемами"""
+
     product = models.ForeignKey(
-        Product,
-        related_name='variants',
-        on_delete=models.CASCADE,
-        verbose_name=_("Основний товар")
+        Product, related_name="variants", on_delete=models.CASCADE, verbose_name=_("Основний товар")
     )
-    volume = models.PositiveIntegerField(
-        _("Об'єм (мл)"),
-        choices=Product.VOLUME_CHOICES,
-        null=True,
-        blank=True
-    )
-    price = models.DecimalField(
-        _("Ціна"),
-        max_digits=99,
-        decimal_places=2
-    )
-    old_price = models.DecimalField(
-        _("Стара ціна"),
-        max_digits=99,
-        decimal_places=2,
-        null=True,
-        blank=True
-    )
+    volume = models.PositiveIntegerField(_("Об'єм (мл)"), choices=Product.VOLUME_CHOICES, null=True, blank=True)
+    price = models.DecimalField(_("Ціна"), max_digits=99, decimal_places=2)
+    old_price = models.DecimalField(_("Стара ціна"), max_digits=99, decimal_places=2, null=True, blank=True)
     image = models.ImageField(
         _("Зображення варіанту"),
         upload_to="product-variants",
         help_text=_("Зображення для конкретного об'єму товару"),
         null=True,
-        blank=True
+        blank=True,
     )
-    sku = ShortUUIDField(
-        unique=True,
-        length=4,
-        max_length=10,
-        prefix="sku",
-        alphabet="1234567890"
-    )
+    sku = ShortUUIDField(unique=True, length=4, max_length=10, prefix="sku", alphabet="1234567890")
     status = models.BooleanField(_("Активний"), default=True)
 
     class Meta:
         verbose_name = _("Варіант товару")
         verbose_name_plural = _("Варіанти товару")
-        unique_together = ['product', 'volume']
+        unique_together = ["product", "volume"]
 
     def __str__(self):
         return f"{self.product.title} - {self.volume}мл" if self.volume else self.product.title

@@ -46,9 +46,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "price",
-                    models.DecimalField(
-                        decimal_places=2, max_digits=99, verbose_name="Ціна"
-                    ),
+                    models.DecimalField(decimal_places=2, max_digits=99, verbose_name="Ціна"),
                 ),
                 (
                     "old_price",

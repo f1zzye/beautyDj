@@ -1,6 +1,8 @@
 from django.contrib import admin
+
 from core.models import (Address, Brand, CartOrder, CartOrderItems, Category,
-                         Coupon, Product, ProductImages, WishList, ProductVariant)
+                         Coupon, Product, ProductImages, ProductVariant,
+                         WishList)
 
 
 class ProductImagesAdmin(admin.TabularInline):
@@ -11,21 +13,15 @@ class ProductImagesAdmin(admin.TabularInline):
 class ProductVariantInline(admin.TabularInline):
     model = ProductVariant
     extra = 0
-    fields = ['volume', 'price', 'old_price', 'status', 'image']
-    readonly_fields = ['sku']
+    fields = ["volume", "price", "old_price", "status", "image"]
+    readonly_fields = ["sku"]
 
 
 @admin.register(Product)
 class ProductsAdmin(admin.ModelAdmin):
     inlines = [ProductVariantInline, ProductImagesAdmin]
     list_display = ["user", "title", "products_image", "price", "category", "featured", "product_status", "pid"]
-    list_filter = [
-        "category",
-        "brand",
-        "status",
-        "featured",
-        "product_status"
-    ]
+    list_filter = ["category", "brand", "status", "featured", "product_status"]
     search_fields = ["title", "description", "mini_description"]
     readonly_fields = ["pid", "sku"]
 

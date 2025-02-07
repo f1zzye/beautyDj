@@ -134,3 +134,67 @@ $(document).ready(function () {
         });
     });
 });
+
+
+$('.add-to-cart-btn').on('click', function(e){
+    e.preventDefault();
+
+    let this_val = $(this)
+    let index_val = this_val.attr('data-index')
+    let isProductPage = this_val.hasClass('single_add_to_cart_button'); // Проверяем, находимся ли мы на странице продукта
+
+    let quantity = $('.product-quantity-'+ index_val).val()
+    let product_title = $('.product-title-'+ index_val).val()
+    let product_id = $('.product-id-'+ index_val).val()
+    let product_price = $('.current-product-price-'+ index_val).text()
+    let product_pid = $('.product-pid-' + index_val).val()
+    let product_image = $('.product-image-' + index_val).val()
+
+    console.log('Quantity:', quantity);
+    console.log('Title:', product_title);
+    console.log('ID:', product_id);
+    console.log('PID:', product_pid);
+    console.log('Image:', product_image);
+    console.log('Index:', index_val);
+    console.log('Price:', product_price);
+
+    $.ajax({
+        url: '/add-to-cart',
+        data: {
+            'id': product_id,
+            'pid': product_pid,
+            'image': product_image,
+            'quantity': quantity,
+            'title': product_title,
+            'price': product_price
+        },
+        dataType: 'json',
+        beforeSend: function(){
+            console.log('Adding to cart...');
+            // Можно добавить индикатор загрузки
+            this_val.prop('disabled', true);
+        },
+        success: function(response) {
+            if (isProductPage) {
+                // Если это страница product-details
+                this_val.html('Товар у кошику');
+                this_val.addClass('added-to-cart');
+            } else {
+                // Если это страница index
+                this_val.html('<span class="success-check">✔</span>');
+                this_val.addClass('added-to-cart');
+            }
+
+            console.log('Added to cart');
+            $('.cart-items-count').text(response.totalcartitems);
+        },
+        error: function() {
+            // Обработка ошибки
+            this_val.prop('disabled', false);
+        },
+        complete: function() {
+            // Действия после завершения запроса
+            this_val.prop('disabled', false);
+        }
+    });
+});

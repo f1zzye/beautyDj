@@ -160,7 +160,6 @@ JAZZMIN_SETTINGS = {
     "copyright": "@fizzy_dev",
     "show_ui_builder": False,
     "site_brand": "Админ Панель",
-
     "icons": {
         "core.Category": "fas fa-list",
         "core.Brand": "fas fa-copyright",
@@ -171,15 +170,12 @@ JAZZMIN_SETTINGS = {
         "core.WishList": "fas fa-heart",
         "core.Address": "fas fa-map-marker-alt",
         "core.Coupon": "fas fa-ticket-alt",
-
         "userauths.User": "fas fa-user",
         "userauths.ContactUs": "fas fa-envelope",
-
         "auth.Group": "fas fa-users",
         "auth": "fas fa-users-cog",
         "auth.Group": "fas fa-users",
     },
-
     "custom_icons": {
         "add": "fas fa-plus",
         "change": "fas fa-edit",

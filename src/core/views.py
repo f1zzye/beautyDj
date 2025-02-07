@@ -1,4 +1,4 @@
-from django.db.models import F, Q, Min, Max
+from django.db.models import F, Max, Min, Q
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -9,22 +9,11 @@ from userauths.models import ContactUs
 
 
 def index(request):
-    sale_products = Product.objects.filter(
-        product_status="опубліковано",
-        old_price__gt=F("price")
-    ).order_by("-date")
+    sale_products = Product.objects.filter(product_status="опубліковано", old_price__gt=F("price")).order_by("-date")
 
-    products = Product.objects.filter(
-        product_status="опубліковано",
-        featured=True
-    ).exclude(
-        old_price__gt=F("price")
-    )
+    products = Product.objects.filter(product_status="опубліковано", featured=True).exclude(old_price__gt=F("price"))
 
-    extra_products = Product.objects.filter(
-        product_status="опубліковано",
-        extra_products=True
-    )
+    extra_products = Product.objects.filter(product_status="опубліковано", extra_products=True)
 
     context = {
         "products": products,
@@ -57,11 +46,7 @@ def category_product_list(request, cid):
 
 def products_detail(request, pid):
     product = Product.objects.get(pid=pid)
-    products = Product.objects.filter(
-        category=product.category
-    ).exclude(
-        pid=pid
-    ).distinct()[:5]
+    products = Product.objects.filter(category=product.category).exclude(pid=pid).distinct()[:5]
     p_image = product.p_images.all()
 
     variants = product.variants.filter(status=True)
@@ -69,27 +54,31 @@ def products_detail(request, pid):
     all_volumes = []
 
     if product.volume:
-        all_volumes.append({
-            'volume': product.volume,
-            'price': product.price,
-            'image_url': product.image.url,
-            'is_base': True,
-            'id': None,
-            'old_price': None
-        })
+        all_volumes.append(
+            {
+                "volume": product.volume,
+                "price": product.price,
+                "image_url": product.image.url,
+                "is_base": True,
+                "id": None,
+                "old_price": None,
+            }
+        )
 
     for variant in variants:
         if variant.volume != product.volume:
-            all_volumes.append({
-                'volume': variant.volume,
-                'price': variant.price,
-                'image_url': variant.image.url if variant.image else product.image.url,
-                'is_base': False,
-                'id': variant.id,
-                'old_price': getattr(variant, 'old_price', None)
-            })
+            all_volumes.append(
+                {
+                    "volume": variant.volume,
+                    "price": variant.price,
+                    "image_url": variant.image.url if variant.image else product.image.url,
+                    "is_base": False,
+                    "id": variant.id,
+                    "old_price": getattr(variant, "old_price", None),
+                }
+            )
 
-    all_volumes.sort(key=lambda x: x['volume'])
+    all_volumes.sort(key=lambda x: x["volume"])
 
     context = {
         "product": product,
@@ -172,15 +161,14 @@ def get_price_range(request):
     if brands:
         products = products.filter(brand__id__in=brands)
 
-    price_range = products.aggregate(
-        min_price=Min('price'),
-        max_price=Max('price')
-    )
+    price_range = products.aggregate(min_price=Min("price"), max_price=Max("price"))
 
-    return JsonResponse({
-        'min_price': float(price_range['min_price']) if price_range['min_price'] else 0,
-        'max_price': float(price_range['max_price']) if price_range['max_price'] else 0
-    })
+    return JsonResponse(
+        {
+            "min_price": float(price_range["min_price"]) if price_range["min_price"] else 0,
+            "max_price": float(price_range["max_price"]) if price_range["max_price"] else 0,
+        }
+    )
 
 
 def contacts(request):
@@ -188,17 +176,42 @@ def contacts(request):
 
 
 def ajax_contact(request):
-    full_name = request.GET['full_name']
-    email = request.GET['email']
-    message = request.GET['message']
+    full_name = request.GET["full_name"]
+    email = request.GET["email"]
+    message = request.GET["message"]
 
     contact = ContactUs.objects.create(
         full_name=full_name,
         email=email,
         message=message,
     )
-    context = {
-        'bool': True,
-        'message': 'Your message has been sent successfully.'
+    context = {"bool": True, "message": "Your message has been sent successfully."}
+    return JsonResponse({"context": context})
+
+
+def add_to_cart(request):
+    cart_product = {}
+
+    cart_product[str(request.GET['id'])] = {
+        'title': request.GET['title'],
+        'quantity': request.GET['quantity'],
+        'price': request.GET['price'],
+        'image': request.GET['image'],
+        'pid': request.GET['pid'],
     }
-    return JsonResponse({'context': context})
+
+    if 'cart_data_obj' in request.session:
+        if str(request.GET['id']) in request.session['cart_data_obj']:
+
+            cart_data = request.session['cart_data_obj']
+            cart_data[str(request.GET['id'])]['quantity'] = int(cart_product[str(request.GET['id'])]['quantity'])
+            cart_data.update(cart_data)
+            request.session['cart_data_obj'] = cart_data
+        else:
+            cart_data = request.session['cart_data_obj']
+            cart_data.update(cart_product)
+            request.session['cart_data_obj'] = cart_data
+    else:
+        request.session['cart_data_obj'] = cart_product
+    return JsonResponse(
+        {"data": request.session['cart_data_obj'], 'totalcartitems': len(request.session['cart_data_obj'])})

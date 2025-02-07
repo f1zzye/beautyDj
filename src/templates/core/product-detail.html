@@ -101,7 +101,7 @@
                         <ins>
                             <span class="woocommerce-Price-amount amount">
                                 <bdi>
-                                    <span class="woocommerce-Price-currencySymbol">₴</span>{{ product.price }}
+                                    <span>₴</span><span class="current-product-price woocommerce-Price-currencySymbol">{{ product.price }}</span>
                                 </bdi>
                             </span>
                         </ins>
@@ -110,7 +110,7 @@
                     <p class="price">
                         <span class="woocommerce-Price-amount amount">
                             <bdi>
-                                <span class="woocommerce-Price-currencySymbol">₴</span>{{ product.price }}
+                                <span>₴</span><span class="current-product-price woocommerce-Price-currencySymbol">{{ product.price }}</span>
                             </bdi>
                         </span>
                     </p>
@@ -163,28 +163,23 @@
                 <div class="single_variation_wrap">
                   <div class="woocommerce-variation single_variation" style="display: none;">
                     <div class="woocommerce-variation-description"></div>
-                    <div class="woocommerce-variation-price"><span class="price"><del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>600.00</bdi>
-                      </span>
-                      </del> <ins><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>480.00</bdi></span></ins></span>
-                    </div>
-                    <div class="woocommerce-variation-availability">
-                      <p class="stock in-stock">2 в наявності</p>
-                    </div>
                   </div>
                   <div class="woocommerce-variation-add-to-cart variations_button woocommerce-variation-add-to-cart-disabled">
 
                     <div class="c-product__quantity quantity">
-                      <label class="screen-reader-text" for="quantity_678cfb777361c">Daeng Gi Meo Ri Vitalizing Treatment Кондиціонер регенеруючий інтенсивний кількість</label>
-                      <input type="number" id="quantity_678cfb777361c" class="c-product__quantity-value qty" step="1" min="1" name="quantity" value="1" title="Qty" placeholder="" inputmode="numeric" max="2">
+                      <label class="screen-reader-text">Daeng Gi Meo Ri Vitalizing Treatment Кондиціонер регенеруючий інтенсивний кількість</label>
+                      <input type="number" id="product-quantity"  class="c-product__quantity-value qty product-quantity-{{ product.id }}" step="1" min="1" name="" value="1" title="Qty" placeholder="" inputmode="numeric">
                       <button class="h-cb c-product__quantity-minus js-quantity-minus" type="button"><i class="ip-minus"></i></button>
                       <button class="h-cb c-product__quantity-plus js-quantity-plus" type="button"><i class="ip-plus_big"></i></button>
                     </div>
 
-                    <button type="submit" class="single_add_to_cart_button button alt disabled wc-variation-selection-needed">Додати в кошик</button>
+                        <input type="hidden" class="product-pid-{{ product.id }}" value="{{ product.pid }}">
+                        <input type="hidden" class="product-image-{{  product.id }}" value="{{ product.image.url }}">
+                        <input type="hidden" class="product-id-{{ product.id }}" value="{{ product.id }}">
+                        <input type="hidden" class="product-title-{{ product.id }}" value="{{ product.title }}">
+                        <input type="hidden" class="product-category" value="{{ product.category }}">
 
-                    <input type="hidden" name="add-to-cart" value="4592">
-                    <input type="hidden" name="product_id" value="4592">
-                    <input type="hidden" name="variation_id" class="variation_id" value="">
+                        <button type="button" class="single_add_to_cart_button add-to-cart-btn button alt wc-variation-selection-needed" id="add-to-cart-btn" data-index="{{ product.id }}">Додати в кошик</button>
                   </div>
                 </div>
 
