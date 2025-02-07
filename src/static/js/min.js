@@ -4488,7 +4488,7 @@ IdeaparkQueue.init();
         $('.js-woocommerce-carousel:not(.owl-carousel)').each(function() {
             var $this = $(this);
             if ($('.product', $this).length > 1) {
-                var autoplay = false; // Force autoplay to be false instead of checking data attribute
+                var autoplay = $this.data('autoplay') === 'yes';
                 var animation_timeout = $this.data('animation-timeout');
                 var params = {
                     center: false,
@@ -4499,13 +4499,26 @@ IdeaparkQueue.init();
                     dots: !$this.hasClass('h-carousel--dots-hide'),
                     navText: ideapark_nav_text,
                     onInitialized: ideapark_owl_hide_arrows,
+                    responsive: {
+                        0: {
+                            items: 2,
+                            margin: 10
+                        },
+                        768: {
+                            items: 3,
+                            margin: 20
+                        },
+                        992: {
+                            items: 4,
+                            margin: 30
+                        }
+                    }
                 };
 
-                // Remove this entire if block to completely disable autoplay
-                /* if (autoplay) {
+                if (autoplay) {
                     params.autoplay = true;
                     params.autoplayTimeout = animation_timeout;
-                } */
+                }
 
                 $this.addClass('owl-carousel')
                      .on('resized.owl.carousel', ideapark_owl_hide_arrows)

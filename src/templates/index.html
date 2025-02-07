@@ -299,35 +299,44 @@
                                                 <div class="woocommerce columns-4 ">
                                                     <div class="c-product-grid__wrap c-product-grid__wrap--3-per-row  c-product-grid__wrap--2-per-row ">
                                                         <div data-autoplay="yes" data-animation-timeout="5000" class="c-product-grid__list c-ip-woocommerce-carousel__list c-ip-woocommerce-carousel__list--3-per-row js-woocommerce-carousel h-carousel h-carousel--default-dots h-carousel--flex h-carousel--round h-carousel--border c-ip-woocommerce-carousel__list--dots h-carousel--loop c-product-grid__list--3-per-row ">
-                                                            {% for extra in extra_products %}
-                                                                <div class="c-product-grid__item c-product-grid__item--3-per-row c-product-grid__item--normal c-product-grid__item--2-per-row product type-product post-4459 status-publish first instock product_cat-envie product_cat-brands product_cat-dlya_volossya product_cat-mask has-post-thumbnail shipping-taxable purchasable product-type-variable">
+                                                           {% for extra in extra_products %}
+                                                                <div class="c-product-grid__item c-product-grid__item--sidebar c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product">
                                                                     {% if extra.old_price > extra.price %}
                                                                     <div class="c-product-grid__badges c-badge__list">
                                                                         <span class="c-badge c-badge--sale">-{{ extra.get_percentage|floatformat:1 }}%</span>
                                                                     </div>
-                                                                    {% else %}
-                                                                    <div class="c-product-grid__badges c-badge__list"></div>
                                                                     {% endif %}
 
                                                                     <div class="c-product-grid__thumb-wrap c-product-grid__thumb-wrap--buttons">
                                                                         <a href="{% url 'core:product-detail' extra.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                                            <img loading="lazy" decoding="async" width="460" height="460" src="{{ extra.image.url }}" class="c-product-grid__thumb c-product-grid__thumb--cover" alt="" srcset="{{ extra.image.url }}" sizes="(max-width: 460px) 100vw, 460px">
+                                                                            <span class="acoplw-badge">
+                                                                                <img width="260" height="260"
+                                                                                     src="{{ extra.image.url }}"
+                                                                                     class="c-product-grid__thumb c-product-grid__thumb--cover"
+                                                                                     alt=""
+                                                                                     decoding="async">
+                                                                            </span>
                                                                         </a>
                                                                         <div class="c-product-grid__thumb-button-list">
-                                                                            <button class="js-wishlist-btn c-wishlist__btn c-wishlist__item-4459-btn h-cb c-product-grid__thumb-button" data-product-id="4459" data-title="Wishlist">
+                                                                            <button class="js-wishlist-btn c-wishlist__btn h-cb c-product-grid__thumb-button"
+                                                                                    data-product-id="{{ extra.id }}"
+                                                                                    data-title="Wishlist">
                                                                                 <i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i>
                                                                                 <i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i>
                                                                             </button>
                                                                         </div>
                                                                     </div>
-                                                                    <a data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add-to-cart-btn" data-index="{{ product.id }}" rel="nofollow">
-                                                                        <input type="hidden" value="1" class="product-quantity-{{ product.id }}">
-                                                                        <input type="hidden" class="product-pid-{{ product.id }}" value="{{ product.pid }}">
-                                                                        <input type="hidden" class="product-image-{{  product.id }}" value="{{ product.image.url }}">
-                                                                        <input type="hidden" class="product-id-{{ product.id }}" value="{{ product.id }}">
-                                                                        <input type="hidden" class="product-title-{{ product.id }}" value="{{ product.title }}">
+
+                                                                    <a data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add-to-cart-btn"
+                                                                       data-index="{{ extra.id }}" rel="nofollow">
+                                                                        <input type="hidden" value="1" class="product-quantity-{{ extra.id }}">
+                                                                        <input type="hidden" class="product-pid-{{ extra.id }}" value="{{ extra.pid }}">
+                                                                        <input type="hidden" class="product-image-{{ extra.id }}" value="{{ extra.image.url }}">
+                                                                        <input type="hidden" class="product-id-{{ extra.id }}" value="{{ extra.id }}">
+                                                                        <input type="hidden" class="product-title-{{ extra.id }}" value="{{ extra.title }}">
                                                                         <i class="ip-cart c-product-grid__atc-icon"></i>
                                                                     </a>
+
                                                                     <div class="c-product-grid__details">
                                                                         <div class="c-product-grid__title-wrap">
                                                                             <a href="{% url 'core:product-detail' extra.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
@@ -339,33 +348,39 @@
                                                                                 </div>
                                                                             </a>
                                                                         </div>
-                                                                        <!-- .c-product-grid__title-wrap -->
+
                                                                         <div class="c-product-grid__price-wrap">
-                                                                            {% if extra.old_price > extra.price %}
                                                                             <span class="price">
-                                                                                <del aria-hidden="true">
+                                                                                {% if extra.old_price > extra.price %}
+                                                                                    <del aria-hidden="true">
+                                                                                        <span class="woocommerce-Price-amount amount">
+                                                                                            <bdi>
+                                                                                                <span class="woocommerce-Price-currencySymbol">&#8372;</span>
+                                                                                                {{ extra.old_price }}
+                                                                                            </bdi>
+                                                                                        </span>
+                                                                                    </del>
+                                                                                    <ins>
+                                                                                        <span class="woocommerce-Price-amount amount">
+                                                                                            <bdi>
+                                                                                                <span class="woocommerce-Price-currencySymbol">&#8372;</span>
+                                                                                                <span class="current-product-price-{{ extra.id }}">{{ extra.price }}</span>
+                                                                                            </bdi>
+                                                                                        </span>
+                                                                                    </ins>
+                                                                                {% else %}
                                                                                     <span class="woocommerce-Price-amount amount">
-                                                                                        <bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ extra.old_price }}</bdi>
+                                                                                        <bdi>
+                                                                                            <span class="woocommerce-Price-currencySymbol">&#8372;</span>
+                                                                                            <span class="current-product-price-{{ extra.id }}">{{ extra.price }}</span>
+                                                                                        </bdi>
                                                                                     </span>
-                                                                                </del>
-                                                                                <ins>
-                                                                                    <span class="woocommerce-Price-amount amount">
-                                                                                        <span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span><span class="current-product-price-{{ product.id }}">{{ product.price }}</span></bdi></span></span>
-                                                                                    </span>
-                                                                                </ins>
+                                                                                {% endif %}
                                                                             </span>
-                                                                            {% else %}
-                                                                            <span class="price">
-                                                                                <span class="woocommerce-Price-amount amount">
-                                                                                    <bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ extra.price }}</bdi>
-                                                                                </span>
-                                                                            </span>
-                                                                            {% endif %}
                                                                         </div>
-                                                                        <!-- .c-product-grid__price-wrap -->
-                                                                    </div><!-- .c-product-grid__details -->
+                                                                    </div>
                                                                 </div>
-                                                            {% endfor %}
+                                                                {% endfor %}
                                                         </div>
                                                     </div>
                                                 </div>
