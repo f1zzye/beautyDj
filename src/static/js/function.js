@@ -136,7 +136,7 @@ $(document).ready(function () {
 });
 
 
-$('.add-to-cart-btn').on('click', function(e){
+$(document).on('click', '.add-to-cart-btn', function(e){
     e.preventDefault();
 
     let this_val = $(this)

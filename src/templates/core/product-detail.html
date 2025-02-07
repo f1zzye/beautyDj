@@ -94,14 +94,16 @@
                         <del aria-hidden="true">
                             <span class="woocommerce-Price-amount amount">
                                 <bdi>
-                                    <span class="woocommerce-Price-currencySymbol">₴</span>{{ product.old_price }}
+                                    <span class="woocommerce-Price-currencySymbol">₴</span>
+                                    {{ product.old_price }}
                                 </bdi>
                             </span>
                         </del>
                         <ins>
                             <span class="woocommerce-Price-amount amount">
                                 <bdi>
-                                    <span>₴</span><span class="current-product-price woocommerce-Price-currencySymbol">{{ product.price }}</span>
+                                    <span class="woocommerce-Price-currencySymbol">₴</span>
+                                    <span class="current-product-price-{{ product.id }}">{{ product.price }}</span>
                                 </bdi>
                             </span>
                         </ins>
@@ -110,7 +112,8 @@
                     <p class="price">
                         <span class="woocommerce-Price-amount amount">
                             <bdi>
-                                <span>₴</span><span class="current-product-price woocommerce-Price-currencySymbol">{{ product.price }}</span>
+                                <span class="woocommerce-Price-currencySymbol">&#8372;</span>
+                                <span class="current-product-price-{{ product.id }}">{{ product.price }}</span>
                             </bdi>
                         </span>
                     </p>
@@ -269,13 +272,14 @@
                                     <div class="woocommerce columns-4">
                                         <div class="c-product__products-title">Схожі товари</div>
                                         <div class="c-product-grid__wrap c-product-grid__wrap--4-per-row c-product-grid__wrap--2-per-row">
-                                            <div data-autoplay="yes" data-animation-timeout="5000" class="c-product-grid__list c-ip-woocommerce-carousel__list c-ip-woocommerce-carousel__list--4-per-row js-woocommerce-carousel h-carousel h-carousel--default-dots h-carousel--flex h-carousel--round h-carousel--border c-ip-woocommerce-carousel__list--dots h-carousel--loop">
+                                            <div data-autoplay="yes" data-animation-timeout="5000" class="c-product-grid__list c-ip-woocommerce-carousel__list c-ip-woocommerce-carousel__list--4-per-row js-woocommerce-carousel h-carousel h-carousel--default-dots h-carousel--flex h-carousel--round h-carousel--border c-ip-woocommerce-carousel__list--dots">
                                                 {% for product in products %}
-                                                    {% if product.old_price > product.price %}
                                                     <div class="c-product-grid__item c-product-grid__item--sidebar c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product">
-                                                        <div class="c-product-grid__badges c-badge__list">
-                                                            <span class="c-badge c-badge--sale">-{{ product.get_percentage| floatformat:1 }}%</span>
-                                                        </div>
+                                                        {% if product.old_price > product.price %}
+                                                            <div class="c-product-grid__badges c-badge__list">
+                                                                <span class="c-badge c-badge--sale">-{{ product.get_percentage|floatformat:1 }}%</span>
+                                                            </div>
+                                                        {% endif %}
                                                         <div class="c-product-grid__thumb-wrap c-product-grid__thumb-wrap--buttons">
                                                             <a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                                 <span class="acoplw-badge">
@@ -295,9 +299,17 @@
                                                                 </button>
                                                             </div>
                                                         </div>
-                                                        <a href="" data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add_to_cart_button" data-product_id="4592" data-product_sku="" aria-label="Виберіть опції для &quot; Daeng Gi Meo Ri Vitalizing Treatment Кондиціонер регенеруючий інтенсивний&quot;" aria-describedby="Цей товар має кілька варіантів. Параметри можна вибрати на сторінці товару" rel="nofollow">
-                                                            <i class="ip-cart c-product-grid__icon c-product-grid__icon--cart"></i>
+
+                                                        <a data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add-to-cart-btn"
+                                                           data-index="{{ product.id }}" rel="nofollow">
+                                                            <input type="hidden" value="1" class="product-quantity-{{ product.id }}">
+                                                            <input type="hidden" class="product-pid-{{ product.id }}" value="{{ product.pid }}">
+                                                            <input type="hidden" class="product-image-{{ product.id }}" value="{{ product.image.url }}">
+                                                            <input type="hidden" class="product-id-{{ product.id }}" value="{{ product.id }}">
+                                                            <input type="hidden" class="product-title-{{ product.id }}" value="{{ product.title }}">
+                                                            <i class="ip-cart c-product-grid__atc-icon"></i>
                                                         </a>
+
                                                         <div class="c-product-grid__details">
                                                             <div class="c-product-grid__title-wrap">
                                                                 <a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
@@ -309,50 +321,39 @@
                                                                     </div>
                                                                 </a>
                                                             </div>
+
+                                                            <!-- Блок с ценой -->
                                                             <div class="c-product-grid__price-wrap">
-                                                                <span class="price">
-                                                                    <del aria-hidden="true">
-                                                                        <span class="woocommerce-Price-amount amount">
-                                                                            <bdi>
-                                                                                <span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ product.old_price }}
-                                                                            </bdi>
-                                                                        </span>
-                                                                    </del>
-                                                                    <ins>
-                                                                        <span class="woocommerce-Price-amount amount">
-                                                                            <bdi>
-                                                                                <span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ product.price }}
-                                                                            </bdi>
-                                                                        </span>
-                                                                    </ins>
-                                                                </span>
-                                                            </div>
+    <span class="price">
+        {% if product.old_price > product.price %}
+            <del aria-hidden="true">
+                <span class="woocommerce-Price-amount amount">
+                    <bdi>
+                        <span class="woocommerce-Price-currencySymbol">&#8372;</span>
+                        {{ product.old_price }}
+                    </bdi>
+                </span>
+            </del>
+            <ins>
+                <span class="woocommerce-Price-amount amount">
+                    <bdi>
+                        <span class="woocommerce-Price-currencySymbol">&#8372;</span>
+                        <span class="current-product-price-{{ product.id }}">{{ product.price }}</span>
+                    </bdi>
+                </span>
+            </ins>
+        {% else %}
+            <span class="woocommerce-Price-amount amount">
+                <bdi>
+                    <span class="woocommerce-Price-currencySymbol">&#8372;</span>
+                    <span class="current-product-price-{{ product.id }}">{{ product.price }}</span>
+                </bdi>
+            </span>
+        {% endif %}
+    </span>
+</div>
                                                         </div>
                                                     </div>
-                                                    {% else %}
-                                                    <div class="c-product-grid__item c-product-grid__item--sidebar c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product post-4592 status-publish first instock product_cat-daeng-gi-meo-ri product_cat-brands product_cat-dlya_volossya product_cat-conditioner has-post-thumbnail sale shipping-taxable purchasable product-type-variable">
-                                                        <div class="c-product-grid__thumb-wrap c-product-grid__thumb-wrap--buttons"><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img width="260" height="260" src="{{ product.image.url }}" class="c-product-grid__thumb c-product-grid__thumb--cover" alt="" decoding="async" srcset="{{ product.image.url }}" sizes="(max-width: 260px) 100vw, 260px"></span></a>
-                                                            <div class="c-product-grid__thumb-button-list ">
-                                                                <button class="js-wishlist-btn c-wishlist__btn c-wishlist__item-4592-btn h-cb c-product-grid__thumb-button" data-product-id="4592" data-title="Wishlist"><i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i><i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i></button> </div>
-                                                        </div><!-- .c-product-grid__thumb-wrap --><a href="" data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add_to_cart_button" data-product_id="4592" data-product_sku="" aria-label="Виберіть опції для &quot; Daeng Gi Meo Ri Vitalizing Treatment Кондиціонер регенеруючий інтенсивний&quot;" aria-describedby="Цей товар має кілька варіантів. Параметри можна вибрати на сторінці товару" rel="nofollow">
-                                                            <i class="ip-cart c-product-grid__icon c-product-grid__icon--cart"></i>
-                                                        </a>
-                                                        <div class="c-product-grid__details">
-                                                            <div class="c-product-grid__title-wrap"><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                                    <h2 class="woocommerce-loop-product__title">{{ product.title }}</h2>
-                                                                </a><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                                    <div class="c-product-grid__short-desc">
-                                                                        <p>{{ product.brand }}</p>
-                                                                    </div>
-                                                                </a></div>
-                                                            <!-- .c-product-grid__title-wrap -->
-                                                            <div class="c-product-grid__price-wrap">
-                                                                <span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ product.price }}
-                                                            </div>
-                                                            <!-- .c-product-grid__price-wrap -->
-                                                        </div><!-- .c-product-grid__details -->
-                                                    </div>
-                                                    {% endif %}
                                                 {% endfor %}
                                             </div>
                                         </div>
@@ -399,33 +400,80 @@
     <script>
         (function($) {
             $(document).ready(function() {
+                // Constants and DOM elements
                 const mainImageElement = $('.c-product__slider-img');
                 const zoomContainer = $('.c-product__image-zoom');
                 const priceDisplay = $('.price');
                 const downloadLink = $('.c-product__image-link');
+                const addToCartBtn = $('.add-to-cart-btn');
+                const mainSlider = $('.c-product__slider'); // Main slider container
+                const thumbnailSlider = $('.c-product__thumbs'); // Thumbnail slider if exists
+                let currentVariationData = null;
 
-                const baseVolume = '{{ product.volume }}';
-                const basePrice = '{{ product.price }}';
-                const baseImage = '{{ product.image.url }}';
+                // Update all product images
+                function updateAllImages(imageUrl) {
+                    if (!imageUrl) return;
 
-                function updateImage(imageUrl) {
+                    // Update main image
+                    mainImageElement.attr('src', imageUrl).attr('srcset', imageUrl);
 
-                    mainImageElement.attr('src', imageUrl);
-                    mainImageElement.attr('srcset', imageUrl);
+                    // Update zoom container
                     zoomContainer.attr('data-img', imageUrl);
                     downloadLink.attr('href', imageUrl);
 
-                    $('.zoomImg').remove();
+                    // Update owl carousel slide if it exists
+                    if (mainSlider.hasClass('owl-carousel')) {
+                        // Remove existing slides
+                        mainSlider.trigger('destroy.owl.carousel');
+                        mainSlider.html(`
+                            <div class="c-product__slider-item">
+                                <img src="${imageUrl}"
+                                     class="c-product__slider-img"
+                                     alt="Product Image">
+                            </div>
+                        `);
+                        // Reinitialize the carousel
+                        mainSlider.owlCarousel({
+                            items: 1,
+                            nav: true,
+                            dots: false,
+                            loop: false,
+                            rtl: ideapark_is_rtl,
+                            navText: ideapark_nav_text,
+                        });
+                    }
 
+                    // Update thumbnail if it exists
+                    if (thumbnailSlider.length) {
+                        thumbnailSlider.find('.c-product__thumbs-item.active')
+                            .find('img')
+                            .attr('src', imageUrl);
+                    }
+
+                    // Reset and reinitialize zoom
+                    $('.zoomImg').remove();
                     zoomContainer.zoom({
                         url: imageUrl,
                         touch: false,
                         onZoomIn: function() {
+                            $(this).addClass('active');
+                        },
+                        onZoomOut: function() {
+                            $(this).removeClass('active');
                         }
                     });
+
+                    // Update hidden input for cart
+                    $('.product-image-' + addToCartBtn.attr('data-index')).val(imageUrl);
                 }
 
+                // Update price display
                 function updatePrice(price, oldPrice) {
+                    if (!price) return;
+
+                    priceDisplay.empty();
+                    const productId = addToCartBtn.attr('data-index');
+
                     if (oldPrice && parseFloat(oldPrice) > parseFloat(price)) {
                         priceDisplay.html(`
                             <del aria-hidden="true">
@@ -435,42 +483,168 @@
                             </del>
                             <ins>
                                 <span class="woocommerce-Price-amount amount">
-                                    <bdi><span class="woocommerce-Price-currencySymbol">₴</span>${price}</bdi>
+                                    <bdi><span class="woocommerce-Price-currencySymbol">₴</span>
+                                        <span class="current-product-price-${productId}">${price}</span>
+                                    </bdi>
                                 </span>
                             </ins>
                         `);
                     } else {
                         priceDisplay.html(`
                             <span class="woocommerce-Price-amount amount">
-                                <bdi><span class="woocommerce-Price-currencySymbol">₴</span>${price}</bdi>
+                                <bdi><span class="woocommerce-Price-currencySymbol">₴</span>
+                                    <span class="current-product-price-${productId}">${price}</span>
+                                </bdi>
                             </span>
                         `);
                     }
+
+                    // Remove duplicate price elements
+                    const currentPriceSpans = $(`.current-product-price-${productId}`);
+                    if (currentPriceSpans.length > 1) {
+                        currentPriceSpans.not(':first').remove();
+                    }
                 }
 
+                // Handle variation selection
                 $('.thwvsf-wrapper-item-li').on('click', function(e) {
                     e.preventDefault();
                     const $this = $(this);
 
                     if ($this.hasClass('active')) {
+                        // Reset to base variation
                         $('.thwvsf-wrapper-item-li').removeClass('active');
-                        $('[data-is-base="true"]').addClass('active');
-                        updatePrice(basePrice);
-                        updateImage(baseImage);
+                        const baseElement = $('[data-is-base="true"]');
+                        baseElement.addClass('active');
+                        currentVariationData = null;
                         $('.variation_id').val('');
+
+                        // Reset to base values
+                        updatePrice(baseElement.data('price'));
+                        updateAllImages(baseElement.data('image'));
                     } else {
+                        // Set new variation
                         $('.thwvsf-wrapper-item-li').removeClass('active');
                         $this.addClass('active');
-                        updatePrice($this.data('price'), $this.data('old-price'));
-                        updateImage($this.data('image'));
-                        $('.variation_id').val($this.data('variation-id'));
+
+                        // Store current variation data
+                        currentVariationData = {
+                            variation_id: $this.data('variation-id'),
+                            price: $this.data('price'),
+                            old_price: $this.data('old-price'),
+                            image: $this.data('image'),
+                            volume: $this.data('volume')
+                        };
+
+                        // Update display
+                        updatePrice(currentVariationData.price, currentVariationData.old_price);
+                        updateAllImages(currentVariationData.image);
+                        $('.variation_id').val(currentVariationData.variation_id);
                     }
                 });
 
-                zoomContainer.zoom({
-                    url: baseImage,
-                    touch: false
+                // Handle quantity changes
+                function handleQuantityChange() {
+                    // Plus button
+                    $(document).on('click', '.js-quantity-plus', function() {
+                        const input = $(this).siblings('.qty');
+                        const currentVal = parseInt(input.val());
+                        input.val(currentVal + 1);
+                    });
+
+                    // Minus button
+                    $(document).on('click', '.js-quantity-minus', function() {
+                        const input = $(this).siblings('.qty');
+                        const currentVal = parseInt(input.val());
+                        if (currentVal > 1) {
+                            input.val(currentVal - 1);
+                        }
+                    });
+
+                    // Direct input validation
+                    $(document).on('change', '.qty', function() {
+                        const value = parseInt($(this).val());
+                        if (isNaN(value) || value < 1) {
+                            $(this).val(1);
+                        }
+                    });
+                }
+
+                // Handle add to cart
+                $(document).on('click', '.add-to-cart-btn', function(e) {
+                    e.preventDefault();
+
+                    const this_val = $(this);
+                    const index_val = this_val.attr('data-index');
+                    const isProductPage = this_val.hasClass('single_add_to_cart_button');
+
+                    // Get product data
+                    const quantity = $('.product-quantity-' + index_val).val();
+                    const product_title = $('.product-title-' + index_val).val();
+                    const product_id = $('.product-id-' + index_val).val();
+                    const product_pid = $('.product-pid-' + index_val).val();
+                    const product_image = currentVariationData ? currentVariationData.image : $('.product-image-' + index_val).val();
+                    const product_price = currentVariationData ? currentVariationData.price : $('.current-product-price-' + index_val).text();
+
+                    // Validate variation selection
+                    if (isProductPage && $('.thwvsf-wrapper-item-li').length && !currentVariationData && !$('[data-is-base="true"]').hasClass('active')) {
+                        alert('Будь ласка, виберіть об\'єм продукту');
+                        return;
+                    }
+
+                    // Add to cart AJAX request
+                    $.ajax({
+                        url: '/add-to-cart',
+                        data: {
+                            'id': product_id,
+                            'pid': product_pid,
+                            'image': product_image,
+                            'quantity': quantity,
+                            'title': product_title,
+                            'price': product_price,
+                            'variation_id': currentVariationData ? currentVariationData.variation_id : '',
+                            'volume': currentVariationData ? currentVariationData.volume : ''
+                        },
+                        dataType: 'json',
+                        beforeSend: function() {
+                            this_val.prop('disabled', true);
+                        },
+                        success: function(response) {
+                            if (isProductPage) {
+                                this_val.html('Товар у кошику');
+                            } else {
+                                this_val.html('<span class="success-check">✔</span>');
+                            }
+                            this_val.addClass('added-to-cart');
+                            $('.cart-items-count').text(response.totalcartitems);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error adding to cart:', error);
+                            this_val.prop('disabled', false);
+                            alert('Помилка при додаванні товару до кошика. Будь ласка, спробуйте ще раз.');
+                        },
+                        complete: function() {
+                            this_val.prop('disabled', false);
+                        }
+                    });
                 });
+
+                // Initialize functionality
+                handleQuantityChange();
+
+                // Initial zoom setup
+                if (zoomContainer.length) {
+                    zoomContainer.zoom({
+                        url: zoomContainer.data('img'),
+                        touch: false,
+                        onZoomIn: function() {
+                            $(this).addClass('active');
+                        },
+                        onZoomOut: function() {
+                            $(this).removeClass('active');
+                        }
+                    });
+                }
             });
         })(jQuery);
     </script>

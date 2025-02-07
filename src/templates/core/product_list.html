@@ -140,6 +140,7 @@
 	                    <div class="c-product-grid__wrap c-product-grid__wrap--4-per-row  c-product-grid__wrap--2-per-row  c-product-grid__wrap--sidebar ">
 	                        <div class="c-product-grid__list c-product-grid__list--4-per-row" id="filtered-products">
 							{% for product in products %}
+								{% csrf_token %}
 								{% if product.old_price > product.price %}
 								<div class="c-product-grid__item c-product-grid__item--sidebar c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product">
 									<div class="c-product-grid__badges c-badge__list">
@@ -195,7 +196,7 @@
 												<ins>
 													<span class="woocommerce-Price-amount amount">
 														<bdi>
-															<span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ product.price }}
+															<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span><span class="current-product-price-{{ product.id }}">{{ product.price }}</span></bdi></span></span>
 														</bdi>
 													</span>
 												</ins>
@@ -227,7 +228,7 @@
 											</a></div>
 										<!-- .c-product-grid__title-wrap -->
 										<div class="c-product-grid__price-wrap">
-											<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ product.price }}
+											<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span><span class="current-product-price-{{ product.id }}">{{ product.price }}</span></bdi></span></span>
 										</div>
 										<!-- .c-product-grid__price-wrap -->
 									</div><!-- .c-product-grid__details -->

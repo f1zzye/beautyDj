@@ -54,7 +54,7 @@
                     <ins>
                         <span class="woocommerce-Price-amount amount">
                             <bdi>
-                                <span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ product.price }}
+                                <span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span><span class="current-product-price-{{ product.id }}">{{ product.price }}</span></bdi></span></span>
                             </bdi>
                         </span>
                     </ins>
@@ -86,7 +86,7 @@
                 </a></div>
             <!-- .c-product-grid__title-wrap -->
             <div class="c-product-grid__price-wrap">
-                <span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span>{{ product.price }}
+                <span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#8372;</span><span class="current-product-price-{{ product.id }}">{{ product.price }}</span></bdi></span></span>
             </div>
             <!-- .c-product-grid__price-wrap -->
         </div><!-- .c-product-grid__details -->

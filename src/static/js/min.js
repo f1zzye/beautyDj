@@ -4488,26 +4488,31 @@ IdeaparkQueue.init();
         $('.js-woocommerce-carousel:not(.owl-carousel)').each(function() {
             var $this = $(this);
             if ($('.product', $this).length > 1) {
-                var autoplay = $this.data('autoplay') === 'yes';
+                var autoplay = false; // Force autoplay to be false instead of checking data attribute
                 var animation_timeout = $this.data('animation-timeout');
                 var params = {
                     center: false,
-                    autoWidth: true,
-                    loop: $this.hasClass('h-carousel--loop'),
-                    margin: 0,
+                    autoWidth: false,
+                    loop: false,
                     rtl: ideapark_is_rtl,
                     nav: !$this.hasClass('h-carousel--nav-hide'),
                     dots: !$this.hasClass('h-carousel--dots-hide'),
                     navText: ideapark_nav_text,
-                    onInitialized: ideapark_owl_hide_arrows
+                    onInitialized: ideapark_owl_hide_arrows,
                 };
-                if (autoplay) {
+
+                // Remove this entire if block to completely disable autoplay
+                /* if (autoplay) {
                     params.autoplay = true;
                     params.autoplayTimeout = animation_timeout;
-                }
-                $this.addClass('owl-carousel').on('resized.owl.carousel', ideapark_owl_hide_arrows).owlCarousel(params).on('changed.owl.carousel', function() {
-                    $this.find('.owl-nav,.owl-dots').removeClass('disabled');
-                });
+                } */
+
+                $this.addClass('owl-carousel')
+                     .on('resized.owl.carousel', ideapark_owl_hide_arrows)
+                     .owlCarousel(params)
+                     .on('changed.owl.carousel', function() {
+                         $this.find('.owl-nav,.owl-dots').removeClass('disabled');
+                     });
             }
         });
     };
