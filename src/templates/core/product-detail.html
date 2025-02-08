@@ -396,7 +396,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <script>
     (function($) {
-        // Инициализация зума
         function initZoom() {
             const zoomContainer = $('.c-product__image-zoom');
 
@@ -432,11 +431,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const thumbnailSlider = $('.c-product__thumbs');
             let currentVariationData = null;
 
-            // Инициализация базового объема при загрузке страницы
             const baseVolume = $('.thwvsf-wrapper-item-li[data-is-base="true"]').data('volume') ||
                               '{{ product.volume }} мл';
 
-            // Инициализация базовых данных товара
             if ($('[data-is-base="true"]').length > 0) {
                 const baseElement = $('[data-is-base="true"]');
                 currentVariationData = {
@@ -627,8 +624,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 handleAddToCart(this_val, true);
             });
 
-            // Инициализация
-            $(window).on('load', initZoom);
+           initZoom();
             $(document).on('click', '.thwvsf-wrapper-item-li', function() {
                 setTimeout(initZoom, 100);
             });
