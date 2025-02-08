@@ -1,19 +1,35 @@
 from django.db.models import F, Max, Min, Q
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 
 from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
                          Product, WishList)
 from userauths.models import ContactUs
+from django.contrib import messages
 
 
 def index(request):
-    sale_products = Product.objects.filter(product_status="опубліковано", old_price__gt=F("price")).order_by("-date")
+    sale_products = Product.objects.filter(
+        product_status="опубліковано",
+        old_price__gt=F("price")
+    ).order_by("-date")
 
-    products = Product.objects.filter(product_status="опубліковано", featured=True).exclude(old_price__gt=F("price"))
+    products = Product.objects.filter(
+        product_status="опубліковано",
+        featured=True
+    ).exclude(
+        old_price__gt=F("price")
+    )
 
-    extra_products = Product.objects.filter(product_status="опубліковано", extra_products=True)
+    extra_products = Product.objects.filter(
+        product_status="опубліковано",
+        extra_products=True
+    ).exclude(
+        id__in=sale_products.values_list('id', flat=True)
+    ).exclude(
+        id__in=products.values_list('id', flat=True)
+    )
 
     context = {
         "products": products,
@@ -192,26 +208,55 @@ def ajax_contact(request):
 def add_to_cart(request):
     cart_product = {}
 
-    cart_product[str(request.GET['id'])] = {
-        'title': request.GET['title'],
-        'quantity': request.GET['quantity'],
-        'price': request.GET['price'],
-        'image': request.GET['image'],
-        'pid': request.GET['pid'],
+    product_id = request.GET["id"]
+    variation_id = request.GET.get("variation_id", "")
+    cart_key = f"{product_id}_{variation_id}" if variation_id else product_id
+
+    cart_product[cart_key] = {
+        "title": request.GET["title"],
+        "quantity": request.GET["quantity"],
+        "price": request.GET["price"],
+        "image": request.GET["image"],
+        "pid": request.GET["pid"],
+        "volume": request.GET.get("volume", ""),
+        "variation_id": variation_id
     }
 
-    if 'cart_data_obj' in request.session:
-        if str(request.GET['id']) in request.session['cart_data_obj']:
-
-            cart_data = request.session['cart_data_obj']
-            cart_data[str(request.GET['id'])]['quantity'] = int(cart_product[str(request.GET['id'])]['quantity'])
-            cart_data.update(cart_data)
-            request.session['cart_data_obj'] = cart_data
+    if "cart_data_obj" in request.session:
+        cart_data = request.session["cart_data_obj"]
+        if cart_key in cart_data:
+            cart_data[cart_key]["quantity"] = int(cart_product[cart_key]["quantity"])
         else:
-            cart_data = request.session['cart_data_obj']
             cart_data.update(cart_product)
-            request.session['cart_data_obj'] = cart_data
+        request.session["cart_data_obj"] = cart_data
     else:
-        request.session['cart_data_obj'] = cart_product
-    return JsonResponse(
-        {"data": request.session['cart_data_obj'], 'totalcartitems': len(request.session['cart_data_obj'])})
+        request.session["cart_data_obj"] = cart_product
+
+    return JsonResponse({
+        "data": request.session["cart_data_obj"],
+        "totalcartitems": len(request.session["cart_data_obj"])
+    })
+
+
+def cart(request):
+    cart_total = 0
+    if 'cart_data_obj' in request.session:
+        cart_data = request.session['cart_data_obj']
+
+        for product_id, item in cart_data.items():
+            try:
+                price = float(item['price'].replace(',', '.'))
+                quantity = int(item['quantity'])
+                item['total_price'] = price * quantity
+                cart_total += item['total_price']
+            except (ValueError, TypeError):
+                item['total_price'] = 0
+
+        return render(request, 'core/cart.html', {
+            'cart_data': cart_data,
+            'totalcartitems': len(cart_data),
+            'cart_total': cart_total
+        })
+    else:
+        messages.warning(request, 'Ваш кошик порожній')
+        return redirect('core:index')

@@ -150,7 +150,7 @@
                                                         data-image="{{ volume_item.image_url }}"
                                                         {% if volume_item.is_base %}data-is-base="true"{% endif %}
                                                         {% if not volume_item.is_base %}data-variation-id="{{ volume_item.id }}"{% endif %}
-                                                        {% if volume_item.old_price %}data-old-price="{{ volume_item.old_price }}"{% endif %}>
+                                                        {% if volume_item.old_price %}data-old-price="{{ volume_item.old_price }}{% endif %}">
                                                         <span class="thwvsf-item-span item-span-text">{{ volume_item.volume }} мл</span>
                                                     </li>
                                                     {% endfor %}
@@ -369,87 +369,42 @@
 
   </div>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const tabs = document.querySelectorAll('.c-product__tabs-item-link');
-        const tabContents = document.querySelectorAll('.wc-tab');
+// Обработчик табов
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.c-product__tabs-item-link');
+    const tabContents = document.querySelectorAll('.wc-tab');
 
-        function switchTab(event) {
-            event.preventDefault();
-
-
-            tabs.forEach(tab => tab.parentElement.classList.remove('active'));
-            tabContents.forEach(content => {
-                content.style.display = 'none';
-                content.classList.remove('current', 'visible');
-            });
-
-            const targetTab = document.querySelector(this.getAttribute('href'));
-            console.log(this.parentElement);
-            this.parentElement.classList.add('active');
-            targetTab.style.display = '';
-            targetTab.classList.add('current', 'visible');
-        }
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', switchTab);
-            console.log(tab);
+    function switchTab(event) {
+        event.preventDefault();
+        tabs.forEach(tab => tab.parentElement.classList.remove('active'));
+        tabContents.forEach(content => {
+            content.style.display = 'none';
+            content.classList.remove('current', 'visible');
         });
+
+        const targetTab = document.querySelector(this.getAttribute('href'));
+        this.parentElement.classList.add('active');
+        targetTab.style.display = '';
+        targetTab.classList.add('current', 'visible');
+    }
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', switchTab);
     });
-      </script>
+});
+</script>
 
     <script>
-        (function($) {
-            $(document).ready(function() {
-                const mainImageElement = $('.c-product__slider-img');
-                const zoomContainer = $('.c-product__image-zoom');
-                const priceDisplay = $('.price');
-                const downloadLink = $('.c-product__image-link');
-                const addToCartBtn = $('.add-to-cart-btn');
-                const mainSlider = $('.c-product__slider'); // Main slider container
-                const thumbnailSlider = $('.c-product__thumbs'); // Thumbnail slider if exists
-                let currentVariationData = null;
+    (function($) {
+        // Инициализация зума
+        function initZoom() {
+            const zoomContainer = $('.c-product__image-zoom');
 
-                // Update all product images
-                function updateAllImages(imageUrl) {
-                    if (!imageUrl) return;
+            if (zoomContainer.length) {
+                const imageUrl = zoomContainer.data('img');
+                const testImage = new Image();
 
-                    // Update main image
-                    mainImageElement.attr('src', imageUrl).attr('srcset', imageUrl);
-
-                    // Update zoom container
-                    zoomContainer.attr('data-img', imageUrl);
-                    downloadLink.attr('href', imageUrl);
-
-                    // Update owl carousel slide if it exists
-                    if (mainSlider.hasClass('owl-carousel')) {
-                        // Remove existing slides
-                        mainSlider.trigger('destroy.owl.carousel');
-                        mainSlider.html(`
-                            <div class="c-product__slider-item">
-                                <img src="${imageUrl}"
-                                     class="c-product__slider-img"
-                                     alt="Product Image">
-                            </div>
-                        `);
-                        // Reinitialize the carousel
-                        mainSlider.owlCarousel({
-                            items: 1,
-                            nav: true,
-                            dots: false,
-                            loop: false,
-                            rtl: ideapark_is_rtl,
-                            navText: ideapark_nav_text,
-                        });
-                    }
-
-                    // Update thumbnail if it exists
-                    if (thumbnailSlider.length) {
-                        thumbnailSlider.find('.c-product__thumbs-item.active')
-                            .find('img')
-                            .attr('src', imageUrl);
-                    }
-
-                    // Reset and reinitialize zoom
+                testImage.onload = function() {
                     $('.zoomImg').remove();
                     zoomContainer.zoom({
                         url: imageUrl,
@@ -461,159 +416,228 @@
                             $(this).removeClass('active');
                         }
                     });
+                };
 
-                    // Update hidden input for cart
-                    $('.product-image-' + addToCartBtn.attr('data-index')).val(imageUrl);
+                testImage.src = imageUrl;
+            }
+        }
+
+        $(document).ready(function() {
+            const mainImageElement = $('.c-product__slider-img');
+            const zoomContainer = $('.c-product__image-zoom');
+            const priceDisplay = $('.price');
+            const downloadLink = $('.c-product__image-link');
+            const addToCartBtn = $('.add-to-cart-btn');
+            const mainSlider = $('.c-product__slider');
+            const thumbnailSlider = $('.c-product__thumbs');
+            let currentVariationData = null;
+
+            // Инициализация базового объема при загрузке страницы
+            const baseVolume = $('.thwvsf-wrapper-item-li[data-is-base="true"]').data('volume') ||
+                              '{{ product.volume }} мл';
+
+            // Инициализация базовых данных товара
+            if ($('[data-is-base="true"]').length > 0) {
+                const baseElement = $('[data-is-base="true"]');
+                currentVariationData = {
+                    variation_id: '',
+                    price: baseElement.data('price') || '{{ product.price }}',
+                    old_price: baseElement.data('old-price') || '{{ product.old_price }}',
+                    image: baseElement.data('image') || '{{ product.image.url }}',
+                    volume: baseElement.data('volume') || baseVolume
+                };
+            }
+
+            // Функция обновления изображений
+            function updateAllImages(imageUrl) {
+                if (!imageUrl) return;
+
+                mainImageElement.attr('src', imageUrl).attr('srcset', imageUrl);
+                zoomContainer.attr('data-img', imageUrl);
+                downloadLink.attr('href', imageUrl);
+
+                if (mainSlider.hasClass('owl-carousel')) {
+                    mainSlider.trigger('destroy.owl.carousel');
+                    mainSlider.html(`
+                        <div class="c-product__slider-item">
+                            <img src="${imageUrl}"
+                                 class="c-product__slider-img"
+                                 alt="Product Image">
+                        </div>
+                    `);
+                    mainSlider.owlCarousel({
+                        items: 1,
+                        nav: true,
+                        dots: false,
+                        loop: false,
+                        rtl: ideapark_is_rtl,
+                        navText: ideapark_nav_text,
+                    });
                 }
 
-                function updatePrice(price, oldPrice) {
-                    if (!price) return;
+                if (thumbnailSlider.length) {
+                    thumbnailSlider.find('.c-product__thumbs-item.active')
+                        .find('img')
+                        .attr('src', imageUrl);
+                }
 
-                    const mainProductPrice = $('.summary.entry-summary .price');
-                    const productId = addToCartBtn.attr('data-index');
+                $('.product-image-' + addToCartBtn.attr('data-index')).val(imageUrl);
+            }
 
-                    if (oldPrice && parseFloat(oldPrice) > parseFloat(price)) {
-                        mainProductPrice.html(`
-                            <del aria-hidden="true">
-                                <span class="woocommerce-Price-amount amount">
-                                    <bdi><span class="woocommerce-Price-currencySymbol">₴</span>${oldPrice}</bdi>
-                                </span>
-                            </del>
-                            <ins>
-                                <span class="woocommerce-Price-amount amount">
-                                    <bdi><span class="woocommerce-Price-currencySymbol">₴</span>
-                                        <span class="current-product-price-${productId}">${price}</span>
-                                    </bdi>
-                                </span>
-                            </ins>
-                        `);
-                    } else {
-                        mainProductPrice.html(`
+            // Функция обновления цены
+            function updatePrice(price, oldPrice) {
+                if (!price) return;
+
+                const mainProductPrice = $('.summary.entry-summary .price');
+                const productId = addToCartBtn.attr('data-index');
+
+                if (oldPrice && parseFloat(oldPrice) > parseFloat(price)) {
+                    mainProductPrice.html(`
+                        <del aria-hidden="true">
+                            <span class="woocommerce-Price-amount amount">
+                                <bdi><span class="woocommerce-Price-currencySymbol">₴</span>${oldPrice}</bdi>
+                            </span>
+                        </del>
+                        <ins>
                             <span class="woocommerce-Price-amount amount">
                                 <bdi><span class="woocommerce-Price-currencySymbol">₴</span>
                                     <span class="current-product-price-${productId}">${price}</span>
                                 </bdi>
                             </span>
-                        `);
-                    }
-
-                    const currentPriceSpans = mainProductPrice.find(`.current-product-price-${productId}`);
-                    if (currentPriceSpans.length > 1) {
-                        currentPriceSpans.not(':first').remove();
-                    }
+                        </ins>
+                    `);
+                } else {
+                    mainProductPrice.html(`
+                        <span class="woocommerce-Price-amount amount">
+                            <bdi><span class="woocommerce-Price-currencySymbol">₴</span>
+                                <span class="current-product-price-${productId}">${price}</span>
+                            </bdi>
+                        </span>
+                    `);
                 }
 
-                $('.thwvsf-wrapper-item-li').on('click', function(e) {
-                    e.preventDefault();
-                    const $this = $(this);
+                const currentPriceSpans = mainProductPrice.find(`.current-product-price-${productId}`);
+                if (currentPriceSpans.length > 1) {
+                    currentPriceSpans.not(':first').remove();
+                }
+            }
 
-                    if ($this.hasClass('active')) {
-                        // Reset to base variation
-                        $('.thwvsf-wrapper-item-li').removeClass('active');
-                        const baseElement = $('[data-is-base="true"]');
-                        baseElement.addClass('active');
-                        currentVariationData = null;
-                        $('.variation_id').val('');
+            // Обработчик клика по вариации
+            $('.thwvsf-wrapper-item-li').on('click', function(e) {
+                e.preventDefault();
+                const $this = $(this);
 
-                        // Reset to base values
-                        updatePrice(baseElement.data('price'));
-                        updateAllImages(baseElement.data('image'));
-                    } else {
-                        // Set new variation
-                        $('.thwvsf-wrapper-item-li').removeClass('active');
-                        $this.addClass('active');
+                if ($this.hasClass('active')) {
+                    // Reset to base variation
+                    $('.thwvsf-wrapper-item-li').removeClass('active');
+                    const baseElement = $('[data-is-base="true"]');
+                    baseElement.addClass('active');
 
-                        // Store current variation data
-                        currentVariationData = {
-                            variation_id: $this.data('variation-id'),
-                            price: $this.data('price'),
-                            old_price: $this.data('old-price'),
-                            image: $this.data('image'),
-                            volume: $this.data('volume')
-                        };
+                    // Устанавливаем базовые данные
+                    currentVariationData = {
+                        variation_id: '',
+                        price: baseElement.data('price') || '{{ product.price }}',
+                        old_price: baseElement.data('old-price') || '{{ product.old_price }}',
+                        image: baseElement.data('image') || '{{ product.image.url }}',
+                        volume: baseElement.data('volume') || baseVolume
+                    };
 
-                        // Update display
-                        updatePrice(currentVariationData.price, currentVariationData.old_price);
-                        updateAllImages(currentVariationData.image);
-                        $('.variation_id').val(currentVariationData.variation_id);
-                    }
-                });
+                    $('.variation_id').val('');
+                    updatePrice(currentVariationData.price, currentVariationData.old_price);
+                    updateAllImages(currentVariationData.image);
+                } else {
+                    // Set new variation
+                    $('.thwvsf-wrapper-item-li').removeClass('active');
+                    $this.addClass('active');
 
-                // Handle add to cart
-                $(document).on('click', '.add-to-cart-btn', function(e) {
-                    e.preventDefault();
+                    currentVariationData = {
+                        variation_id: $this.data('variation-id'),
+                        price: $this.data('price'),
+                        old_price: $this.data('old-price'),
+                        image: $this.data('image'),
+                        volume: $this.data('volume')
+                    };
 
-                    const this_val = $(this);
-                    const index_val = this_val.attr('data-index');
-                    const isProductPage = this_val.hasClass('single_add_to_cart_button');
-
-                    // Get product data
-                    const quantity = $('.product-quantity-' + index_val).val();
-                    const product_title = $('.product-title-' + index_val).val();
-                    const product_id = $('.product-id-' + index_val).val();
-                    const product_pid = $('.product-pid-' + index_val).val();
-                    const product_image = currentVariationData ? currentVariationData.image : $('.product-image-' + index_val).val();
-                    const product_price = currentVariationData ? currentVariationData.price : $('.current-product-price-' + index_val).text();
-
-                    // Validate variation selection
-                    if (isProductPage && $('.thwvsf-wrapper-item-li').length && !currentVariationData && !$('[data-is-base="true"]').hasClass('active')) {
-                        alert('Будь ласка, виберіть об\'єм продукту');
-                        return;
-                    }
-
-                    // Add to cart AJAX request
-                    $.ajax({
-                        url: '/add-to-cart',
-                        data: {
-                            'id': product_id,
-                            'pid': product_pid,
-                            'image': product_image,
-                            'quantity': quantity,
-                            'title': product_title,
-                            'price': product_price,
-                            'variation_id': currentVariationData ? currentVariationData.variation_id : '',
-                            'volume': currentVariationData ? currentVariationData.volume : ''
-                        },
-                        dataType: 'json',
-                        beforeSend: function() {
-                            this_val.prop('disabled', true);
-                        },
-                        success: function(response) {
-                            if (isProductPage) {
-                                this_val.html('Товар у кошику');
-                            } else {
-                                this_val.html('<span class="success-check">✔</span>');
-                            }
-                            this_val.addClass('added-to-cart');
-                            $('.cart-items-count').text(response.totalcartitems);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error adding to cart:', error);
-                            this_val.prop('disabled', false);
-                            alert('Помилка при додаванні товару до кошика. Будь ласка, спробуйте ще раз.');
-                        },
-                        complete: function() {
-                            this_val.prop('disabled', false);
-                        }
-                    });
-                });
-
-                handleQuantityChange();
-
-                if (zoomContainer.length) {
-                    zoomContainer.zoom({
-                        url: zoomContainer.data('img'),
-                        touch: false,
-                        onZoomIn: function() {
-                            $(this).addClass('active');
-                        },
-                        onZoomOut: function() {
-                            $(this).removeClass('active');
-                        }
-                    });
+                    updatePrice(currentVariationData.price, currentVariationData.old_price);
+                    updateAllImages(currentVariationData.image);
+                    $('.variation_id').val(currentVariationData.variation_id);
                 }
             });
-        })(jQuery);
+
+            // Функция для обработки добавления в корзину
+            function handleAddToCart(this_val, isProductPage) {
+                const index_val = this_val.attr('data-index');
+
+                // Get product data
+                const quantity = $('.product-quantity-' + index_val).val();
+                const product_title = $('.product-title-' + index_val).val();
+                const product_id = $('.product-id-' + index_val).val();
+                const product_pid = $('.product-pid-' + index_val).val();
+                const product_image = currentVariationData ? currentVariationData.image : $('.product-image-' + index_val).val();
+                const product_price = currentVariationData ? currentVariationData.price : $('.current-product-price-' + index_val).text();
+                const product_volume = currentVariationData ? currentVariationData.volume : baseVolume;
+
+                // AJAX запрос
+                $.ajax({
+                    url: '/add-to-cart',
+                    data: {
+                        'id': product_id,
+                        'pid': product_pid,
+                        'image': product_image,
+                        'quantity': quantity,
+                        'title': product_title,
+                        'price': product_price,
+                        'variation_id': currentVariationData ? currentVariationData.variation_id : '',
+                        'volume': product_volume
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        this_val.prop('disabled', true);
+                    },
+                    success: function(response) {
+                        if (isProductPage) {
+                            this_val.html('Товар у кошику');
+                        } else {
+                            this_val.html('<span class="success-check">✔</span>');
+                        }
+                        this_val.addClass('added-to-cart');
+                        $('.cart-items-count').text(response.totalcartitems);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error adding to cart:', error);
+                        this_val.prop('disabled', false);
+                        alert('Помилка при додаванні товару до кошика. Будь ласка, спробуйте ще раз.');
+                    },
+                    complete: function() {
+                        this_val.prop('disabled', false);
+                    }
+                });
+            }
+
+            // Обработчик добавления в корзину
+            $(document).on('click', '.add-to-cart-btn.single_add_to_cart_button', function(e) {
+                e.preventDefault();
+                const this_val = $(this);
+
+                if ($('.thwvsf-wrapper-item-li').length && !currentVariationData && !$('[data-is-base="true"]').hasClass('active')) {
+                    alert('Будь ласка, виберіть об\'єм продукту');
+                    return;
+                }
+
+                handleAddToCart(this_val, true);
+            });
+
+            // Инициализация
+            $(window).on('load', initZoom);
+            $(document).on('click', '.thwvsf-wrapper-item-li', function() {
+                setTimeout(initZoom, 100);
+            });
+
+            if (typeof handleQuantityChange === 'function') {
+                handleQuantityChange();
+            }
+        });
+    })(jQuery);
     </script>
 </div>
 

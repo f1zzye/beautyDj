@@ -1,8 +1,8 @@
 from django.urls import include, path
 
-from core.views import (ajax_contact, category_product_list, contacts,
-                        filter_products, get_price_range, index, product_list,
-                        products_detail, search, add_to_cart)
+from core.views import (add_to_cart, ajax_contact, category_product_list,
+                        contacts, filter_products, get_price_range, index,
+                        product_list, products_detail, search, cart)
 
 app_name = "core"
 
@@ -16,5 +16,6 @@ urlpatterns = [
     path("contacts/", contacts, name="contacts"),
     path("ajax-contact-form/", ajax_contact, name="ajax-contact-form"),
     path("get-price-range/", get_price_range, name="get-price-range"),
-    path('add-to-cart/', add_to_cart, name='add-to-cart'),
+    path("add-to-cart/", add_to_cart, name="add-to-cart"),
+    path('cart/', cart, name='cart'),
 ]
