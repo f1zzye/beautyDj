@@ -192,8 +192,44 @@ function handleAddToCart(this_val, isProductPage, currentVariationData = null) {
     });
 }
 
-// Обработчик для страницы каталога
 $(document).on('click', '.add-to-cart-btn:not(.single_add_to_cart_button)', function(e) {
     e.preventDefault();
     handleAddToCart($(this), false);
 });
+
+    $(document).on('click', '.delete-product', function(){
+        let product_id = $(this).attr('data-product')
+        let this_val = $(this)
+
+        $.ajax({
+            url: '/delete-from-cart',
+            data: {
+                'id': product_id
+            },
+            dataType: 'json',
+            beforeSend: function(){
+                this_val.hide()
+            },
+            success: function(response){
+                if(response.is_empty) {
+                    // Если корзина пуста, обновляем содержимое внутри #cart-list
+                    $('#cart-list').html(response.data)
+
+                    // Удаляем счетчик товаров, если он есть
+                    $('.cart-items-count').text('0')
+                } else {
+                    // Обновляем только содержимое tbody
+                    $('.c-cart__shop-tbody').html(response.data)
+
+                    // Обновляем счетчик товаров
+                    $('.cart-items-count').text(response.totalcartitems)
+
+                    // Обновляем общую сумму корзины
+                    $('.cart-subtotal .woocommerce-Price-amount bdi, .order-total .woocommerce-Price-amount bdi').html(
+                        '<span class="woocommerce-Price-currencySymbol">₴</span>' +
+                        response.cart_total.toFixed(2)
+                    )
+                }
+            }
+        })
+    })

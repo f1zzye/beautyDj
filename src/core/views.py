@@ -240,7 +240,7 @@ def add_to_cart(request):
 
 def cart(request):
     cart_total = 0
-    if 'cart_data_obj' in request.session:
+    if 'cart_data_obj' in request.session and request.session['cart_data_obj']:
         cart_data = request.session['cart_data_obj']
 
         for product_id, item in cart_data.items():
@@ -262,3 +262,50 @@ def cart(request):
         return render(request, 'core/cart.html', {
             'is_cart_empty': True
         })
+
+
+def delete_item_from_cart(request):
+    product_id = str(request.GET['id'])
+    if 'cart_data_obj' in request.session:
+        if product_id in request.session['cart_data_obj']:
+            cart_data = request.session['cart_data_obj']
+            del request.session['cart_data_obj'][product_id]
+            request.session['cart_data_obj'] = cart_data
+            request.session.modified = True
+
+    if not request.session.get('cart_data_obj'):
+        empty_cart_html = render_to_string('core/async/empty-cart.html')
+        return JsonResponse({
+            'data': empty_cart_html,
+            'totalcartitems': 0,
+            'cart_total': 0,
+            'is_empty': True
+        })
+
+    cart_total = 0
+    cart_data = request.session['cart_data_obj']
+    for product_id, item in cart_data.items():
+        try:
+            price = float(str(item['price']).replace(',', '.'))
+            quantity = int(item['quantity'])
+            item['total_price'] = price * quantity
+            cart_total += item['total_price']
+        except (ValueError, TypeError):
+            item['total_price'] = 0
+            continue
+
+    context = {
+        'cart_data': cart_data,
+        'totalcartitems': len(cart_data),
+        'cart_total': cart_total,
+        'is_cart_empty': False
+    }
+
+    html = render_to_string('core/async/cart-list.html', context)
+
+    return JsonResponse({
+        'data': html,
+        'totalcartitems': len(cart_data),
+        'cart_total': cart_total,
+        'is_empty': False
+    })

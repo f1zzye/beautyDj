@@ -2,10 +2,9 @@
 {% load static %}
 {% block content %}
 
-{% if is_cart_empty %}
-    <div class="l-inner">
+<div class="l-inner" id="cart-list">
+    {% if is_cart_empty %}
         <div class="woocommerce-notices-wrapper woocommerce-notices-wrapper--ajax" style="transform: translateY(0px);"></div>
-
         <div class="l-section l-section--container l-section--bottom-margin l-section--no-sidebar l-section--top-margin-60 l-section--white">
             <div class="l-section__content">
                 <div class="woocommerce">
@@ -18,12 +17,7 @@
                 </div>
             </div>
         </div>
-    </div>
-{% else %}
-    <div class="l-inner">
-    <div class="woocommerce-notices-wrapper woocommerce-notices-wrapper--ajax" style="transform: translateY(90px);"></div>
-
-
+    {% else %}
 
     <div class="l-section l-section--container l-section--bottom-margin l-section--no-sidebar l-section--top-margin">
         <div class="l-section__content">
@@ -52,7 +46,9 @@
 
                                                 <td class="c-cart__shop-td c-cart__shop-td--product-thumbnail">
 
-                                                    <a href="{% url 'core:product-detail' item.pid %}" class="c-cart__shop-remove remove" aria-label="Remove this item" data-product_id="7072" data-product_sku=""><i class="ip-close-small c-cart__shop-remove-icon"></i></a>
+                                                    <a class="c-cart__shop-remove remove delete-product" aria-label="Remove this item" data-product="{{ product_id }}">
+                                                        <i class="ip-close-small c-cart__shop-remove-icon"></i>
+                                                    </a>
                                                     <a class="c-cart__thumbnail-link" href="{% url 'core:product-detail' item.pid %}"><img decoding="async" width="115" height="115" src="{{ item.image }}" class="attachment-woocommerce_gallery_thumbnail size-woocommerce_gallery_thumbnail" alt="" srcset="{{ item.image }}" sizes="(max-width: 115px) 100vw, 115px"></a> </td>
 
                                                <td class="c-cart__shop-td c-cart__shop-td--product-name" data-title="Товар">
@@ -190,7 +186,7 @@
         </div>
     </div>
 
+    {% endif %}
 </div>
-{% endif %}
 
 {% endblock %}

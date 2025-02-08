@@ -1,0 +1,42 @@
+{% for product_id, item in cart_data.items %}
+<tr class="c-cart__shop-tr cart_item" id="cart-list">
+    <td class="c-cart__shop-td c-cart__shop-td--product-thumbnail">
+        <a class="c-cart__shop-remove remove delete-product" aria-label="Remove this item" data-product="{{ product_id }}">
+            <i class="ip-close-small c-cart__shop-remove-icon"></i>
+        </a>
+        <a class="c-cart__thumbnail-link" href="{% url 'core:product-detail' item.pid %}">
+            <img decoding="async" width="115" height="115" src="{{ item.image }}" class="attachment-woocommerce_gallery_thumbnail size-woocommerce_gallery_thumbnail" alt="" srcset="{{ item.image }}" sizes="(max-width: 115px) 100vw, 115px">
+        </a>
+    </td>
+    <td class="c-cart__shop-td c-cart__shop-td--product-name" data-title="Товар">
+        <a href="{% url 'core:product-detail' item.pid %}">{{ item.title }}</a>
+        {% if item.volume %}
+            <div class="c-cart__shop-brand">Об`єм: {{ item.volume }}</div>
+        {% endif %}
+        <span class="c-cart__item-price">
+            <span class="woocommerce-Price-amount amount">
+                <bdi>
+                    <span class="woocommerce-Price-currencySymbol">₴</span>
+                    {{item.price}}
+                </bdi>
+            </span>
+        </span>
+    </td>
+    <td class="c-cart__shop-td c-cart__shop-td--product-quantity" data-title="Кількість">
+        <div class="c-product__quantity quantity">
+            <label class="screen-reader-text">{{ item.title }}</label>
+            <input type="number" class="c-product__quantity-value qty product-quantity-{{ product_id }}" min="1" value="{{ item.quantity }}" placeholder="" inputmode="numeric">
+            <button class="h-cb c-product__quantity-minus js-quantity-minus" type="button"><i class="ip-minus"></i></button>
+            <button class="h-cb c-product__quantity-plus js-quantity-plus" type="button"><i class="ip-plus_big"></i></button>
+        </div>
+    </td>
+    <td class="c-cart__shop-td c-cart__shop-td--product-price c-cart__shop-td--product-subtotal" data-title="Проміжний підсумок">
+        <span class="woocommerce-Price-amount amount">
+            <bdi>
+                <span class="woocommerce-Price-currencySymbol">₴</span>
+                {{ item.total_price|floatformat:2 }}
+            </bdi>
+        </span>
+    </td>
+</tr>
+{% endfor %}
