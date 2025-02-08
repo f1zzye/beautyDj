@@ -255,8 +255,10 @@ def cart(request):
         return render(request, 'core/cart.html', {
             'cart_data': cart_data,
             'totalcartitems': len(cart_data),
-            'cart_total': cart_total
+            'cart_total': cart_total,
+            'is_cart_empty': False
         })
     else:
-        messages.warning(request, 'Ваш кошик порожній')
-        return redirect('core:index')
+        return render(request, 'core/cart.html', {
+            'is_cart_empty': True
+        })
