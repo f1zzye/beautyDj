@@ -152,6 +152,8 @@
                                                                         <input type="hidden" class="product-image-{{  product.id }}" value="{{ product.image.url }}">
                                                                         <input type="hidden" class="product-id-{{ product.id }}" value="{{ product.id }}">
                                                                         <input type="hidden" class="product-title-{{ product.id }}" value="{{ product.title }}">
+                                                                        <input type="hidden" class="product-volume-{{ product.id }}" value="{{ product.volume|default:'' }}">
+                                                                        <input type="hidden" class="current-product-price-{{ product.id }}" value="{{ product.price }}">
                                                                         <i class="ip-cart c-product-grid__atc-icon"></i>
                                                                     </a>
                                                                     <div class="c-product-grid__details">
@@ -212,6 +214,8 @@
                                                                             <input type="hidden" class="product-image-{{  product.id }}" value="{{ product.image.url }}">
                                                                             <input type="hidden" class="product-id-{{ product.id }}" value="{{ product.id }}">
                                                                             <input type="hidden" class="product-title-{{ product.id }}" value="{{ product.title }}">
+                                                                            <input type="hidden" class="product-volume-{{ product.id }}" value="{{ product.volume|default:'' }}">
+                                                                            <input type="hidden" class="current-product-price-{{ product.id }}" value="{{ product.price }}">
                                                                             <i class="ip-cart c-product-grid__atc-icon"></i>
                                                                         </a>
                                                                         <div class="c-product-grid__details">
@@ -327,13 +331,14 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    <a data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add-to-cart-btn"
-                                                                       data-index="{{ extra.id }}" rel="nofollow">
+                                                                    <a data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add-to-cart-btn" data-index="{{ extra.id }}" rel="nofollow">
                                                                         <input type="hidden" value="1" class="product-quantity-{{ extra.id }}">
                                                                         <input type="hidden" class="product-pid-{{ extra.id }}" value="{{ extra.pid }}">
                                                                         <input type="hidden" class="product-image-{{ extra.id }}" value="{{ extra.image.url }}">
                                                                         <input type="hidden" class="product-id-{{ extra.id }}" value="{{ extra.id }}">
                                                                         <input type="hidden" class="product-title-{{ extra.id }}" value="{{ extra.title }}">
+                                                                        <input type="hidden" class="product-volume-{{ extra.id }}" value="{{ extra.volume|default:'' }}">
+                                                                        <input type="hidden" class="current-product-price-{{ extra.id }}" value="{{ extra.price }}">
                                                                         <i class="ip-cart c-product-grid__atc-icon"></i>
                                                                     </a>
 

@@ -147,6 +147,9 @@ function handleAddToCart(this_val, isProductPage, currentVariationData = null) {
     const product_image = currentVariationData ? currentVariationData.image : $('.product-image-' + index_val).val();
     const product_price = currentVariationData ? currentVariationData.price : $('.current-product-price-' + index_val).text();
 
+    // Получаем объем для обычного товара
+    const base_volume = $('.product-volume-' + index_val).val();
+
     // Prepare ajax data
     const ajaxData = {
         'id': product_id,
@@ -154,12 +157,14 @@ function handleAddToCart(this_val, isProductPage, currentVariationData = null) {
         'image': product_image,
         'quantity': quantity,
         'title': product_title,
-        'price': product_price
+        'price': product_price,
+        // Используем объем из вариации если она есть, иначе базовый объем
+        'volume': currentVariationData ? currentVariationData.volume : base_volume
     };
 
+    // Add variation data if exists
     if (currentVariationData) {
         ajaxData.variation_id = currentVariationData.variation_id;
-        ajaxData.volume = currentVariationData.volume;
     }
 
     // Ajax request
