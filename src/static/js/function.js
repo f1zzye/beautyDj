@@ -136,7 +136,6 @@ $(document).ready(function () {
 });
 
 
-// function.js
 function handleAddToCart(this_val, isProductPage, currentVariationData = null) {
     const index_val = this_val.attr('data-index');
 
@@ -158,7 +157,6 @@ function handleAddToCart(this_val, isProductPage, currentVariationData = null) {
         'price': product_price
     };
 
-    // Add variation data if exists
     if (currentVariationData) {
         ajaxData.variation_id = currentVariationData.variation_id;
         ajaxData.volume = currentVariationData.volume;
@@ -212,24 +210,79 @@ $(document).on('click', '.add-to-cart-btn:not(.single_add_to_cart_button)', func
             },
             success: function(response){
                 if(response.is_empty) {
-                    // Если корзина пуста, обновляем содержимое внутри #cart-list
                     $('#cart-list').html(response.data)
-
-                    // Удаляем счетчик товаров, если он есть
                     $('.cart-items-count').text('0')
                 } else {
-                    // Обновляем только содержимое tbody
-                    $('.c-cart__shop-tbody').html(response.data)
-
-                    // Обновляем счетчик товаров
+                    $('#cart-list').html(response.data)
                     $('.cart-items-count').text(response.totalcartitems)
-
-                    // Обновляем общую сумму корзины
-                    $('.cart-subtotal .woocommerce-Price-amount bdi, .order-total .woocommerce-Price-amount bdi').html(
-                        '<span class="woocommerce-Price-currencySymbol">₴</span>' +
-                        response.cart_total.toFixed(2)
-                    )
                 }
             }
         })
     })
+
+
+$(document).on('click', '.qty-plus', function() {
+    let input = $(this).siblings('input.qty');
+    let product_key = input.attr('data-key');
+    let currentVal = parseInt(input.val());
+
+    input.val(currentVal + 1);
+    updateCart(product_key, currentVal + 1, $(this));
+});
+
+$(document).on('click', '.qty-minus', function() {
+    let input = $(this).siblings('input.qty');
+    let product_key = input.attr('data-key');
+    let currentVal = parseInt(input.val());
+
+    if (currentVal > 1) {
+        input.val(currentVal - 1);
+        updateCart(product_key, currentVal - 1, $(this));
+    }
+});
+
+function updateCart(product_key, quantity, button) {
+    button.prop('disabled', true);
+
+    $.ajax({
+        url: '/update-cart',
+        data: {
+            'id': product_key,
+            'quantity': quantity
+        },
+        dataType: 'json',
+        success: function(response) {
+            response.products.forEach(function(product) {
+
+                $('.product-quantity-' + product.product_id.replace('_', '-'))
+                    .val(product.quantity);
+
+                let subtotalCell = $('[data-key="' + product.product_id + '"]')
+                    .closest('tr')
+                    .find('.c-cart__shop-td--product-subtotal .woocommerce-Price-amount bdi');
+
+                subtotalCell.html(
+                    '<span class="woocommerce-Price-currencySymbol">₴</span>' +
+                    product.total_price.toFixed(2)
+                );
+            });
+
+            $('.cart-items-count').text(response.totalcartitems);
+            $('.cart-subtotal .woocommerce-Price-amount bdi').html(
+                '<span class="woocommerce-Price-currencySymbol">₴</span>' +
+                response.cart_total.toFixed(2)
+            );
+            $('.order-total .woocommerce-Price-amount bdi').html(
+                '<span class="woocommerce-Price-currencySymbol">₴</span>' +
+                response.cart_total.toFixed(2)
+            );
+        },
+        error: function() {
+            alert('Помилка при оновленні кошика');
+        },
+        complete: function() {
+            button.prop('disabled', false);
+        }
+    });
+}
+

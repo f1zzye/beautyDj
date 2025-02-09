@@ -1,42 +1,177 @@
-{% for product_id, item in cart_data.items %}
-<tr class="c-cart__shop-tr cart_item" id="cart-list">
-    <td class="c-cart__shop-td c-cart__shop-td--product-thumbnail">
-        <a class="c-cart__shop-remove remove delete-product" aria-label="Remove this item" data-product="{{ product_id }}">
-            <i class="ip-close-small c-cart__shop-remove-icon"></i>
-        </a>
-        <a class="c-cart__thumbnail-link" href="{% url 'core:product-detail' item.pid %}">
-            <img decoding="async" width="115" height="115" src="{{ item.image }}" class="attachment-woocommerce_gallery_thumbnail size-woocommerce_gallery_thumbnail" alt="" srcset="{{ item.image }}" sizes="(max-width: 115px) 100vw, 115px">
-        </a>
-    </td>
-    <td class="c-cart__shop-td c-cart__shop-td--product-name" data-title="Товар">
-        <a href="{% url 'core:product-detail' item.pid %}">{{ item.title }}</a>
-        {% if item.volume %}
-            <div class="c-cart__shop-brand">Об`єм: {{ item.volume }}</div>
-        {% endif %}
-        <span class="c-cart__item-price">
-            <span class="woocommerce-Price-amount amount">
-                <bdi>
-                    <span class="woocommerce-Price-currencySymbol">₴</span>
-                    {{item.price}}
-                </bdi>
-            </span>
-        </span>
-    </td>
-    <td class="c-cart__shop-td c-cart__shop-td--product-quantity" data-title="Кількість">
-        <div class="c-product__quantity quantity">
-            <label class="screen-reader-text">{{ item.title }}</label>
-            <input type="number" class="c-product__quantity-value qty product-quantity-{{ product_id }}" min="1" value="{{ item.quantity }}" placeholder="" inputmode="numeric">
-            <button class="h-cb c-product__quantity-minus js-quantity-minus" type="button"><i class="ip-minus"></i></button>
-            <button class="h-cb c-product__quantity-plus js-quantity-plus" type="button"><i class="ip-plus_big"></i></button>
+   <div class="l-section l-section--container l-section--bottom-margin l-section--no-sidebar l-section--top-margin">
+        <div class="l-section__content">
+            <div class="woocommerce">
+                <div class="c-cart">
+                    <div class="c-cart__wrap">
+                        <div class="c-cart__col-1">
+                            <div class=" js-sticky-sidebar-nearby ">
+
+                                <form class="woocommerce-cart-form" id="cart-update-form" action="" method="post">
+                                    <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents c-cart__shop-table" cellspacing="0">
+                                        <thead class="c-cart__shop-thead">
+                                            <tr>
+                                                <th class="c-cart__shop-th c-cart__shop-th--product-name" colspan="2">Товар</th>
+                                                <th class="c-cart__shop-th c-cart__shop-th--product-quantity">Кількість</th>
+                                                <th class="c-cart__shop-th c-cart__shop-th--product-subtotal">Проміжний підсумок</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="c-cart__shop-tbody">
+                                            <tr class="c-cart__shop-tr c-cart__shop-tr--space">
+                                                <td colspan="4" class="c-cart__shop-td-space"></td>
+                                            </tr>
+
+                                        {% for product_id, item in cart_data.items %}
+                                            <tr class="c-cart__shop-tr cart_item">
+
+                                                <td class="c-cart__shop-td c-cart__shop-td--product-thumbnail">
+
+                                                    <a class="c-cart__shop-remove remove delete-product" aria-label="Remove this item" data-product="{{ product_id }}">
+                                                        <i class="ip-close-small c-cart__shop-remove-icon"></i>
+                                                    </a>
+                                                    <a class="c-cart__thumbnail-link" href="{% url 'core:product-detail' item.pid %}"><img decoding="async" width="115" height="115" src="{{ item.image }}" class="attachment-woocommerce_gallery_thumbnail size-woocommerce_gallery_thumbnail" alt="" srcset="{{ item.image }}" sizes="(max-width: 115px) 100vw, 115px"></a> </td>
+
+                                               <td class="c-cart__shop-td c-cart__shop-td--product-name" data-title="Товар">
+                                                    <a href="{% url 'core:product-detail' item.pid %}">{{ item.title }}</a>
+                                                    {% if item.volume %}
+                                                        <div class="c-cart__shop-brand">Об`єм: {{ item.volume }}</div>
+                                                    {% endif %}
+                                                    <span class="c-cart__item-price">
+                                                        <span class="woocommerce-Price-amount amount">
+                                                            <bdi>
+                                                                <span class="woocommerce-Price-currencySymbol">₴</span>
+                                                                {{item.price}}
+                                                            </bdi>
+                                                        </span>
+                                                    </span>
+                                                </td>
+
+                                                <td class="c-cart__shop-td c-cart__shop-td--product-quantity" data-title="Кількість">
+                                                    <div class="c-product__quantity quantity">
+                                                        <label class="screen-reader-text">{{ item.title }}</label>
+                                                        <input type="number"
+                                                               class="c-product__quantity-value qty product-quantity-{{ product_id|slugify }}"
+                                                               min="1"
+                                                               value="{{ item.quantity }}"
+                                                               data-key="{{ product_id }}"
+                                                               readonly
+                                                               style="background-color: #fff;">
+                                                        <button class="h-cb c-product__quantity-minus qty-minus" type="button" data-key="{{ product_id }}">
+                                                            <i class="ip-minus"></i>
+                                                        </button>
+                                                        <button class="h-cb c-product__quantity-plus qty-plus" type="button" data-key="{{ product_id }}">
+                                                            <i class="ip-plus_big"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+
+                                                <td class="c-cart__shop-td c-cart__shop-td--product-price c-cart__shop-td--product-subtotal" data-title="Проміжний підсумок">
+                                                    <span class="woocommerce-Price-amount amount">
+                                                        <bdi>
+                                                            <span class="woocommerce-Price-currencySymbol">₴</span>
+                                                            {{ item.total_price|floatformat:2 }}
+                                                        </bdi>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+
+                                            <tr class="c-cart__shop-tr c-cart__shop-tr--space">
+                                                <td colspan="4" class="c-cart__shop-td-space"></td>
+                                            </tr>
+                                            <tr class="c-cart__shop-tr c-cart__shop-tr--actions">
+                                                <td colspan="5" class="c-cart__shop-td c-cart__shop-td--actions">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="c-cart__col-2">
+
+
+                            <div class="cart-collaterals c-cart__collaterals js-sticky-sidebar">
+                                <div class="c-cart__totals cart_totals">
+
+
+                                    <div class="c-cart__coupon">
+
+                                        <a href="#" class="js-cart-coupon">
+                                            <div class="c-cart__coupon-header">
+                                                Код купону <i class="ip-down_arrow c-cart__select-icon"></i>
+                                            </div>
+                                        </a>
+
+                                        <div class="c-cart__coupon-from-wrap">
+                                            <div class="c-cart__coupon-form">
+                                                <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Код купону">
+                                                <button class="c-button--outline c-cart__coupon-apply c-button" id="ip-checkout-apply-coupon" name="apply_coupon" type="button">Прийняти</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <table class="c-cart__totals-table shop_table">
+
+                                        <tbody>
+                                            <tr class="c-cart__totals-subtotal cart-subtotal">
+                                                <th class="c-cart__sub-sub-header">Проміжний підсумок</th>
+                                                <td class="c-cart__totals-price" data-title="Проміжний підсумок"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>{{cart_total|floatformat:2}}</bdi></span></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td colspan="2" class="c-cart__totals-space c-cart__totals-space--hr"></td>
+                                            </tr>
+
+
+                                            <tr class="woocommerce-shipping-totals shipping">
+                                                <td class="c-cart__totals-td" data-title="Доставка" colspan="2">
+                                                    <div class="c-cart__sub-header">Доставка</div>
+                                                    <ul id="shipping_method" class="c-cart__shipping-methods woocommerce-shipping-methods">
+                                                        <li class="c-cart__shipping-methods-item">
+                                                            <span class="c-cart__shipping-methods-wrap"><input type="radio" name="shipping_method[0]" data-index="0" id="shipping_method_0_nova_poshta_shipping1" value="nova_poshta_shipping:1" class="shipping_method" checked="checked"></span><label class="c-cart__shipping-methods-label" for="shipping_method_0_nova_poshta_shipping1"><span id="wcus-shipping-cost">Нова Пошта</span></label><input id="wcus-shipping-name" type="hidden" value="Нова Пошта"> </li>
+                                                    </ul>
+
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td colspan="2" class="c-cart__totals-space c-cart__totals-space--hr"></td>
+                                            </tr>
+
+                                            <tr class="order-total">
+                                                <th class="c-cart__sub-sub-header">Загалом</th>
+                                                <td class="c-cart__totals-price c-cart__totals-price--total" data-title="Загалом"><span id="wcus-order-total"><strong><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>{{cart_total|floatformat:2}}</bdi></span></strong> </span></td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="c-cart__totals-action wc-proceed-to-checkout" colspan="2">
+
+                                                    <a href="https://www.onlyone.beauty/checkout/" class="c-button c-button--big c-cart__checkout-btn checkout-button button alt wc-forward">
+                                                        Оформлення замовлення</a>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="c-cart__cross-sell">
+                </div>
+            </div>
         </div>
-    </td>
-    <td class="c-cart__shop-td c-cart__shop-td--product-price c-cart__shop-td--product-subtotal" data-title="Проміжний підсумок">
-        <span class="woocommerce-Price-amount amount">
-            <bdi>
-                <span class="woocommerce-Price-currencySymbol">₴</span>
-                {{ item.total_price|floatformat:2 }}
-            </bdi>
-        </span>
-    </td>
-</tr>
-{% endfor %}
+    </div>
+
+
+</div>

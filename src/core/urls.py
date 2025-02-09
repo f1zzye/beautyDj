@@ -2,7 +2,7 @@ from django.urls import include, path
 
 from core.views import (add_to_cart, ajax_contact, category_product_list,
                         contacts, filter_products, get_price_range, index,
-                        product_list, products_detail, search, cart, delete_item_from_cart)
+                        product_list, products_detail, search, cart, delete_item_from_cart, update_cart)
 
 app_name = "core"
 
@@ -19,4 +19,5 @@ urlpatterns = [
     path("add-to-cart/", add_to_cart, name="add-to-cart"),
     path('cart/', cart, name='cart'),
     path('delete-from-cart/', delete_item_from_cart, name='delete-from-cart'),
+    path('update-cart/', update_cart, name='update-cart'),
 ]

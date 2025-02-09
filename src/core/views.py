@@ -214,18 +214,21 @@ def add_to_cart(request):
 
     cart_product[cart_key] = {
         "title": request.GET["title"],
-        "quantity": request.GET["quantity"],
+        "quantity": int(request.GET["quantity"]),
         "price": request.GET["price"],
         "image": request.GET["image"],
         "pid": request.GET["pid"],
         "volume": request.GET.get("volume", ""),
-        "variation_id": variation_id
+        "variation_id": variation_id,
+        "total_price": float(request.GET["price"].replace(',', '.')) * int(request.GET["quantity"])
     }
 
     if "cart_data_obj" in request.session:
         cart_data = request.session["cart_data_obj"]
         if cart_key in cart_data:
             cart_data[cart_key]["quantity"] = int(cart_product[cart_key]["quantity"])
+            price = float(cart_data[cart_key]["price"].replace(',', '.'))
+            cart_data[cart_key]["total_price"] = price * cart_data[cart_key]["quantity"]
         else:
             cart_data.update(cart_product)
         request.session["cart_data_obj"] = cart_data
@@ -308,4 +311,46 @@ def delete_item_from_cart(request):
         'totalcartitems': len(cart_data),
         'cart_total': cart_total,
         'is_empty': False
+    })
+
+
+def update_cart(request):
+    product_key = str(request.GET['id'])
+    product_quantity = int(request.GET['quantity'])
+
+    if 'cart_data_obj' in request.session:
+        cart_data = request.session['cart_data_obj']
+
+        if product_key in cart_data:
+            cart_data[product_key]['quantity'] = product_quantity
+
+            price = float(str(cart_data[product_key]['price']).replace(',', '.'))
+            cart_data[product_key]['total_price'] = price * product_quantity
+
+            request.session['cart_data_obj'] = cart_data
+            request.session.modified = True
+
+    cart_total = 0
+    products_data = []
+
+    if 'cart_data_obj' in request.session:
+        for key, item in request.session['cart_data_obj'].items():
+            try:
+                price = float(str(item['price']).replace(',', '.'))
+                quantity = int(item['quantity'])
+                total_price = price * quantity
+                cart_total += total_price
+
+                products_data.append({
+                    'product_id': key,
+                    'quantity': quantity,
+                    'total_price': total_price
+                })
+            except (ValueError, KeyError):
+                continue
+
+    return JsonResponse({
+        'products': products_data,
+        'totalcartitems': len(request.session['cart_data_obj']),
+        'cart_total': cart_total
     })

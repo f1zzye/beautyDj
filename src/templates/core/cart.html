@@ -27,7 +27,7 @@
                         <div class="c-cart__col-1">
                             <div class=" js-sticky-sidebar-nearby ">
 
-                                <form class="woocommerce-cart-form" action="https://www.onlyone.beauty/cart/" method="post">
+                                <form class="woocommerce-cart-form" id="cart-update-form" action="" method="post">
                                     <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents c-cart__shop-table" cellspacing="0">
                                         <thead class="c-cart__shop-thead">
                                             <tr>
@@ -69,9 +69,19 @@
                                                 <td class="c-cart__shop-td c-cart__shop-td--product-quantity" data-title="Кількість">
                                                     <div class="c-product__quantity quantity">
                                                         <label class="screen-reader-text">{{ item.title }}</label>
-                                                        <input type="number" id="" class="c-product__quantity-value qty product-quantity-{{ product_id }}" min="1" name="" value="{{ item.quantity }}" placeholder="" inputmode="numeric">
-                                                        <button class="h-cb c-product__quantity-minus js-quantity-minus" type="button"><i class="ip-minus"></i></button>
-                                                        <button class="h-cb c-product__quantity-plus js-quantity-plus" type="button"><i class="ip-plus_big"></i></button>
+                                                        <input type="number"
+                                                               class="c-product__quantity-value qty product-quantity-{{ product_id|slugify }}"
+                                                               min="1"
+                                                               value="{{ item.quantity }}"
+                                                               data-key="{{ product_id }}"
+                                                               readonly
+                                                               style="background-color: #fff;">
+                                                        <button class="h-cb c-product__quantity-minus qty-minus" type="button" data-key="{{ product_id }}">
+                                                            <i class="ip-minus"></i>
+                                                        </button>
+                                                        <button class="h-cb c-product__quantity-plus qty-plus" type="button" data-key="{{ product_id }}">
+                                                            <i class="ip-plus_big"></i>
+                                                        </button>
                                                     </div>
                                                 </td>
 
@@ -82,6 +92,7 @@
                                                             {{ item.total_price|floatformat:2 }}
                                                         </bdi>
                                                     </span>
+                                                </td>
                                             </tr>
                                         {% endfor %}
 
@@ -90,10 +101,7 @@
                                             </tr>
                                             <tr class="c-cart__shop-tr c-cart__shop-tr--actions">
                                                 <td colspan="5" class="c-cart__shop-td c-cart__shop-td--actions">
-                                                    <span class="c-cart__shop-update">
-                                                        <input type="submit" class="c-button c-button--outline c-cart__shop-update-button button" name="update_cart" value="Оновити кошик" disabled="">
-                                                    </span>
-                                                    <input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="0702f61307"><input type="hidden" name="_wp_http_referer" value="/cart/"> </td>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
