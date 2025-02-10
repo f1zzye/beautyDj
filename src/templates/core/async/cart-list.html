@@ -32,7 +32,7 @@
 
                                                <td class="c-cart__shop-td c-cart__shop-td--product-name" data-title="Товар">
                                                     <a href="{% url 'core:product-detail' item.pid %}">{{ item.title }}</a>
-                                                    {% if item.volume %}
+                                                    {% if item.volume != 'None мл' %}
                                                         <div class="c-cart__shop-brand">Об`єм: {{ item.volume }}</div>
                                                     {% endif %}
                                                     <span class="c-cart__item-price">

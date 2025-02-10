@@ -37,6 +37,7 @@ $(document).ready(function () {
     const maxRange = document.getElementById('max_range');
     const minLabel = document.getElementById('min_price_label');
     const maxLabel = document.getElementById('max_price_label');
+    const orderbySelect = document.querySelector('.orderby');
 
     function updateSliderRange(minPrice, maxPrice) {
         minRange.min = minPrice;
@@ -66,45 +67,15 @@ $(document).ready(function () {
         );
     }
 
-    $(".filter-checkbox").on("change", function() {
-        let filter_object = {};
-
-        $(".filter-checkbox").each(function () {
-            let filter_key = $(this).data("filter");
-            filter_object[filter_key + "[]"] = Array.from(
-                document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')
-            ).map(element => element.value);
-        });
-
-        $.ajax({
-            url: '/get-price-range/',
-            data: filter_object,
-            dataType: 'json',
-            success: function(response) {
-                updateSliderRange(response.min_price, response.max_price);
-            }
-        });
-    });
-
-    minRange.addEventListener('input', function() {
-        if (parseFloat(minRange.value) > parseFloat(maxRange.value)) {
-            minRange.value = maxRange.value;
-        }
-        updatePriceLabels();
-    });
-
-    maxRange.addEventListener('input', function() {
-        if (parseFloat(maxRange.value) < parseFloat(minRange.value)) {
-            maxRange.value = minRange.value;
-        }
-        updatePriceLabels();
-    });
-
-    $(".filter-checkbox, #price-filter-btn").on("click", function () {
+    function getFilterParams() {
         let filter_object = {
             min_price: minRange.value,
             max_price: maxRange.value
         };
+
+        if (orderbySelect) {
+            filter_object.orderby = orderbySelect.value;
+        }
 
         $(".filter-checkbox").each(function () {
             let filter_value = $(this).val();
@@ -114,6 +85,12 @@ $(document).ready(function () {
                 document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')
             ).map(element => element.value);
         });
+
+        return filter_object;
+    }
+
+    function updateProducts() {
+        const filter_object = getFilterParams();
 
         $.ajax({
             url: '/filter-products',
@@ -132,7 +109,61 @@ $(document).ready(function () {
                 $('#filtered-products').removeClass('loading');
             }
         });
+    }
+
+    // Обработчик изменения сортировки
+    if (orderbySelect) {
+        orderbySelect.addEventListener('change', function(e) {
+            e.preventDefault();
+            updateProducts();
+        });
+    }
+
+    // Обработчики фильтров
+    $(".filter-checkbox").on("change", function() {
+        let filter_object = {};
+
+        $(".filter-checkbox").each(function () {
+            let filter_key = $(this).data("filter");
+            filter_object[filter_key + "[]"] = Array.from(
+                document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')
+            ).map(element => element.value);
+        });
+
+        $.ajax({
+            url: '/get-price-range/',
+            data: filter_object,
+            dataType: 'json',
+            success: function(response) {
+                updateSliderRange(response.min_price, response.max_price);
+            }
+        });
+
+        updateProducts();
     });
+
+    // Обработчики ползунков цены
+    minRange.addEventListener('input', function() {
+        if (parseFloat(minRange.value) > parseFloat(maxRange.value)) {
+            minRange.value = maxRange.value;
+        }
+        updatePriceLabels();
+    });
+
+    maxRange.addEventListener('input', function() {
+        if (parseFloat(maxRange.value) < parseFloat(minRange.value)) {
+            maxRange.value = minRange.value;
+        }
+        updatePriceLabels();
+    });
+
+    // Обработчик кнопки фильтра цены
+    $("#price-filter-btn").on("click", updateProducts);
+
+    // Инициализация ценовых меток при загрузке страницы
+    if (minRange && maxRange) {
+        updatePriceLabels();
+    }
 });
 
 
@@ -290,4 +321,5 @@ function updateCart(product_key, quantity, button) {
         }
     });
 }
+
 

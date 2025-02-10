@@ -2,6 +2,9 @@
 {% load static %}
 {% block content %}
 
+{% block extra_js %}
+    <script src="{% static 'js/product-sorting.js' %}"></script>
+{% endblock %}
 
 	<div class="l-inner">
 
@@ -120,16 +123,16 @@
 							<p class="woocommerce-result-count" id="products-count">Ми знайшли для вас <strong>{{ products.count }}</strong> товар{% if products.count == 1 %}{% elif products.count == 2 or products.count == 3 or products.count == 4 %}и{% else %}ів{% endif %}!</p>
 	                    </div>
 	                    <div class="c-catalog-ordering__col c-catalog-ordering__col--ordering">
-	                        <form class="woocommerce-ordering" method="get">
-	                            <select name="orderby" class="orderby" aria-label="Замовлення магазину">
-	                                <option value="menu_order" selected='selected'>Сортування за замовчуванням</option>
+							<form class="woocommerce-ordering" onsubmit="return false;">
+								{% csrf_token %}
+								<select name="orderby" class="orderby" aria-label="Замовлення магазину">
+									<option value="menu_order" selected='selected'>Сортування за замовчуванням</option>
 									<option value="rating">За назвою (А–Я)</option>
-	                                <option value="price">Від дорогих до дешевих</option>
-	                                <option value="price-desc">Від дешевих до дорогих</option>
-	                            </select>
-	                            <input type="hidden" name="paged" value="1">
-	                        </form>
-	                    </div>
+									<option value="price">Від дорогих до дешевих</option>
+									<option value="price-desc">Від дешевих до дорогих</option>
+								</select>
+							</form>
+						</div>
 	                    <button class="h-cb c-catalog-ordering__filter-show-button c-catalog-ordering__filter-show-button--mobile js-filter-show-button" type="button">
 	                        Фільтри<i class="ip-filter c-catalog-ordering__filter-ico"></i>
 	                    </button>

@@ -2,6 +2,7 @@ from django.db.models import F, Max, Min, Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
+from django.views.decorators.http import require_http_methods
 
 from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
                          Product, WishList)
@@ -137,20 +138,30 @@ def search(request):
 def filter_products(request):
     categories = request.GET.getlist("category[]")
     brands = request.GET.getlist("brand[]")
+    sort_by = request.GET.get('orderby', 'menu_order')
+    min_price = request.GET.get("min_price")
+    max_price = request.GET.get("max_price")
 
-    min_price = request.GET["min_price"]
-    max_price = request.GET["max_price"]
+    products = Product.objects.filter(product_status="опубліковано").distinct()
 
-    products = Product.objects.filter(product_status="опубліковано").order_by("-date").distinct()
+    if min_price:
+        products = products.filter(price__gte=min_price)
+    if max_price:
+        products = products.filter(price__lte=max_price)
 
-    products = products.filter(price__gte=min_price)
-    products = products.filter(price__lte=max_price)
+    if categories:
+        products = products.filter(category__id__in=categories)
+    if brands:
+        products = products.filter(brand__id__in=brands)
 
-    if len(categories) > 0:
-        products = products.filter(category__id__in=categories).distinct()
-
-    if len(brands) > 0:
-        products = products.filter(brand__id__in=brands).distinct()
+    if sort_by == 'rating':
+        products = products.order_by('title')
+    elif sort_by == 'price':
+        products = products.order_by('-price')
+    elif sort_by == 'price-desc':
+        products = products.order_by('price')
+    else:
+        products = products.order_by('date')
 
     products_count = products.count()
 
@@ -163,7 +174,10 @@ def filter_products(request):
     data = render_to_string("core/async/product-list.html", {"products": products})
     count_text = f"Ми знайшли для вас <strong>{products_count}</strong> товар{word_ending}!"
 
-    return JsonResponse({"data": data, "count_text": count_text})
+    return JsonResponse({
+        "data": data,
+        "count_text": count_text
+    })
 
 
 def get_price_range(request):
