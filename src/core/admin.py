@@ -20,7 +20,16 @@ class ProductVariantInline(admin.TabularInline):
 @admin.register(Product)
 class ProductsAdmin(admin.ModelAdmin):
     inlines = [ProductVariantInline, ProductImagesAdmin]
-    list_display = ["user", "title", "products_image", "price", "category", "featured", "extra_products", "product_status"]
+    list_display = [
+        "user",
+        "title",
+        "products_image",
+        "price",
+        "category",
+        "featured",
+        "extra_products",
+        "product_status",
+    ]
     list_filter = ["category", "brand", "status", "featured", "product_status"]
     search_fields = ["title", "description", "mini_description"]
     readonly_fields = ["pid", "sku"]

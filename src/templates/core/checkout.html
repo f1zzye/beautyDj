@@ -1,0 +1,644 @@
+{%  extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="l-inner">
+    <div class="woocommerce-notices-wrapper woocommerce-notices-wrapper--ajax" style="transform: translateY(0px);"></div>
+
+
+
+    <div class="l-section l-section--container l-section--bottom-margin l-section--no-sidebar l-section--top-margin-60 l-section--white l-section--checkout">
+        <div class="l-section__content">
+            <div class="woocommerce">
+                <form name="checkout" method="post" class="c-cart c-cart--checkout checkout woocommerce-checkout" action="https://www.onlyone.beauty/checkout/" enctype="multipart/form-data" novalidate="novalidate">
+
+                    <div class="c-cart__wrap">
+                        <div class="c-cart__col-1 c-cart__col-1--checkout">
+                            <div class=" js-sticky-sidebar-nearby ">
+
+
+                                <div class="c-cart__customer-details" id="customer_details">
+                                    <div class="col-1">
+                                        <div class="c-cart__form c-cart__form--billing-fields woocommerce-billing-fields">
+
+                                            <h3 class="c-cart__header">Платіжні дані</h3>
+
+
+
+                                            <div class="c-cart__billing-fields woocommerce-billing-fields__field-wrapper">
+                                                <p class="form-row form-row-first validate-required" id="billing_first_name_field" data-priority="10"><label for="billing_first_name" class="">Ім'я&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_first_name" id="billing_first_name" placeholder="" value="Gillian" autocomplete="given-name"></span></p>
+                                                <p class="form-row form-row-last validate-required" id="billing_last_name_field" data-priority="20"><label for="billing_last_name" class="">Прізвище&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_last_name" id="billing_last_name" placeholder="" value="Mcfarland" autocomplete="family-name"></span></p>
+                                                <p class="form-row form-row-wide address-field update_totals_on_change validate-required" id="billing_country_field" data-priority="40"><label for="billing_country" class="">Країна / Регіон&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><strong>Україна</strong><input type="hidden" name="billing_country" id="billing_country" value="UA" autocomplete="country" class="country_to_state" readonly="readonly"></span></p>
+                                                <p class="form-row address-field validate-required form-row-wide" id="billing_address_1_field" data-priority="50" style="display: none;"><label for="billing_address_1" class="">Назва вулиці&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_address_1" id="billing_address_1" placeholder="Номер будинку та назва вулиці" value="" autocomplete="address-line1" data-placeholder="Номер будинку та назва вулиці"></span></p>
+                                                <p class="form-row address-field form-row-wide" id="billing_address_2_field" data-priority="60" style="display: none;"><label for="billing_address_2" class="screen-reader-text">Будинок, офіс, блок, тощо.&nbsp;<span class="optional">(необов'язково)</span></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_address_2" id="billing_address_2" placeholder="Квартира, офіс, блок, тощо (опціонально)" value="" autocomplete="address-line2" data-placeholder="Квартира, офіс, блок, тощо (опціонально)"></span></p>
+                                                <p class="form-row address-field validate-required form-row-wide" id="billing_city_field" data-priority="70" data-o_class="form-row form-row-wide address-field validate-required" style="display: none;"><label for="billing_city" class="">Місто / Село&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_city" id="billing_city" placeholder="" value="" autocomplete="address-level2"></span></p>
+                                                <p class="form-row address-field validate-required validate-state form-row-wide" id="billing_state_field" data-priority="80" data-o_class="form-row form-row-wide address-field validate-required validate-state" style="display: none;"><label for="billing_state" class="">Область / Округ&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><select name="billing_state" id="billing_state" class="state_select select2-hidden-accessible" autocomplete="address-level1" data-placeholder="Виберіть опцію…" data-input-classes="" data-label="Область / Округ" tabindex="-1" aria-hidden="true">
+                                                            <option value="">Виберіть опцію…</option>
+                                                            <option value="UA05">Вінницька область</option>
+                                                            <option value="UA07">Волинська область</option>
+                                                            <option value="UA09">Луганська область</option>
+                                                            <option value="UA12">Дніпропетровська область</option>
+                                                            <option value="UA14">Донецька область</option>
+                                                            <option value="UA18">Житомирська область</option>
+                                                            <option value="UA21">Закарпатська область</option>
+                                                            <option value="UA23">Запорізька область</option>
+                                                            <option value="UA26">Івано-Франківська область</option>
+                                                            <option value="UA30">місто Київ</option>
+                                                            <option value="UA32">Київська область</option>
+                                                            <option value="UA35">Кіровоградська область</option>
+                                                            <option value="UA40">місто Севастополь</option>
+                                                            <option value="UA43">Автономна Республіка Крим</option>
+                                                            <option value="UA46">Львівська область</option>
+                                                            <option value="UA48">Миколаївська область</option>
+                                                            <option value="UA51">Одеська область</option>
+                                                            <option value="UA53">Полтавська область</option>
+                                                            <option value="UA56">Рівненська область</option>
+                                                            <option value="UA59">Сумська область</option>
+                                                            <option value="UA61">Тернопільська область</option>
+                                                            <option value="UA63">Харківська область</option>
+                                                            <option value="UA65">Херсонська область</option>
+                                                            <option value="UA68">Хмельницька область</option>
+                                                            <option value="UA71">Черкаська область</option>
+                                                            <option value="UA74">Чернігівська область</option>
+                                                            <option value="UA77">Чернівецька область</option>
+                                                        </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-label="Область / Округ" role="combobox"><span class="select2-selection__rendered" id="select2-billing_state-container" role="textbox" aria-readonly="true" title="Харківська область">Харківська область</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span></span></p>
+                                                <p class="form-row address-field validate-required validate-postcode form-row-wide" id="billing_postcode_field" data-priority="90" data-o_class="form-row form-row-wide address-field validate-required validate-postcode" style="display: none;"><label for="billing_postcode" class="">Поштовий індекс&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_postcode" id="billing_postcode" placeholder="" value="" autocomplete="postal-code"></span></p>
+                                                <p class="form-row form-row-wide validate-required validate-phone" id="billing_phone_field" data-priority="100"><label for="billing_phone" class="">Телефон&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="tel" class="input-text " name="billing_phone" id="billing_phone" placeholder="" value="+1 (826) 893-7648" autocomplete="tel"></span></p>
+                                                <p class="form-row form-row-wide validate-required validate-email" id="billing_email_field" data-priority="110"><label for="billing_email" class="">E-mail адреса&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="email" class="input-text " name="billing_email" id="billing_email" placeholder="" value="dicedifu@mailinator.com" autocomplete="email username"></span></p>
+                                            </div>
+
+                                            <div class="wcus-checkout-fields">
+                                                <h3>Вкажіть адресу доставки</h3>
+                                                <div class="">
+                                                    <p class="form-row form-row-wide validate-required">
+                                                        <div class="zen-ui-select zen-ui-select-1">
+                                                            <div style="width: 0px; height: 0px; overflow: hidden;"><input type="hidden" value="warehouse"></div>
+                                                            <div class="zen-ui-select__value"><span class="zen-ui-select__value-text">на відділення</span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129">
+                                                                    <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51, 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6, 1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8, 1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
+                                                                </svg></div>
+                                                            <div class="zen-ui-select__dropdown">
+                                                                <!---->
+                                                                <div class="zen-ui-select__options">
+                                                                    <div class="zen-ui-select__option zen-ui-select__option--current">
+                                                                        на відділення
+                                                                    </div>
+                                                                    <div class="zen-ui-select__option">
+                                                                        до дверей
+                                                                    </div>
+                                                                    <!---->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </p> <input type="hidden" name="wcus_np_billing_custom_address_active" value="0">
+                                                    <div>
+                                                        <p class="form-row form-row-wide validate-required"><span class="woocommerce-input-wrapper"><input type="hidden" name="wcus_np_billing_city" value="8d5a980d-391c-11dd-90d9-001a92567626"> <input type="hidden" name="wcus_np_billing_city_name" value="Київ">
+                                                                <div class="zen-ui-select zen-ui-select-2">
+                                                                    <div style="width: 0px; height: 0px; overflow: hidden;"><input type="hidden" value="8d5a980d-391c-11dd-90d9-001a92567626"></div>
+                                                                    <div class="zen-ui-select__value"><span class="zen-ui-select__value-text">Київ</span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129">
+                                                                            <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51, 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6, 1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8, 1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
+                                                                        </svg></div>
+                                                                    <div class="zen-ui-select__dropdown">
+                                                                        <div class="zen-ui-select__search"><input type="text" placeholder="Введіть значення для пошуку" class="zen-ui-select__search-input"></div>
+                                                                        <div class="zen-ui-select__options">
+                                                                            <div class="zen-ui-select__option zen-ui-select__option--current">
+                                                                                Київ
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Кременчук
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Миколаїв
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Полтава
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Хмельницький
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Житомир
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Запоріжжя
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Херсон
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Біла Церква
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Одеса
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Вінниця
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Харків
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Суми
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Дніпро
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Львів
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Тернопіль
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Черкаси
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Івано-Франківськ
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Кривий Ріг
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Кам'янець-Подільський
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Краматорськ
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Луцьк
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Маріуполь
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Рівне
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Чернігів
+                                                                            </div>
+                                                                            <div class="zen-ui-select__option">
+                                                                                Чернівці
+                                                                            </div>
+                                                                            <!---->
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </span></p>
+                                                        <p class="form-row form-row-wide validate-required"><span class="woocommerce-input-wrapper"><input type="hidden" name="wcus_np_billing_warehouse" value="7b422fbe-e1b8-11e3-8c4a-0050568002cf"> <input type="hidden" name="wcus_np_billing_warehouse_name" value="Відділення №2: вул. Богатирська, 11">
+                                                                <div class="zen-ui-select zen-ui-select-3">
+                                                                    <div style="width: 0px; height: 0px; overflow: hidden;"><input type="hidden" value="7b422fbe-e1b8-11e3-8c4a-0050568002cf"></div>
+                                                                    <div class="zen-ui-select__value"><span class="zen-ui-select__value-text">Відділення №2: вул. Богатирська, 11</span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129">
+                                                                            <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51, 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6, 1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8, 1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
+                                                                        </svg></div>
+                                                                    <div class="zen-ui-select__dropdown">
+                                                                        <div class="zen-ui-select__search"><input type="text" placeholder="Введіть значення для пошуку" class="zen-ui-select__search-input"></div>
+                                                                        <div class="zen-ui-select__options">
+                                                                            <!---->
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </span></p>
+                                                        <p class="form-row form-row-wide validate-required" style="display: none;"><span class="woocommerce-input-wrapper"><input type="text" name="wcus_np_billing_custom_address" id="wcus_np_billing_custom_address" placeholder="Введіть адресу" class="input-text"></span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="c-cart__form c-cart__form--shipping-fields woocommerce-shipping-fields">
+
+                                            <label for="ship-to-different-address-checkbox" class="checkbox">
+                                                <h3 id="ship-to-different-address">
+                                                    <input id="ship-to-different-address-checkbox" class="input-checkbox" type="checkbox" name="ship_to_different_address" value="1">
+                                                    Доставити на іншу адресу? </h3>
+                                            </label>
+
+                                            <div class="shipping_address" style="display: none;">
+
+
+                                                <div class="c-cart__shipping-fields woocommerce-shipping-fields__field-wrapper">
+                                                    <p class="form-row form-row-first validate-required" id="shipping_first_name_field" data-priority="10"><label for="shipping_first_name" class="">Ім'я&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_first_name" id="shipping_first_name" placeholder="" value="Gillian" autocomplete="given-name"></span></p>
+                                                    <p class="form-row form-row-last validate-required" id="shipping_last_name_field" data-priority="20"><label for="shipping_last_name" class="">Прізвище&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_last_name" id="shipping_last_name" placeholder="" value="Mcfarland" autocomplete="family-name"></span></p>
+                                                    <p class="form-row form-row-wide address-field update_totals_on_change validate-required" id="shipping_country_field" data-priority="40"><label for="shipping_country" class="">Країна / Регіон&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><strong>Україна</strong><input type="hidden" name="shipping_country" id="shipping_country" value="UA" autocomplete="country" class="country_to_state" readonly="readonly"></span></p>
+                                                    <p class="form-row address-field validate-required form-row-wide" id="shipping_address_1_field" data-priority="50" style="display: none;"><label for="shipping_address_1" class="">Назва вулиці&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_address_1" id="shipping_address_1" placeholder="Номер будинку та назва вулиці" value="" autocomplete="address-line1" data-placeholder="Номер будинку та назва вулиці"></span></p>
+                                                    <p class="form-row address-field form-row-wide" id="shipping_address_2_field" data-priority="60" style="display: none;"><label for="shipping_address_2" class="screen-reader-text">Будинок, офіс, блок, тощо.&nbsp;<span class="optional">(необов'язково)</span></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_address_2" id="shipping_address_2" placeholder="Квартира, офіс, блок, тощо (опціонально)" value="" autocomplete="address-line2" data-placeholder="Квартира, офіс, блок, тощо (опціонально)"></span></p>
+                                                    <p class="form-row address-field validate-required form-row-wide" id="shipping_city_field" data-priority="70" data-o_class="form-row form-row-wide address-field validate-required" style="display: none;"><label for="shipping_city" class="">Місто / Село&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_city" id="shipping_city" placeholder="" value="" autocomplete="address-level2"></span></p>
+                                                    <p class="form-row address-field validate-required validate-state form-row-wide" id="shipping_state_field" data-priority="80" data-o_class="form-row form-row-wide address-field validate-required validate-state" style="display: none;"><label for="shipping_state" class="">Область / Округ&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><select name="shipping_state" id="shipping_state" class="state_select select2-hidden-accessible" autocomplete="address-level1" data-placeholder="Виберіть опцію…" data-input-classes="" data-label="Область / Округ" tabindex="-1" aria-hidden="true">
+                                                                <option value="">Виберіть опцію…</option>
+                                                                <option value="UA05">Вінницька область</option>
+                                                                <option value="UA07">Волинська область</option>
+                                                                <option value="UA09">Луганська область</option>
+                                                                <option value="UA12">Дніпропетровська область</option>
+                                                                <option value="UA14">Донецька область</option>
+                                                                <option value="UA18">Житомирська область</option>
+                                                                <option value="UA21">Закарпатська область</option>
+                                                                <option value="UA23">Запорізька область</option>
+                                                                <option value="UA26">Івано-Франківська область</option>
+                                                                <option value="UA30">місто Київ</option>
+                                                                <option value="UA32">Київська область</option>
+                                                                <option value="UA35">Кіровоградська область</option>
+                                                                <option value="UA40">місто Севастополь</option>
+                                                                <option value="UA43">Автономна Республіка Крим</option>
+                                                                <option value="UA46">Львівська область</option>
+                                                                <option value="UA48">Миколаївська область</option>
+                                                                <option value="UA51">Одеська область</option>
+                                                                <option value="UA53">Полтавська область</option>
+                                                                <option value="UA56">Рівненська область</option>
+                                                                <option value="UA59">Сумська область</option>
+                                                                <option value="UA61">Тернопільська область</option>
+                                                                <option value="UA63">Харківська область</option>
+                                                                <option value="UA65">Херсонська область</option>
+                                                                <option value="UA68">Хмельницька область</option>
+                                                                <option value="UA71">Черкаська область</option>
+                                                                <option value="UA74">Чернігівська область</option>
+                                                                <option value="UA77">Чернівецька область</option>
+                                                            </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-label="Область / Округ" role="combobox"><span class="select2-selection__rendered" id="select2-shipping_state-container" role="textbox" aria-readonly="true" title="Харківська область">Харківська область</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span></span></p>
+                                                    <p class="form-row address-field validate-required validate-postcode form-row-wide" id="shipping_postcode_field" data-priority="90" data-o_class="form-row form-row-wide address-field validate-required validate-postcode" style="display: none;"><label for="shipping_postcode" class="">Поштовий індекс&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_postcode" id="shipping_postcode" placeholder="" value="" autocomplete="postal-code"></span></p>
+                                                </div>
+
+                                                <div class="wcus-checkout-fields" style="display: none;">
+                                                    <h3>Вкажіть адресу доставки</h3>
+                                                    <div class="">
+                                                        <p class="form-row form-row-wide validate-required">
+                                                            <div class="zen-ui-select zen-ui-select-4">
+                                                                <div style="width: 0px; height: 0px; overflow: hidden;"><input type="hidden" value="warehouse"></div>
+                                                                <div class="zen-ui-select__value"><span class="zen-ui-select__value-text">на відділення</span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129">
+                                                                        <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51, 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6, 1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8, 1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
+                                                                    </svg></div>
+                                                                <div class="zen-ui-select__dropdown">
+                                                                    <!---->
+                                                                    <div class="zen-ui-select__options">
+                                                                        <div class="zen-ui-select__option zen-ui-select__option--current">
+                                                                            на відділення
+                                                                        </div>
+                                                                        <div class="zen-ui-select__option">
+                                                                            до дверей
+                                                                        </div>
+                                                                        <!---->
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </p> <input type="hidden" name="wcus_np_shipping_custom_address_active" value="0">
+                                                        <div>
+                                                            <p class="form-row form-row-wide validate-required"><span class="woocommerce-input-wrapper"><input type="hidden" name="wcus_np_shipping_city" value="8d5a980d-391c-11dd-90d9-001a92567626"> <input type="hidden" name="wcus_np_shipping_city_name" value="Київ">
+                                                                    <div class="zen-ui-select zen-ui-select-5">
+                                                                        <div style="width: 0px; height: 0px; overflow: hidden;"><input type="hidden" value="8d5a980d-391c-11dd-90d9-001a92567626"></div>
+                                                                        <div class="zen-ui-select__value"><span class="zen-ui-select__value-text">Київ</span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129">
+                                                                                <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51, 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6, 1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8, 1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
+                                                                            </svg></div>
+                                                                        <div class="zen-ui-select__dropdown">
+                                                                            <div class="zen-ui-select__search"><input type="text" placeholder="Введіть значення для пошуку" class="zen-ui-select__search-input"></div>
+                                                                            <div class="zen-ui-select__options">
+                                                                                <div class="zen-ui-select__option zen-ui-select__option--current">
+                                                                                    Київ
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Кременчук
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Миколаїв
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Полтава
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Хмельницький
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Житомир
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Запоріжжя
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Херсон
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Біла Церква
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Одеса
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Вінниця
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Харків
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Суми
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Дніпро
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Львів
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Тернопіль
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Черкаси
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Івано-Франківськ
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Кривий Ріг
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Кам'янець-Подільський
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Краматорськ
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Луцьк
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Маріуполь
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Рівне
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Чернігів
+                                                                                </div>
+                                                                                <div class="zen-ui-select__option">
+                                                                                    Чернівці
+                                                                                </div>
+                                                                                <!---->
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </span></p>
+                                                            <p class="form-row form-row-wide validate-required"><span class="woocommerce-input-wrapper"><input type="hidden" name="wcus_np_shipping_warehouse" value="7b422fbe-e1b8-11e3-8c4a-0050568002cf"> <input type="hidden" name="wcus_np_shipping_warehouse_name" value="Відділення №2: вул. Богатирська, 11">
+                                                                    <div class="zen-ui-select zen-ui-select-6">
+                                                                        <div style="width: 0px; height: 0px; overflow: hidden;"><input type="hidden" value="7b422fbe-e1b8-11e3-8c4a-0050568002cf"></div>
+                                                                        <div class="zen-ui-select__value"><span class="zen-ui-select__value-text">Відділення №2: вул. Богатирська, 11</span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129">
+                                                                                <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51, 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6, 1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8, 1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
+                                                                            </svg></div>
+                                                                        <div class="zen-ui-select__dropdown">
+                                                                            <div class="zen-ui-select__search"><input type="text" placeholder="Введіть значення для пошуку" class="zen-ui-select__search-input"></div>
+                                                                            <div class="zen-ui-select__options">
+                                                                                <!---->
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </span></p>
+                                                            <p class="form-row form-row-wide validate-required" style="display: none;"><span class="woocommerce-input-wrapper"><input type="text" name="wcus_np_shipping_custom_address" id="wcus_np_shipping_custom_address" placeholder="Введіть адресу" class="input-text"></span></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="c-cart__form c-cart__form--additional-fields woocommerce-additional-fields">
+
+
+
+                                            <div class="c-cart__additional-fields woocommerce-additional-fields__field-wrapper">
+                                                <p class="form-row notes" id="order_comments_field" data-priority=""><label for="order_comments" class="">Нотатки до замовлення&nbsp;<span class="optional">(необов'язково)</span></label><span class="woocommerce-input-wrapper"><textarea name="order_comments" class="input-text " id="order_comments" placeholder="Нотатки до вашого замовлення, наприклад спеціальні нотатки для доставки." rows="2" cols="5"></textarea></span></p>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="c-cart__col-2">
+                            <div class="c-cart__collaterals collaterals checkout-collaterals js-sticky-sidebar">
+
+
+                                <div class="c-cart__coupon">
+
+                                    <a href="#" class="js-cart-coupon">
+                                        <div class="c-cart__coupon-header">
+                                            Код купону <i class="ip-down_arrow c-cart__select-icon"></i>
+                                        </div>
+                                    </a>
+
+                                    <div class="c-cart__coupon-from-wrap">
+                                        <div class="c-cart__coupon-form">
+                                            <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Код купону">
+                                            <button class="c-button--outline c-cart__coupon-apply c-button" id="ip-checkout-apply-coupon" name="apply_coupon" type="button">Прийняти</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="c-cart__sub-header" id="order_review_heading">Ваше замовлення</div>
+                                <div id="order_review" class="c-cart__review-order woocommerce-checkout-review-order">
+                                    <table class="c-cart__totals-table shop_table woocommerce-checkout-review-order-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="c-cart__totals-th product-name">Товар</th>
+                                                <th class="c-cart__totals-th c-cart__totals-th--product-total product-total">Проміжний підсумок</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2" class="c-cart__totals-product-space"></td>
+                                            </tr>
+                                            <tr class="c-cart__totals-product cart_item">
+
+                                                <td class="c-cart__totals-product-name">
+                                                    Термозахист з ефектом розгладження Keratin spray - 60-мл&nbsp; <strong class="c-cart__totals-product-quantity product-quantity">×&nbsp;1</strong>
+                                                    <dl class="variation">
+                                                        <dt class="variation-">Об`єм:</dt>
+                                                        <dd class="variation-">
+                                                            <p>60 мл</p>
+                                                        </dd>
+                                                    </dl>
+                                                </td>
+                                                <td class="c-cart__totals-price">
+                                                    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>520.00</bdi></span> </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="2" class="c-cart__totals-space c-cart__totals-space--hr"></td>
+                                            </tr>
+
+                                            <tr class="cart-subtotal">
+                                                <th class="c-cart__sub-sub-header">Проміжний підсумок</th>
+                                                <td class="c-cart__totals-price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>520.00</bdi></span></td>
+                                            </tr>
+
+
+
+                                            <tr>
+                                                <td colspan="2" class="c-cart__totals-space c-cart__totals-space--hr"></td>
+                                            </tr>
+
+
+                                            <tr class="woocommerce-shipping-totals shipping">
+                                                <td class="c-cart__totals-td" data-title="Доставка" colspan="2">
+                                                    <div class="c-cart__sub-header">Доставка</div>
+                                                    <ul id="shipping_method" class="c-cart__shipping-methods woocommerce-shipping-methods">
+                                                        <li class="c-cart__shipping-methods-item">
+                                                            <span class="c-cart__shipping-methods-wrap"><input type="radio" name="shipping_method[0]" data-index="0" id="shipping_method_0_nova_poshta_shipping1" value="nova_poshta_shipping:1" class="shipping_method" checked="checked"></span><label class="c-cart__shipping-methods-label" for="shipping_method_0_nova_poshta_shipping1"><span id="wcus-shipping-cost">Нова Пошта</span></label><input id="wcus-shipping-name" type="hidden" value="Нова Пошта"> </li>
+                                                    </ul>
+
+                                                </td>
+                                            </tr>
+
+
+
+
+
+
+
+
+                                            <tr>
+                                                <td colspan="2" class="c-cart__totals-space c-cart__totals-space--hr"></td>
+                                            </tr>
+
+                                            <tr class="order-total">
+                                                <th class="c-cart__sub-sub-header">Загалом</th>
+                                                <td class="c-cart__totals-price c-cart__totals-price--total" data-title="Загалом"><span id="wcus-order-total"><strong><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>520.00</bdi></span></strong> </span></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="2" class="c-cart__totals-space c-cart__totals-space--hr"></td>
+                                            </tr>
+
+
+                                        </tfoot>
+                                    </table>
+
+                                    <div id="payment" class="woocommerce-checkout-payment">
+                                        <div class="c-cart__sub-header">Спосіб оплати</div>
+                                        <ul class="c-cart__payment-methods wc_payment_methods payment_methods methods">
+                                            <li class="wc_payment_method payment_method_liqpay">
+                                                <span class="c-cart__payment-methods-wrap">
+                                                    <input id="payment_method_liqpay" type="radio" class="c-cart__payment-method-radio input-radio" name="payment_method" value="liqpay" checked="checked" data-order_button_text="" style="display: none;">
+                                                </span>
+
+                                                <label class="c-cart__payment-methods-title" for="payment_method_liqpay">
+                                                    Онлайн-оплата карткою </label>
+                                            </li>
+                                        </ul>
+                                        <div class="c-cart__place-order form-row place-order">
+                                            <noscript>
+                                                Оскільки ваш браузер не підтримує JavaScript (або він вимкнений), будь ласка, натисніть кнопку <em>Оновлення підсумку</em> перед розміщенням замовлення. Інакше ви можете отримати рахунок на більшу суму, ніж очікуєте, якщо не зробите цього. <br />
+                                                <button type="submit" class="button alt" name="woocommerce_checkout_update_totals" value="Оновити підсумки">Оновити підсумки</button>
+                                            </noscript>
+
+                                            <div class="woocommerce-terms-and-conditions-wrapper">
+                                                <div class="woocommerce-privacy-policy-text">
+                                                    <p>Ваші особисті дані використовуватимуться для опрацювання ваших замовлень, спрощення вашої роботи із сайтом та для інших цілей, описаних у нашій <a href="https://www.onlyone.beauty/faq/" class="woocommerce-privacy-policy-link" target="_blank">політика конфіденційності</a>.</p>
+                                                </div>
+                                                <div class="woocommerce-terms-and-conditions" style="display: none; max-height: 200px; overflow: auto;">
+                                                    <header class="l-section c-page-header c-page-header--header-type-4 c-page-header--default
+ c-page-header--page c-page-header--low">
+                                                        <p></p>
+                                                        <h1>FAQ</h1>
+                                                    </header>
+                                                    <p> <a href="">1. Загальні положення</a> </p>
+                                                    <p>1.1. Ця Угода визначає умови використання Користувачами (Покупцями) матеріалів і сервісів сайту onlyone.beauty (далі – Сайт, веб-сайт, інтернет-магазин)</p>
+                                                    <p>1.2. Дана угода відповідно до ст. ст. 633, 641, 699 Цивільного кодексу України є публічним договором (офертою) і адресовано невизначеному колу осіб не залежно від статусу (фізична особа, юридична особа, фізична особа – підприємець), що бажають придбати товари в інтернет-магазині onlyone.beauty.</p>
+                                                    <p>1.3. Оскільки ця Угода є публічною офертою, то отримуючи доступ до матеріалів Сайту Користувач (Покупець) вважається приєдналася до цієї Угоди.</p>
+                                                    <p>1.4. Адміністрація Сайту (власник сайту onlyone.beauty і / або уповноважені ним особи) має право в будь-який час в односторонньому порядку змінювати умови цієї Угоди. Нове або змінений Угода стають дійсними після розміщення його на Сайті. При незгоді Користувача з внесеними змінами він зобов’язаний відмовитися від доступу до Сайту, припинити використання матеріалів і сервісів Сайту.</p>
+                                                    <p>1.5.Покупатель погоджується з цією публічною офертою в цілому і без застережень при оформленні Замовлення на Сайті.</p>
+                                                    <p>1.6.Покупець користуючись сайтом, реєструючись на сайті і / або роблячи замовлення погоджується з тим, що всі умови Угоди Користування йому зрозумілі і він приймає його повністю і беззастережно.</p>
+                                                    <p> <a href="">2. Використання сайту і реєстрація на Сайті</a> </p>
+                                                    <p>2.1. Сайт onlyone.beauty (далі «only one beauty» або «Сайт») дозволяє переглядати матеріали цього Сайту тільки для особистого некомерційного використання, за умови збереження всієї інформації про авторське право та інших відомостей про право власності, що містяться у вихідних матеріалах і будь-яких їхніх копіях. Забороняється змінювати матеріали цього Сайту, а також поширювати або демонструвати їх в будь-якому вигляді або використовувати їх будь-яким іншим чином для суспільних або комерційних цілей. Будь-яке використання цих матеріалів на інших сайтах або в комп’ютерних мережах забороняється.</p>
+                                                    <p>2.2. Для формування замовлень на Сайті Користувач (Покупець) може пройти процедуру реєстрації та внести необхідні дані, згідно з анкетою.</p>
+                                                    <p>2.3. При реєстрації на Сайті Користувач (Покупець) зобов’язується надати достовірну і точну інформацію про себе і своїх контактних даних, для виконання Адміністрацією Сайту своїх зобов’язань перед Користувачем (Покупцем) і доставки йому сплаченого Товару.</p>
+                                                    <p>2.4. У процесі реєстрації на Сайті Користувач (Покупець) вказує логін (його e-mail) і пароль, за безпеку яких він несе відповідальність. Користувач (Покупець) зобов’язується не повідомляти третім особам логін і пароль, вказані при реєстрації, зберігати ці дані в недоступному для сторонніх місці. За всі дії, що здійснюються від його імені, тобто з використанням його логіна та пароля, відповідальність несе виключно Покупець.</p>
+                                                    <p> <a href="">3. Порядок оформлення Замовлень.</a> </p>
+                                                    <p>3.1. Відвідувач (Покупець) оформляє замовлення самостійно, шляхом натискання кнопки “купити” і “оформити замовлення”. Після оформлення замовлення покупцеві буде направлено повідомлення про підтвердження замовлення, на зазначені при оформленні замовлення контакти, і наявності товару або про передбачувану дату надходження товару в разі його відсутності.</p>
+                                                    <p>3.2. Замовлення розміщується Покупцем на сайті onlyone.beauty</p>
+                                                    <p>3.3. Розміщуючи замовлення на сайті, Відвідувач (Покупець) приймає той факт, що всі основні параметри товару вказані на сайті, і є достатніми для здійснення усвідомленого акцепту з боку Відвідувача (Покупця). Адміністрація сайту не доповнює характеристики товару, в тому числі на прохання Покупця.</p>
+                                                    <p>3.4. Роздрібне замовлення:</p>
+                                                    <p>3.4.1. Не має обмеження по сумі.</p>
+                                                    <p>3.4.2. Оплата за замовлення здійснюється на картковий рахунок, або в компаніях перевізниках при получені замовлення. Вся інформация про перевізників вказана на сайті в розділі «Оплата і доставка».</p>
+                                                    <p>3.4.3 Адміністрація сайту має право змінювати банківські реквізити для оплати. Адміністрація сайту не несе відповідальності за оплату Покупцем на недіючі реквізити.</p>
+                                                    <p> <a href="">4. Оплата і ціна на товар</a> </p>
+                                                    <p>4.1. Покупець здійснює оплату протягом 3 робочих днів з дня розміщення ним замовлення на сайті onlyone.beauty.</p>
+                                                    <p>4.2. Порядок оплати або 100% передоплата на банківський рахунок, вказаний на сайті, або в порядку післяплати</p>
+                                                    <p>4.3. У разі несплати протягом 3 робочих днів з дня розміщення Покупцем замовлення, Адміністрація сайту має право анулювати замовлення</p>
+                                                    <p>4.4. При оплаті на банківський рахунок Покупець зобов’язаний вказати номер замовлення.</p>
+                                                    <p>4.5. При оплаті в порядку накладеного платежу витрати на накладений платіж оплачує Покупець.</p>
+                                                    <p>4.6. Відвідувач (Покупець) погоджується з тим, що ціна на товар, відкладений їм в «кошик», його асортимент і кількість, будуть актуальними лише на момент формування «кошика» і можуть змінюватися, якщо покупка не була остаточно оформлена шляхом натискання кнопки «оформити замовлення “, “підтвердити замовлення”.</p>
+                                                    <p> <a href="">5. Поставка товару. Якість і комплектність товару.</a> </p>
+                                                    <p>5.1. Адміністрація сайту обробляє замовлення протягом 3 робочих днів після отримання грошей на банківський рахунок.</p>
+                                                    <p>5.2. У разі відсутності товару, вказаного на Сайті, внаслідок технічних неполадок, а також з інших причин, не залежних від Адміністрації, зазначене замовлення анулюється повністю або частково, а Відвідувач (Покупець) інформується протягом 1 робочого дня шляхом направлення йому повідомлення. Покупцеві буде запропонований товар в замін відсутнього або повернуті гроші.</p>
+                                                    <p>5.3. Приєднуючись до цієї Угоди і оформляючи замовлення, Користувач (покупець) підтверджує, що ознайомлений з розділами Сайту «Оплата і доставка»; погоджується з ними і розуміє їх в повній мірі. Адміністрація залишає за собою право змінити термін доставки замовлення з наступним повідомленням користувача.</p>
+                                                    <p>5.4. Поставка товару проводиться в форматі «від виробника» (може бути без стікерів та інших супутніх елементів), при цьому Адміністрація сайту розміщує дані особливості в характеристиках товару на сайті і не несе відповідальності, якщо Покупець з ними не ознайомився.</p>
+                                                    <p>5.5. Скарги Покупців по комплектності або збереження товару приймаються тільки при пошкодженні товару при транспортуванні Новою поштою за умови, якщо посилка була розкрита в офісі Нової пошти і був складений акт огляду працівниками Нової пошти про пошкодження посилки з детальним зазначенням, що саме було пошкоджено, а також вартість посилки не була компенсована Новою поштою. У разі дотримання вищевказаних умов Адміністрація сайту проводить повну компенсацію пошкодженого товару.</p>
+                                                    <p>5.6. Терміни придатності на товар повідомляються Користувачу/Покупцю за його вимогою. Адміністрація Сайту onlyone.beauty заздалегідь повідомляє Користувача/Покупця, якщо термін придатності на вибраний товар добігає кінця. Якщо після повідомлення терміну придатності на товар Покупець здійснив покупку — в такому випадку Покупець погоджується з такими термінами придатності.</p>
+                                                    <p>5.7. Доставка товару Покупцю здійснюється виключно постачальниками, зазначеними на сайті в розділі «Оплата і доставка»</p>
+                                                    <p>5.8. Доставка товару оплачується Покупцем.</p>
+                                                    <p> <a href="">6. Обмін товару</a> </p>
+                                                    <p>6.1. Обміну підлягає виключно товар з виробничим / заводським недоліком</p>
+                                                    <p>6.2. Відвідувач (Покупець) погоджується з тим, що придбаний ним Товар не підлягає обміну і поверненню в разі, якщо:</p>
+                                                    <ul>
+                                                        <li>Це не ходовий товар і знижений у ціні товар</li>
+                                                        <li>Товар був у вжитку, порушена цілісність упаковки і / або комплектність, відсутні бирки і т.д.</li>
+                                                        <li>Якщо у покупця виявилася алергічна реакція або індивідуальна непереносимість</li>
+                                                    </ul>
+                                                    <p> <a href="">7.Конфіденційність і персональні дані</a> </p>
+                                                    <p>7.1. Інформація, яку надає Користувач (Покупець) є конфіденційною. Адміністрація сайту використовує інформацію про Користувача (Покупця) з метою виконання Замовлень Відвідувача (Покупця), якщо інших цілей не вказано в цій Угоді.</p>
+                                                    <p>7.2. Заповнення реєстраційної анкети на сайті onlyone.beauty Відвідувач (Покупець) добровільно дає згоду на збір і обробку своїх персональних даних Адміністрацією Сайту з подальшою метою: дані, які надає Відвідувач (Покупець) під час реєстрації на Сайті будуть використовуватися для обробки Замовлень на придбання товарів, отримання інформації про замовленні, відправка телекомунікаційними засобами зв’язку (по електронній пошті, мобільним зв’язком) рекламних та спеціальних пропозицій, інформації про акції, розіграші або будь-якої іншої інформації про діяльність Веб-сайту onlyone.beauty, в інших комерційних цілях.</p>
+                                                    <p>7.3. Для цілей, передбачених цим пунктом, Адміністрація має право направляти листи, повідомлення та матеріали на поштову адресу, e-mail Відвідувача (Покупця), а також відправляти sms-повідомлення, здійснювати дзвінки на вказаний в анкеті номер, якщо це необхідно для виконання замовлення Користувача ( покупця). Адміністрація має право здійснювати запис телефонних дзвінків з Відвідувачем (Покупцем) з метою поліпшення якості обслуговування останнього, на що Відвідувач (Покупець) дає свою беззастережну згоду.</p>
+                                                    <p>7.4. Покупець дає право Адміністрації здійснювати обробку його персональних даних, в тому числі: поміщати персональні дані в бази даних Адміністрації (без додаткового повідомлення про це), здійснювати довічне зберігання даних, їх накопичення, оновлення, зміна (у міру необхідності). Адміністрація зобов’язується забезпечити захист даних від несанкціонованого доступу третіх осіб, не поширювати і не передавати дані будь-якої третьої сторони (крім передачі даних пов’язаним особам, комерційним партнерам, особам, уповноваженим Адміністрацією на здійснення безпосередньої обробки даних для зазначених цілей, а також на обов’язковий запит компетентного державного органу).</p>
+                                                    <p>7.5. У разі небажання отримувати розсилку про рекламні акції, нові продукти і т.д., Відвідувач (Покупець) має право відмовитися від неї, шляхом надсилання листа Адміністрації.</p>
+                                                    <p>7.6. Адміністрація не несе відповідальності за зміст і достовірність інформації, наданої Відвідувачем (Покупцем) при реєстрації на веб-сайті onlyone.beauty і оформленні Замовлення. Відвідувач (Покупець) несе відповідальність за достовірність інформації, зазначеної при реєстрації на веб-сайті та оформленні Замовлення інформації погоджується на всі ризики, пов’язані з недостовірністю такої інформації.</p>
+                                                    <p> <a href="">8. Обмеження відповідальності Адміністрації сайту</a> </p>
+                                                    <p>8.1. Адміністрація не несе ніякої відповідальності за будь-які помилки, друкарські помилки і неточності, які можуть бути виявлені в матеріалах, що містяться на даному веб-сайті. Адміністрація докладає всіх необхідних зусиль, щоб забезпечити точність і достовірність на сайті Інтернет-магазину інформації. Вся інформація та матеріали надаються на умовах “як є”, без будь-яких гарантій, як явних, так і непрямих.</p>
+                                                    <p>8.2. У разі старіння матеріалів на Сайті onlyone.beauty не зобов’язаний оновлювати їх. onlyone.beauty ні за яких обставин не несе відповідальності за будь-які збитки (включаючи, але не обмежуючись збитком від втрати прибутку, даних або від переривання ділової активності), що виник внаслідок використання, неможливості використання або результатів використання матеріалів цього сайту.</p>
+                                                    <p>8.3. Адміністрація не несе ніякої відповідальності за висловлювання і думки Відвідувачів (Покупця) веб-сайту, залишені в якості коментарів або оглядів.</p>
+                                                    <p>8.4. Адміністрація не несе відповідальність за можливі протиправні дії Відвідувача (Покупця) щодо третіх осіб, або третіх осіб щодо Відвідувача / Покупця.</p>
+                                                    <p>8.5. Адміністрація не несе відповідальності за шкоду, збитки або витрати (реальні або можливі), що виникли в зв’язку з цим веб-сайтом, його використанням або неможливістю використання.</p>
+                                                    <p>8.6. Адміністрація не несе відповідальності за втрату Користувачем (Покупцем) можливості доступу до свого облікового запису – облікового запису на сайті onlyone.beauty (втрату логіна, пароля, іншої інформації).</p>
+                                                    <p>8.7. З метою вищевикладеного Адміністрація залишає за собою право видаляти розміщену на Сайті інформацію і робити технічні і юридичні заходи для припинення доступу до Інтернет-магазину користувачів (Покупців), що створюють проблеми у використанні Інтернет-магазину іншими Відвідувачами (Покупцями), або Відвідувачів (Покупців), порушують вимоги Угоди.</p>
+                                                    <p>8.8. Адміністрація веб-сайту в т.ч. не несе відповідальності за:</p>
+                                                    <p>8.8.1. Затримки або збої в процесі здійснення операції, що виникли внаслідок непереборної сили, а також будь-якого випадку неполадок в телекомунікаційних, комп’ютерних, електричних та інших суміжних системах.</p>
+                                                    <p>8.8.2. Дії систем переказів, банків, платіжних систем і за затримки пов’язані з їх роботою.</p>
+                                                    <p>8.8.3. Належне функціонування Сайту, в разі, якщо Відвідувач (Покупець) не має необхідних технічних засобів для його використання, а також не несе ніяких зобов’язань по забезпеченню користувачів такими засобами.</p>
+                                                    <p> <a href="">9. Виняткові права</a> </p>
+                                                    <p>9.1. Всі об’єкти, доступні за допомогою сервісів Сайту onlyone.beauty, в тому числі елементи дизайну, текст, графічні зображення, ілюстрації, відео, програми для ЕОМ, бази даних, музика, звуки і інші об’єкти (далі – зміст сервісів), а також будь-який контент, розміщений на веб-сайті onlyone.beauty, є об’єктами виняткових прав Адміністрації, користувачів та інших правовласників.</p>
+                                                    <p>9.2. Використання контенту, а також будь-яких інших елементів сервісів можливо тільки в рамках функціоналу, пропонованого тим чи іншим сервісом. Ніякі елементи змісту сервісів Сайту onlyone.beauty, а також будь-який контент, розміщений на сервісах Сайту onlyone.beauty &nbsp;не можуть бути використані іншим чином без попереднього дозволу / згоди правовласника. Під використанням мається на увазі, в тому числі: відтворення, копіювання, переробка, поширення на будь-якій основі і так далі. Виняток становлять випадки, прямо передбачені законодавством України. Використання Користувачем елементів змісту сервісів, а також будь-якого контенту для особистого некомерційного використання, допускається за умови збереження всіх знаків охорони авторського права, суміжних прав, товарних знаків, інших повідомлень про авторство, збереження імені (або псевдоніма) автора / найменування правовласника в незмінному вигляді, збереженні відповідного об’єкта в незмінному вигляді. Виняток становлять випадки, прямо передбачені законодавством України.</p>
+                                                    <p>9.3. З усіх питань щодо прав, а також з іншими питаннями і пропозиціями Ви можете зв’язатися з нами за електронною адресою: admin@onlyone.beauty</p>
+                                                    <p> <a href="">10. Інформація про продавця</a> </p>
+                                                    <p align="justify"><strong>Найменування Продавця:</strong> ФОП Шаповалова Ю.О., ЄДРПОУ 3485506327</p>
+                                                    <p align="justify"><b>Місцезнаходження Продавця:&nbsp;</b>Україна, Харківська область, Купʼянский район, с. Петропілля вул. Середня 32.</p>
+                                                </div>
+                                                <p class="c-form__terms-and-conditions form-row validate-required">
+                                                    <label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
+                                                        <input type="checkbox" class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" name="terms" id="terms">
+                                                        <span class="woocommerce-terms-and-conditions-checkbox-text">Я прочитав (ла) і погоджуюся з правилами сайту <a href="https://www.onlyone.beauty/faq/" class="woocommerce-terms-and-conditions-link" target="_blank">правила та умови</a></span>&nbsp;<span class="required">*</span>
+                                                    </label>
+                                                    <input type="hidden" name="terms-field" value="1">
+                                                </p>
+                                            </div>
+
+
+                                            <button type="submit" class="c-button c-button--big c-cart__place-order-btn button alt" name="woocommerce_checkout_place_order" id="place_order" value="Підтвердити замовлення" data-value="Підтвердити замовлення">Підтвердити замовлення</button>
+
+                                            <input type="hidden" id="woocommerce-process-checkout-nonce" name="woocommerce-process-checkout-nonce" value="c68ab65b33"><input type="hidden" name="_wp_http_referer" value="/?wc-ajax=update_order_review">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

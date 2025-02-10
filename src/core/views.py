@@ -1,35 +1,24 @@
+from django.contrib import messages
 from django.db.models import F, Max, Min, Q
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_http_methods
 
 from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
                          Product, WishList)
 from userauths.models import ContactUs
-from django.contrib import messages
 
 
 def index(request):
-    sale_products = Product.objects.filter(
-        product_status="опубліковано",
-        old_price__gt=F("price")
-    ).order_by("-date")
+    sale_products = Product.objects.filter(product_status="опубліковано", old_price__gt=F("price")).order_by("-date")
 
-    products = Product.objects.filter(
-        product_status="опубліковано",
-        featured=True
-    ).exclude(
-        old_price__gt=F("price")
-    )
+    products = Product.objects.filter(product_status="опубліковано", featured=True).exclude(old_price__gt=F("price"))
 
-    extra_products = Product.objects.filter(
-        product_status="опубліковано",
-        extra_products=True
-    ).exclude(
-        id__in=sale_products.values_list('id', flat=True)
-    ).exclude(
-        id__in=products.values_list('id', flat=True)
+    extra_products = (
+        Product.objects.filter(product_status="опубліковано", extra_products=True)
+        .exclude(id__in=sale_products.values_list("id", flat=True))
+        .exclude(id__in=products.values_list("id", flat=True))
     )
 
     context = {
@@ -138,7 +127,7 @@ def search(request):
 def filter_products(request):
     categories = request.GET.getlist("category[]")
     brands = request.GET.getlist("brand[]")
-    sort_by = request.GET.get('orderby', 'menu_order')
+    sort_by = request.GET.get("orderby", "menu_order")
     min_price = request.GET.get("min_price")
     max_price = request.GET.get("max_price")
 
@@ -154,14 +143,14 @@ def filter_products(request):
     if brands:
         products = products.filter(brand__id__in=brands)
 
-    if sort_by == 'rating':
-        products = products.order_by('title')
-    elif sort_by == 'price':
-        products = products.order_by('-price')
-    elif sort_by == 'price-desc':
-        products = products.order_by('price')
+    if sort_by == "rating":
+        products = products.order_by("title")
+    elif sort_by == "price":
+        products = products.order_by("-price")
+    elif sort_by == "price-desc":
+        products = products.order_by("price")
     else:
-        products = products.order_by('date')
+        products = products.order_by("date")
 
     products_count = products.count()
 
@@ -174,10 +163,7 @@ def filter_products(request):
     data = render_to_string("core/async/product-list.html", {"products": products})
     count_text = f"Ми знайшли для вас <strong>{products_count}</strong> товар{word_ending}!"
 
-    return JsonResponse({
-        "data": data,
-        "count_text": count_text
-    })
+    return JsonResponse({"data": data, "count_text": count_text})
 
 
 def get_price_range(request):
@@ -234,14 +220,14 @@ def add_to_cart(request):
         "pid": request.GET["pid"],
         "volume": request.GET.get("volume", ""),
         "variation_id": variation_id,
-        "total_price": float(request.GET["price"].replace(',', '.')) * int(request.GET["quantity"])
+        "total_price": float(request.GET["price"].replace(",", ".")) * int(request.GET["quantity"]),
     }
 
     if "cart_data_obj" in request.session:
         cart_data = request.session["cart_data_obj"]
         if cart_key in cart_data:
             cart_data[cart_key]["quantity"] = int(cart_product[cart_key]["quantity"])
-            price = float(cart_data[cart_key]["price"].replace(',', '.'))
+            price = float(cart_data[cart_key]["price"].replace(",", "."))
             cart_data[cart_key]["total_price"] = price * cart_data[cart_key]["quantity"]
         else:
             cart_data.update(cart_product)
@@ -249,122 +235,111 @@ def add_to_cart(request):
     else:
         request.session["cart_data_obj"] = cart_product
 
-    return JsonResponse({
-        "data": request.session["cart_data_obj"],
-        "totalcartitems": len(request.session["cart_data_obj"])
-    })
+    return JsonResponse(
+        {"data": request.session["cart_data_obj"], "totalcartitems": len(request.session["cart_data_obj"])}
+    )
 
 
 def cart(request):
     cart_total = 0
-    if 'cart_data_obj' in request.session and request.session['cart_data_obj']:
-        cart_data = request.session['cart_data_obj']
+    if "cart_data_obj" in request.session and request.session["cart_data_obj"]:
+        cart_data = request.session["cart_data_obj"]
 
         for product_id, item in cart_data.items():
             try:
-                price = float(item['price'].replace(',', '.'))
-                quantity = int(item['quantity'])
-                item['total_price'] = price * quantity
-                cart_total += item['total_price']
+                price = float(item["price"].replace(",", "."))
+                quantity = int(item["quantity"])
+                item["total_price"] = price * quantity
+                cart_total += item["total_price"]
             except (ValueError, TypeError):
-                item['total_price'] = 0
+                item["total_price"] = 0
 
-        return render(request, 'core/cart.html', {
-            'cart_data': cart_data,
-            'totalcartitems': len(cart_data),
-            'cart_total': cart_total,
-            'is_cart_empty': False
-        })
+        return render(
+            request,
+            "core/cart.html",
+            {
+                "cart_data": cart_data,
+                "totalcartitems": len(cart_data),
+                "cart_total": cart_total,
+                "is_cart_empty": False,
+            },
+        )
     else:
-        return render(request, 'core/cart.html', {
-            'is_cart_empty': True
-        })
+        return render(request, "core/cart.html", {"is_cart_empty": True})
 
 
 def delete_item_from_cart(request):
-    product_id = str(request.GET['id'])
-    if 'cart_data_obj' in request.session:
-        if product_id in request.session['cart_data_obj']:
-            cart_data = request.session['cart_data_obj']
-            del request.session['cart_data_obj'][product_id]
-            request.session['cart_data_obj'] = cart_data
+    product_id = str(request.GET["id"])
+    if "cart_data_obj" in request.session:
+        if product_id in request.session["cart_data_obj"]:
+            cart_data = request.session["cart_data_obj"]
+            del request.session["cart_data_obj"][product_id]
+            request.session["cart_data_obj"] = cart_data
             request.session.modified = True
 
-    if not request.session.get('cart_data_obj'):
-        empty_cart_html = render_to_string('core/async/empty-cart.html')
-        return JsonResponse({
-            'data': empty_cart_html,
-            'totalcartitems': 0,
-            'cart_total': 0,
-            'is_empty': True
-        })
+    if not request.session.get("cart_data_obj"):
+        empty_cart_html = render_to_string("core/async/empty-cart.html")
+        return JsonResponse({"data": empty_cart_html, "totalcartitems": 0, "cart_total": 0, "is_empty": True})
 
     cart_total = 0
-    cart_data = request.session['cart_data_obj']
+    cart_data = request.session["cart_data_obj"]
     for product_id, item in cart_data.items():
         try:
-            price = float(str(item['price']).replace(',', '.'))
-            quantity = int(item['quantity'])
-            item['total_price'] = price * quantity
-            cart_total += item['total_price']
+            price = float(str(item["price"]).replace(",", "."))
+            quantity = int(item["quantity"])
+            item["total_price"] = price * quantity
+            cart_total += item["total_price"]
         except (ValueError, TypeError):
-            item['total_price'] = 0
+            item["total_price"] = 0
             continue
 
     context = {
-        'cart_data': cart_data,
-        'totalcartitems': len(cart_data),
-        'cart_total': cart_total,
-        'is_cart_empty': False
+        "cart_data": cart_data,
+        "totalcartitems": len(cart_data),
+        "cart_total": cart_total,
+        "is_cart_empty": False,
     }
 
-    html = render_to_string('core/async/cart-list.html', context)
+    html = render_to_string("core/async/cart-list.html", context)
 
-    return JsonResponse({
-        'data': html,
-        'totalcartitems': len(cart_data),
-        'cart_total': cart_total,
-        'is_empty': False
-    })
+    return JsonResponse({"data": html, "totalcartitems": len(cart_data), "cart_total": cart_total, "is_empty": False})
 
 
 def update_cart(request):
-    product_key = str(request.GET['id'])
-    product_quantity = int(request.GET['quantity'])
+    product_key = str(request.GET["id"])
+    product_quantity = int(request.GET["quantity"])
 
-    if 'cart_data_obj' in request.session:
-        cart_data = request.session['cart_data_obj']
+    if "cart_data_obj" in request.session:
+        cart_data = request.session["cart_data_obj"]
 
         if product_key in cart_data:
-            cart_data[product_key]['quantity'] = product_quantity
+            cart_data[product_key]["quantity"] = product_quantity
 
-            price = float(str(cart_data[product_key]['price']).replace(',', '.'))
-            cart_data[product_key]['total_price'] = price * product_quantity
+            price = float(str(cart_data[product_key]["price"]).replace(",", "."))
+            cart_data[product_key]["total_price"] = price * product_quantity
 
-            request.session['cart_data_obj'] = cart_data
+            request.session["cart_data_obj"] = cart_data
             request.session.modified = True
 
     cart_total = 0
     products_data = []
 
-    if 'cart_data_obj' in request.session:
-        for key, item in request.session['cart_data_obj'].items():
+    if "cart_data_obj" in request.session:
+        for key, item in request.session["cart_data_obj"].items():
             try:
-                price = float(str(item['price']).replace(',', '.'))
-                quantity = int(item['quantity'])
+                price = float(str(item["price"]).replace(",", "."))
+                quantity = int(item["quantity"])
                 total_price = price * quantity
                 cart_total += total_price
 
-                products_data.append({
-                    'product_id': key,
-                    'quantity': quantity,
-                    'total_price': total_price
-                })
+                products_data.append({"product_id": key, "quantity": quantity, "total_price": total_price})
             except (ValueError, KeyError):
                 continue
 
-    return JsonResponse({
-        'products': products_data,
-        'totalcartitems': len(request.session['cart_data_obj']),
-        'cart_total': cart_total
-    })
+    return JsonResponse(
+        {"products": products_data, "totalcartitems": len(request.session["cart_data_obj"]), "cart_total": cart_total}
+    )
+
+
+def checkout(request):
+    return render(request, "core/checkout.html")
