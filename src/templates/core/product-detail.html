@@ -429,10 +429,22 @@ document.addEventListener('DOMContentLoaded', function() {
             const addToCartBtn = $('.add-to-cart-btn');
             const mainSlider = $('.c-product__slider');
             const thumbnailSlider = $('.c-product__thumbs');
+            const quantityInput = $('#product-quantity');
             let currentVariationData = null;
 
             const baseVolume = $('.thwvsf-wrapper-item-li[data-is-base="true"]').data('volume') ||
                               '{{ product.volume }} мл';
+
+            // Функция сброса состояния кнопки и количества
+            function resetAddToCartState() {
+                // Сброс количества к 1
+                quantityInput.val(1);
+
+                // Сброс текста кнопки
+                const addToCartButton = $('.single_add_to_cart_button');
+                addToCartButton.html('Додати в кошик');
+                addToCartButton.removeClass('added-to-cart');
+            }
 
             if ($('[data-is-base="true"]').length > 0) {
                 const baseElement = $('[data-is-base="true"]');
@@ -445,7 +457,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
             }
 
-            // Функция обновления изображений
             function updateAllImages(imageUrl) {
                 if (!imageUrl) return;
 
@@ -481,7 +492,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 $('.product-image-' + addToCartBtn.attr('data-index')).val(imageUrl);
             }
 
-            // Функция обновления цены
             function updatePrice(price, oldPrice) {
                 if (!price) return;
 
@@ -519,18 +529,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-            // Обработчик клика по вариации
             $('.thwvsf-wrapper-item-li').on('click', function(e) {
                 e.preventDefault();
                 const $this = $(this);
 
+                // Сбрасываем состояние кнопки и количества при смене вариации
+                resetAddToCartState();
+
                 if ($this.hasClass('active')) {
-                    // Reset to base variation
                     $('.thwvsf-wrapper-item-li').removeClass('active');
                     const baseElement = $('[data-is-base="true"]');
                     baseElement.addClass('active');
 
-                    // Устанавливаем базовые данные
                     currentVariationData = {
                         variation_id: '',
                         price: baseElement.data('price') || '{{ product.price }}',
@@ -543,7 +553,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     updatePrice(currentVariationData.price, currentVariationData.old_price);
                     updateAllImages(currentVariationData.image);
                 } else {
-                    // Set new variation
                     $('.thwvsf-wrapper-item-li').removeClass('active');
                     $this.addClass('active');
 
@@ -561,11 +570,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            // Функция для обработки добавления в корзину
             function handleAddToCart(this_val, isProductPage) {
                 const index_val = this_val.attr('data-index');
 
-                // Get product data
                 const quantity = $('.product-quantity-' + index_val).val();
                 const product_title = $('.product-title-' + index_val).val();
                 const product_id = $('.product-id-' + index_val).val();
@@ -574,7 +581,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const product_price = currentVariationData ? currentVariationData.price : $('.current-product-price-' + index_val).text();
                 const product_volume = currentVariationData ? currentVariationData.volume : baseVolume;
 
-                // AJAX запрос
                 $.ajax({
                     url: '/add-to-cart',
                     data: {
@@ -611,7 +617,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
 
-            // Обработчик добавления в корзину
             $(document).on('click', '.add-to-cart-btn.single_add_to_cart_button', function(e) {
                 e.preventDefault();
                 const this_val = $(this);
@@ -624,7 +629,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 handleAddToCart(this_val, true);
             });
 
-           initZoom();
+            initZoom();
             $(document).on('click', '.thwvsf-wrapper-item-li', function() {
                 setTimeout(initZoom, 100);
             });
