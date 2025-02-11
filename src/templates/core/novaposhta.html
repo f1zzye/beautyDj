@@ -1,0 +1,525 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/np-logomark-red.png' %}"/>
+    <title>Форма оплати та доставки</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            max-width: 150px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        .form-container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            color: #333;
+            margin: 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ddd;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .city-search-container {
+            position: relative;
+        }
+
+        .search-results {
+            position: absolute;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 1000;
+        }
+
+        .search-results div {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .search-results div:hover {
+            background-color: #f5f5f5;
+        }
+
+
+        .city-input-wrapper input {
+            width: 100%;
+            padding-right: 40px;
+        }
+
+        .toggle-select {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            background: transparent;
+            border: 1px solid #ddd;
+            border-left: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .toggle-select:hover {
+            background-color: #f5f5f5;
+        }
+
+        .search-results {
+            position: absolute;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 0 0 5px 5px;
+            z-index: 1000;
+        }
+
+        .search-results div {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .search-results div:hover {
+            background-color: #f5f5f5;
+        }
+
+        .search-results.show-all {
+            display: block !important;
+        }
+
+        .city-input-wrapper {
+            position: relative;
+            display: flex;
+            width: 100%;
+        }
+
+        .city-input-wrapper input {
+            width: 100%;
+            padding-right: 40px;
+        }
+
+        .toggle-select {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        .toggle-select:hover {
+            background-color: #f5f5f5;
+        }
+
+        .search-results {
+            position: absolute;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 0 0 5px 5px;
+            z-index: 1000;
+        }
+
+        .search-results div {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .search-results div:hover {
+            background-color: #f5f5f5;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .form-container {
+                padding: 15px;
+            }
+
+            input, select {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <img src="{% static 'images/Nova_Poshta_2022_logo.png' %}" alt="Nova Poshta Logo">
+    <h1>Форма оплати та доставки</h1>
+</div>
+
+<div class="form-container">
+    <h3>Оплата та доставка</h3>
+
+    <form>
+        <div class="form-group">
+            <label for="firstname">Ім'я:</label>
+            <input type="text" id="firstname" name="firstname" placeholder="Введіть ваше ім'я" required>
+        </div>
+
+        <div class="form-group">
+            <label for="lastname">Прізвище:</label>
+            <input type="text" id="lastname" name="lastname" placeholder="Введіть ваше прізвище" required>
+        </div>
+
+        <div class="form-group">
+            <label for="country">Країна:</label>
+            <select id="country" name="country" required>
+                <option value="UA">Україна</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Телефон:</label>
+            <input type="tel" id="phone" name="phone" placeholder="+380 ХХ ХХХ ХХ ХХ" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Електронна пошта:</label>
+            <input type="email" id="email" name="email" placeholder="example@mail.com" required>
+        </div>
+
+        <h3>Вкажіть відділення доставки</h3>
+
+        <div class="form-group">
+            <label for="region">Оберіть область:</label>
+            <select id="region" name="region" required>
+                <option value="">Завантаження...</option>
+            </select>
+        </div>
+
+        <div class="form-group city-search-container">
+            <label for="city">Місто:</label>
+            <div class="city-input-wrapper">
+                <input type="text" id="cityInput" name="cityInput"
+                       placeholder="Введіть назву міста або оберіть зі списку" autocomplete="off">
+                <button type="button" id="toggleCitySelect" class="toggle-select">▼</button>
+            </div>
+            <input type="hidden" id="cityRef" name="cityRef">
+            <div id="citySearchResults" class="search-results"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="office">Відділення:</label>
+            <select id="office" name="office" required>
+                <option value="">Оберіть відділення</option>
+            </select>
+        </div>
+
+        <button type="submit">Підтвердити</button>
+    </form>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Кэшируем DOM элементы в объект для лучшей организации
+    const elements = {
+        region: document.getElementById("region"),
+        city: {
+            input: document.getElementById("cityInput"),
+            results: document.getElementById("citySearchResults"),
+            toggle: document.getElementById("toggleCitySelect"),
+            ref: document.getElementById("cityRef")
+        },
+        office: document.getElementById("office")
+    };
+
+    // Константы
+    const API_KEY = "3506f7c429e7bd9d4bd22481c0458455";
+    const DEFAULT_OPTIONS = {
+        loading: '<option value="">Завантаження...</option>',
+        select: '<option value="">Оберіть відділення</option>'
+    };
+
+    // Класс для работы с API
+    class NovaPoshtaApi {
+        constructor(apiKey) {
+            this.apiKey = apiKey;
+            this.baseUrl = "https://api.novaposhta.ua/v2.0/json/";
+        }
+
+        async request(modelName, calledMethod, methodProperties = {}) {
+            try {
+                const response = await fetch(this.baseUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        apiKey: this.apiKey,
+                        modelName,
+                        calledMethod,
+                        methodProperties
+                    })
+                });
+                const data = await response.json();
+                if (!data.success) throw new Error(data.errors?.join(' ') || "API request failed");
+                return data;
+            } catch (error) {
+                console.error(`${modelName}/${calledMethod} failed:`, error);
+                throw error;
+            }
+        }
+    }
+
+    const api = new NovaPoshtaApi(API_KEY);
+    let citiesData = [];
+
+    // Утилиты
+    const utils = {
+        setLoading: (isLoading) => {
+            elements.city.input.disabled = isLoading;
+            elements.city.toggle.disabled = isLoading;
+            elements.city.input.placeholder = isLoading ?
+                'Завантаження...' :
+                'Введіть назву міста або оберіть зі списку';
+        },
+
+        sortByLocale: (a, b, field = 'Description') =>
+            a[field].localeCompare(b[field], 'uk'),
+
+        getCityName: (city) => city.Description.split(',')[0].trim().toLowerCase()
+    };
+
+    // Функция выбора города
+    function selectCity(city) {
+        elements.city.input.value = city.Description;
+        elements.city.ref.value = city.Ref;
+        elements.city.results.style.display = 'none';
+        loadOffices(city.Ref);
+    }
+
+    // Основные функции
+    async function loadRegions() {
+        try {
+            elements.region.innerHTML = DEFAULT_OPTIONS.loading;
+            utils.setLoading(true);
+            elements.office.innerHTML = DEFAULT_OPTIONS.select;
+
+            const response = await api.request("Address", "getAreas");
+            const filteredAreas = response.data
+                .filter(area => area.Description !== 'АРК')
+                .sort(utils.sortByLocale);
+
+            elements.region.innerHTML = '<option value="">Оберіть область</option>' +
+                filteredAreas.map(area =>
+                    `<option value="${area.Ref}">${area.Description}</option>`
+                ).join('');
+
+        } catch (error) {
+            elements.region.innerHTML = '<option value="">Помилка завантаження</option>';
+        }
+    }
+
+    async function loadCities(regionRef) {
+        try {
+            utils.setLoading(true);
+            elements.office.innerHTML = DEFAULT_OPTIONS.select;
+
+            const response = await api.request("Address", "getCities", { AreaRef: regionRef });
+            citiesData = response.data.sort(utils.sortByLocale);
+            utils.setLoading(false);
+
+        } catch (error) {
+            utils.setLoading(true);
+            elements.city.input.placeholder = 'Помилка завантаження';
+        }
+    }
+
+    function filterCities(searchText) {
+        if (!searchText) {
+            displaySearchResults(citiesData);
+            return;
+        }
+
+        const search = searchText.toLowerCase().trim();
+        const filtered = citiesData
+            .filter(city => utils.getCityName(city).startsWith(search))
+            .sort((a, b) => {
+                const nameA = utils.getCityName(a);
+                const nameB = utils.getCityName(b);
+                const aStarts = nameA.startsWith(search);
+                const bStarts = nameB.startsWith(search);
+
+                return aStarts === bStarts ?
+                    nameA.localeCompare(nameB, 'uk') :
+                    bStarts ? 1 : -1;
+            });
+
+        displaySearchResults(filtered);
+    }
+
+    function displaySearchResults(cities) {
+        elements.city.results.innerHTML = '';
+
+        if (cities.length) {
+            cities.forEach(city => {
+                const div = document.createElement('div');
+                div.textContent = city.Description;
+                div.onclick = () => selectCity(city);
+                elements.city.results.appendChild(div);
+            });
+            elements.city.results.style.display = 'block';
+        } else {
+            elements.city.results.style.display = 'none';
+        }
+    }
+
+    async function loadOffices(cityRef) {
+        try {
+            elements.office.innerHTML = DEFAULT_OPTIONS.loading;
+
+            const response = await api.request("Address", "getWarehouses", { CityRef: cityRef });
+            const sortedOffices = response.data.sort((a, b) =>
+                parseInt(a.Number) - parseInt(b.Number)
+            );
+
+            elements.office.innerHTML = DEFAULT_OPTIONS.select +
+                sortedOffices.map(office =>
+                    `<option value="${office.Ref}">${office.Description}</option>`
+                ).join('');
+
+        } catch (error) {
+            elements.office.innerHTML = '<option value="">Помилка завантаження</option>';
+        }
+    }
+
+    // Event Listeners
+    elements.region.addEventListener("change", (e) => {
+        const regionRef = e.target.value;
+        elements.city.input.value = '';
+
+        if (regionRef) {
+            loadCities(regionRef);
+        } else {
+            utils.setLoading(true);
+            elements.office.innerHTML = DEFAULT_OPTIONS.select;
+        }
+    });
+
+    elements.city.input.addEventListener('input', (e) => filterCities(e.target.value));
+
+    elements.city.input.addEventListener('focus', () => {
+        if (!elements.city.input.value) displaySearchResults(citiesData);
+    });
+
+    elements.city.toggle.addEventListener('click', () => {
+        const isVisible = elements.city.results.style.display === 'block';
+        if (isVisible) {
+            elements.city.results.style.display = 'none';
+        } else {
+            displaySearchResults(citiesData);
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        const isClickInside = [
+            elements.city.input,
+            elements.city.results,
+            elements.city.toggle
+        ].some(el => el.contains(e.target));
+
+        if (!isClickInside) {
+            elements.city.results.style.display = 'none';
+        }
+    });
+
+    // Initialize
+    loadRegions();
+});
+
+</script>
+</body>
+</html>

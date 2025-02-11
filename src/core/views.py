@@ -169,13 +169,18 @@ def filter_products(request):
 def get_price_range(request):
     categories = request.GET.getlist("category[]", [])
     brands = request.GET.getlist("brand[]", [])
+    ignore_price_filter = request.GET.get("ignore_price_filter", False)
+    ignore_price_filter = ignore_price_filter == "true"
+
+    print(ignore_price_filter)
 
     products = Product.objects.filter(product_status="опубліковано")
 
-    if categories:
-        products = products.filter(category__id__in=categories)
-    if brands:
-        products = products.filter(brand__id__in=brands)
+    if not ignore_price_filter:
+        if categories:
+            products = products.filter(category__id__in=categories)
+        if brands:
+            products = products.filter(brand__id__in=brands)
 
     price_range = products.aggregate(min_price=Min("price"), max_price=Max("price"))
 
@@ -341,5 +346,84 @@ def update_cart(request):
     )
 
 
-def checkout(request):
-    return render(request, "core/checkout.html")
+def save_checkout_info(request):
+    cart_total = 0
+    total_amount = 0
+
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        fname = request.POST.get('fname')
+        lname = request.POST.get('lname')
+        address = request.POST.get('address')
+        country = request.POST.get('country')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        extra_info = request.POST.get('extra_info')
+
+        request.session['email'] = email
+        request.session['fname'] = fname
+        request.session['lname'] = lname
+        request.session['address'] = address
+        request.session['country'] = country
+        request.session['city'] = city
+        request.session['state'] = state
+        request.session['extra_info'] = extra_info
+
+        if 'cart_data_obj' in request.session:
+            for product_id, item in request.session['cart_data_obj'].items():
+                # Заменяем запятую на точку перед конвертацией
+                price = float(item['price'].replace(',', '.'))
+                total_amount += price * int(item['quantity'])
+
+            order = CartOrder.objects.create(
+                user=request.user,
+                price=total_amount,
+                email=email,
+                phone=phone,
+                fname=fname,
+                lname=lname,
+                address=address,
+                country=country,
+                city=city,
+                state=state,
+                extra_info=extra_info,
+            )
+
+            session_keys = ['email', 'phone', 'fname', 'lname', 'address', 'country', 'city', 'state', 'extra_info']
+            for key in session_keys:
+                if key in request.session:
+                    del request.session[key]
+
+            for product_id, item in request.session['cart_data_obj'].items():
+                price = float(item['price'].replace(',', '.'))
+                item_total = price * int(item['quantity'])
+                cart_total += item_total
+
+                CartOrderItems.objects.create(
+                    order=order,
+                    invoice_num='INVOICE_№-' + str(order.id),
+                    item=item['title'],
+                    image=item['image'],
+                    quantity=item['quantity'],
+                    price=price,
+                    total=item_total,
+                )
+
+            return redirect('core:checkout', order.oid)
+    return redirect('core:checkout', order.oid)
+
+
+def checkout(request, oid):
+    order = CartOrder.objects.get(oid=oid)
+    order_items = CartOrderItems.objects.filter(order=order)
+
+    context = {
+        'order': order,
+        'order_items': order_items,
+    }
+    return render(request, 'core/checkout.html', context)
+
+
+def novaposhta(request):
+    return render(request, "core/novaposhta.html")

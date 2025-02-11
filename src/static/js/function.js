@@ -120,7 +120,7 @@ $(document).ready(function () {
     }
 
     // Обработчики фильтров
-    $(".filter-checkbox").on("change", function() {
+    $(".filter-checkbox").on("change", function(event) {
         let filter_object = {};
 
         $(".filter-checkbox").each(function () {
@@ -132,17 +132,19 @@ $(document).ready(function () {
 
         $.ajax({
             url: '/get-price-range/',
-            data: filter_object,
+            data: {
+            ...filter_object,
+            ignore_price_filter: !this.checked
+            },
             dataType: 'json',
             success: function(response) {
                 updateSliderRange(response.min_price, response.max_price);
+                updateProducts();
             }
         });
 
-        updateProducts();
     });
 
-    // Обработчики ползунков цены
     minRange.addEventListener('input', function() {
         if (parseFloat(minRange.value) > parseFloat(maxRange.value)) {
             minRange.value = maxRange.value;
@@ -157,10 +159,8 @@ $(document).ready(function () {
         updatePriceLabels();
     });
 
-    // Обработчик кнопки фильтра цены
     $("#price-filter-btn").on("click", updateProducts);
 
-    // Инициализация ценовых меток при загрузке страницы
     if (minRange && maxRange) {
         updatePriceLabels();
     }

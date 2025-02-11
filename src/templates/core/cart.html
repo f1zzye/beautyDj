@@ -4,19 +4,19 @@
 
 <div class="l-inner" id="cart-list">
     {% if is_cart_empty %}
-        <div class="woocommerce-notices-wrapper woocommerce-notices-wrapper--ajax" style="transform: translateY(0px);"></div>
-        <div class="l-section l-section--container l-section--bottom-margin l-section--no-sidebar l-section--top-margin-60 l-section--white">
-            <div class="l-section__content">
-                <div class="woocommerce">
-                    <div class="c-cart-empty">
-                        <h1 class="c-cart-empty__header">Кошик поки порожній</h1>
-                        <a class="c-button c-button--outline c-cart-empty__backward" href="{% url 'core:product-list' %}">
-                            Повернутись в магазин
-                        </a>
-                    </div>
+    <div class="woocommerce-notices-wrapper woocommerce-notices-wrapper--ajax" style="transform: translateY(0px);"></div>
+    <div class="l-section l-section--container l-section--bottom-margin l-section--no-sidebar l-section--top-margin-60 l-section--white">
+        <div class="l-section__content">
+            <div class="woocommerce">
+                <div class="c-cart-empty">
+                    <h1 class="c-cart-empty__header">Кошик поки порожній</h1>
+                    <a class="c-button c-button--outline c-cart-empty__backward" href="{% url 'core:product-list' %}">
+                        Повернутись в магазин
+                    </a>
                 </div>
             </div>
         </div>
+    </div>
     {% else %}
 
     <div class="l-section l-section--container l-section--bottom-margin l-section--no-sidebar l-section--top-margin">
@@ -41,7 +41,7 @@
                                                 <td colspan="4" class="c-cart__shop-td-space"></td>
                                             </tr>
 
-                                        {% for product_id, item in cart_data.items %}
+                                            {% for product_id, item in cart_data.items %}
                                             <tr class="c-cart__shop-tr cart_item">
 
                                                 <td class="c-cart__shop-td c-cart__shop-td--product-thumbnail">
@@ -51,10 +51,10 @@
                                                     </a>
                                                     <a class="c-cart__thumbnail-link" href="{% url 'core:product-detail' item.pid %}"><img decoding="async" width="115" height="115" src="{{ item.image }}" class="attachment-woocommerce_gallery_thumbnail size-woocommerce_gallery_thumbnail" alt="" srcset="{{ item.image }}" sizes="(max-width: 115px) 100vw, 115px"></a> </td>
 
-                                               <td class="c-cart__shop-td c-cart__shop-td--product-name" data-title="Товар">
+                                                <td class="c-cart__shop-td c-cart__shop-td--product-name" data-title="Товар">
                                                     <a href="{% url 'core:product-detail' item.pid %}">{{ item.title }}</a>
                                                     {% if item.volume != 'None мл' %}
-                                                        <div class="c-cart__shop-brand">Об`єм: {{ item.volume }}</div>
+                                                    <div class="c-cart__shop-brand">Об`єм: {{ item.volume }}</div>
                                                     {% endif %}
                                                     <span class="c-cart__item-price">
                                                         <span class="woocommerce-Price-amount amount">
@@ -69,13 +69,7 @@
                                                 <td class="c-cart__shop-td c-cart__shop-td--product-quantity" data-title="Кількість">
                                                     <div class="c-product__quantity quantity">
                                                         <label class="screen-reader-text">{{ item.title }}</label>
-                                                        <input type="number"
-                                                               class="c-product__quantity-value qty product-quantity-{{ product_id|slugify }}"
-                                                               min="1"
-                                                               value="{{ item.quantity }}"
-                                                               data-key="{{ product_id }}"
-                                                               readonly
-                                                               style="background-color: #fff;">
+                                                        <input type="number" class="c-product__quantity-value qty product-quantity-{{ product_id|slugify }}" min="1" value="{{ item.quantity }}" data-key="{{ product_id }}" readonly style="background-color: #fff;">
                                                         <button class="h-cb c-product__quantity-minus qty-minus" type="button" data-key="{{ product_id }}">
                                                             <i class="ip-minus"></i>
                                                         </button>
@@ -94,7 +88,7 @@
                                                     </span>
                                                 </td>
                                             </tr>
-                                        {% endfor %}
+                                            {% endfor %}
 
                                             <tr class="c-cart__shop-tr c-cart__shop-tr--space">
                                                 <td colspan="4" class="c-cart__shop-td-space"></td>
@@ -106,8 +100,141 @@
                                         </tbody>
                                     </table>
                                 </form>
+
+                                <div class="l-section l-section--bottom-margin l-section--no-sidebar l-section--top-margin-60 l-section--white l-section--checkout">
+                                    <div class="l-section__content">
+                                        <div class="woocommerce">
+
+                                            <form action="{% url 'core:save_checkout_info' %}" method="POST">
+                                                {% csrf_token %}
+
+                                                <div class="c-cart__wrap">
+                                                    <div class="c-cart__col-1 c-cart__col-1--checkout">
+                                                        <div class=" js-sticky-sidebar-nearby ">
+
+
+                                                            <div class="c-cart__customer-details" id="customer_details">
+                                                                <div class="col-1">
+                                                                    <div class="c-cart__form c-cart__form--billing-fields woocommerce-billing-fields">
+
+                                                                        <h3 class="c-cart__header">Платіжні дані</h3>
+
+
+
+                                                                        <div class="c-cart__billing-fields woocommerce-billing-fields__field-wrapper">
+                                                                            <!--Ім'я-->
+                                                                            <p class="form-row form-row-first validate-required" id="billing_first_name_field" data-priority="10">
+                                                                                <label class="">Ім'я&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                                                <span class="woocommerce-input-wrapper">
+                                                                                    <input type="text" class="input-text" name="fname" value="" placeholder="" autocomplete="given-name">
+                                                                                </span>
+                                                                            </p>
+                                                                            <!--Прізвище-->
+                                                                            <p class="form-row form-row-last validate-required" id="billing_last_name_field" data-priority="20">
+                                                                                <label class="">Прізвище&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                                                <span class="woocommerce-input-wrapper">
+                                                                                    <input type="text" class="input-text" name="lname" value="" placeholder="" autocomplete="family-name">
+                                                                                </span>
+                                                                            </p>
+                                                                            <!--Адреса-->
+                                                                            <p class="form-row form-row-last validate-required" id="billing_address_field" data-priority="50">
+                                                                                <label class="">Адреса&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                                                <span class="woocommerce-input-wrapper">
+                                                                                    <input type="text" class="input-text" name="address" value="" placeholder="Введіть адресу" autocomplete="street-address">
+                                                                                </span>
+                                                                            </p>
+                                                                            <!--Країна-->
+                                                                            <p class="form-row form-row-last validate-required" data-priority="70">
+                                                                                <label class="">Країна&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                                                <span class="woocommerce-input-wrapper">
+                                                                                    <input type="text" class="input-text" name="country" value="" placeholder="Введіть країну" autocomplete="address-level2">
+                                                                                </span>
+                                                                            </p>
+                                                                            <!--Місто-->
+                                                                            <p class="form-row form-row-last validate-required" data-priority="70">
+                                                                                <label class="">Місто&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                                                <span class="woocommerce-input-wrapper">
+                                                                                    <input type="text" class="input-text" name="city" value="" placeholder="Введіть місто" autocomplete="address-level2">
+                                                                                </span>
+                                                                            </p>
+                                                                            <!--Область-->
+                                                                            <p class="form-row form-row-last validate-required" id="billing_state_field" data-priority="80">
+                                                                                <label class="">Область&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                                                <span class="woocommerce-input-wrapper">
+                                                                                    <input type="text" class="input-text" name="state" value="" placeholder="Введіть область" autocomplete="address-level1">
+                                                                                </span>
+                                                                            </p>
+                                                                            <!--                                                <p class="form-row form-row-wide address-field update_totals_on_change validate-required" id="billing_country_field" data-priority="40"><label for="billing_country" class="">Країна / Регіон&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><strong>Україна</strong><input type="hidden" name="billing_country" id="billing_country" value="UA" autocomplete="country" class="country_to_state" readonly="readonly"></span></p>-->
+                                                                            <!--                                                <p class="form-row address-field validate-required form-row-wide" id="billing_address_1_field" data-priority="50" style="display: none;"><label for="billing_address_1" class="">Назва вулиці&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_address_1" id="billing_address_1" placeholder="Номер будинку та назва вулиці" value="" autocomplete="address-line1" data-placeholder="Номер будинку та назва вулиці"></span></p>-->
+                                                                            <!--                                                <p class="form-row address-field form-row-wide" id="billing_address_2_field" data-priority="60" style="display: none;"><label for="billing_address_2" class="screen-reader-text">Будинок, офіс, блок, тощо.&nbsp;<span class="optional">(необов'язково)</span></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_address_2" id="billing_address_2" placeholder="Квартира, офіс, блок, тощо (опціонально)" value="" autocomplete="address-line2" data-placeholder="Квартира, офіс, блок, тощо (опціонально)"></span></p>-->
+                                                                            <!--                                                <p class="form-row address-field validate-required form-row-wide" id="billing_city_field" data-priority="70" data-o_class="form-row form-row-wide address-field validate-required" style="display: none;"><label for="billing_city" class="">Місто / Село&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_city" id="billing_city" placeholder="" value="" autocomplete="address-level2"></span></p>-->
+                                                                            <!--                                                <p class="form-row form-row-wide validate-required validate-phone" id="billing_phone_field" data-priority="100"><label for="billing_phone" class="">Телефон&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="tel" class="input-text " name="billing_phone" id="billing_phone" placeholder="" value="+1 (826) 893-7648" autocomplete="tel"></span></p>-->
+
+                                                                            <!--E-mail адреса-->
+                                                                            <p class="form-row form-row-wide validate-required validate-email" data-priority="110">
+                                                                                <label class="">E-mail адреса&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                                                <span class="woocommerce-input-wrapper">
+                                                                                    <input type="email" value="" class="input-text" name="email" placeholder="" autocomplete="email username">
+                                                                                </span>
+                                                                            </p>
+
+                                                                            <p class="form-row form-row-wide validate-required validate-email" data-priority="110">
+                                                                                <label class="">Телефон&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                                                <span class="woocommerce-input-wrapper">
+                                                                                    <input type="text" value="" class="input-text" name="phone" placeholder="" autocomplete="email username">
+                                                                                </span>
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div class="wcus-checkout-fields">
+                                                                            <h3>Вкажіть адресу доставки</h3>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-2">
+                                                                    <div class="c-cart__form c-cart__form--shipping-fields woocommerce-shipping-fields">
+
+
+                                                                    </div>
+                                                                    <div class="c-cart__form c-cart__form--additional-fields woocommerce-additional-fields">
+
+
+
+                                                                        <div class="c-cart__additional-fields woocommerce-additional-fields__field-wrapper">
+                                                                            <p class="form-row notes" id="order_comments_field" data-priority="">
+                                                                                <label class="">Нотатки до замовлення&nbsp;<span class="optional">(необов'язково)</span></label>
+                                                                                <span class="woocommerce-input-wrapper">
+                                                                                    <textarea name="extra_info" value="" class="input-text " placeholder="Нотатки до вашого замовлення, наприклад спеціальні нотатки для доставки." rows="2" cols="5"></textarea>
+                                                                                </span>
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <button type="submit" class="c-button c-button--big c-cart__checkout-btn checkout-button button alt wc-forward">
+                                                                            Оформлення замовлення
+                                                                        </button>
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
+
+
                         <div class="c-cart__col-2">
 
 
@@ -170,8 +297,9 @@
                                             <tr>
                                                 <td class="c-cart__totals-action wc-proceed-to-checkout" colspan="2">
 
-                                                    <a href="https://www.onlyone.beauty/checkout/" class="c-button c-button--big c-cart__checkout-btn checkout-button button alt wc-forward">
-                                                        Оформлення замовлення</a>
+                                                    <!--                                                    <button type="submit" class="c-button c-button&#45;&#45;big c-cart__checkout-btn checkout-button button alt wc-forward">-->
+                                                    <!--                                                        Оформлення замовлення-->
+                                                    <!--                                                    </button>-->
                                                 </td>
                                             </tr>
 

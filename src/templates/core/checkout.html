@@ -10,7 +10,9 @@
     <div class="l-section l-section--container l-section--bottom-margin l-section--no-sidebar l-section--top-margin-60 l-section--white l-section--checkout">
         <div class="l-section__content">
             <div class="woocommerce">
-                <form name="checkout" method="post" class="c-cart c-cart--checkout checkout woocommerce-checkout" action="https://www.onlyone.beauty/checkout/" enctype="multipart/form-data" novalidate="novalidate">
+
+                 <form action="{% url 'core:save_checkout_info' %}" method="POST">
+                    {% csrf_token %}
 
                     <div class="c-cart__wrap">
                         <div class="c-cart__col-1 c-cart__col-1--checkout">
@@ -26,180 +28,72 @@
 
 
                                             <div class="c-cart__billing-fields woocommerce-billing-fields__field-wrapper">
-                                                <p class="form-row form-row-first validate-required" id="billing_first_name_field" data-priority="10"><label for="billing_first_name" class="">Ім'я&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_first_name" id="billing_first_name" placeholder="" value="Gillian" autocomplete="given-name"></span></p>
-                                                <p class="form-row form-row-last validate-required" id="billing_last_name_field" data-priority="20"><label for="billing_last_name" class="">Прізвище&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_last_name" id="billing_last_name" placeholder="" value="Mcfarland" autocomplete="family-name"></span></p>
-                                                <p class="form-row form-row-wide address-field update_totals_on_change validate-required" id="billing_country_field" data-priority="40"><label for="billing_country" class="">Країна / Регіон&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><strong>Україна</strong><input type="hidden" name="billing_country" id="billing_country" value="UA" autocomplete="country" class="country_to_state" readonly="readonly"></span></p>
-                                                <p class="form-row address-field validate-required form-row-wide" id="billing_address_1_field" data-priority="50" style="display: none;"><label for="billing_address_1" class="">Назва вулиці&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_address_1" id="billing_address_1" placeholder="Номер будинку та назва вулиці" value="" autocomplete="address-line1" data-placeholder="Номер будинку та назва вулиці"></span></p>
-                                                <p class="form-row address-field form-row-wide" id="billing_address_2_field" data-priority="60" style="display: none;"><label for="billing_address_2" class="screen-reader-text">Будинок, офіс, блок, тощо.&nbsp;<span class="optional">(необов'язково)</span></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_address_2" id="billing_address_2" placeholder="Квартира, офіс, блок, тощо (опціонально)" value="" autocomplete="address-line2" data-placeholder="Квартира, офіс, блок, тощо (опціонально)"></span></p>
-                                                <p class="form-row address-field validate-required form-row-wide" id="billing_city_field" data-priority="70" data-o_class="form-row form-row-wide address-field validate-required" style="display: none;"><label for="billing_city" class="">Місто / Село&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_city" id="billing_city" placeholder="" value="" autocomplete="address-level2"></span></p>
-                                                <p class="form-row address-field validate-required validate-state form-row-wide" id="billing_state_field" data-priority="80" data-o_class="form-row form-row-wide address-field validate-required validate-state" style="display: none;"><label for="billing_state" class="">Область / Округ&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><select name="billing_state" id="billing_state" class="state_select select2-hidden-accessible" autocomplete="address-level1" data-placeholder="Виберіть опцію…" data-input-classes="" data-label="Область / Округ" tabindex="-1" aria-hidden="true">
-                                                            <option value="">Виберіть опцію…</option>
-                                                            <option value="UA05">Вінницька область</option>
-                                                            <option value="UA07">Волинська область</option>
-                                                            <option value="UA09">Луганська область</option>
-                                                            <option value="UA12">Дніпропетровська область</option>
-                                                            <option value="UA14">Донецька область</option>
-                                                            <option value="UA18">Житомирська область</option>
-                                                            <option value="UA21">Закарпатська область</option>
-                                                            <option value="UA23">Запорізька область</option>
-                                                            <option value="UA26">Івано-Франківська область</option>
-                                                            <option value="UA30">місто Київ</option>
-                                                            <option value="UA32">Київська область</option>
-                                                            <option value="UA35">Кіровоградська область</option>
-                                                            <option value="UA40">місто Севастополь</option>
-                                                            <option value="UA43">Автономна Республіка Крим</option>
-                                                            <option value="UA46">Львівська область</option>
-                                                            <option value="UA48">Миколаївська область</option>
-                                                            <option value="UA51">Одеська область</option>
-                                                            <option value="UA53">Полтавська область</option>
-                                                            <option value="UA56">Рівненська область</option>
-                                                            <option value="UA59">Сумська область</option>
-                                                            <option value="UA61">Тернопільська область</option>
-                                                            <option value="UA63">Харківська область</option>
-                                                            <option value="UA65">Херсонська область</option>
-                                                            <option value="UA68">Хмельницька область</option>
-                                                            <option value="UA71">Черкаська область</option>
-                                                            <option value="UA74">Чернігівська область</option>
-                                                            <option value="UA77">Чернівецька область</option>
-                                                        </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-label="Область / Округ" role="combobox"><span class="select2-selection__rendered" id="select2-billing_state-container" role="textbox" aria-readonly="true" title="Харківська область">Харківська область</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span></span></p>
-                                                <p class="form-row address-field validate-required validate-postcode form-row-wide" id="billing_postcode_field" data-priority="90" data-o_class="form-row form-row-wide address-field validate-required validate-postcode" style="display: none;"><label for="billing_postcode" class="">Поштовий індекс&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_postcode" id="billing_postcode" placeholder="" value="" autocomplete="postal-code"></span></p>
-                                                <p class="form-row form-row-wide validate-required validate-phone" id="billing_phone_field" data-priority="100"><label for="billing_phone" class="">Телефон&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="tel" class="input-text " name="billing_phone" id="billing_phone" placeholder="" value="+1 (826) 893-7648" autocomplete="tel"></span></p>
-                                                <p class="form-row form-row-wide validate-required validate-email" id="billing_email_field" data-priority="110"><label for="billing_email" class="">E-mail адреса&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="email" class="input-text " name="billing_email" id="billing_email" placeholder="" value="dicedifu@mailinator.com" autocomplete="email username"></span></p>
+                                             <!--Ім'я-->
+                                                <p class="form-row form-row-first validate-required" id="billing_first_name_field" data-priority="10">
+                                                    <label class="">Ім'я&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                    <span class="woocommerce-input-wrapper">
+                                                        <input type="text" class="input-text" name="fname" value="" placeholder="" autocomplete="given-name">
+                                                    </span>
+                                                </p>
+                                              <!--Прізвище-->
+                                                <p class="form-row form-row-last validate-required" id="billing_last_name_field" data-priority="20">
+                                                    <label class="">Прізвище&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                    <span class="woocommerce-input-wrapper">
+                                                        <input type="text" class="input-text" name="lname" value="" placeholder="" autocomplete="family-name">
+                                                    </span>
+                                                </p>
+                                              <!--Адреса-->
+                                                <p class="form-row form-row-last validate-required" id="billing_address_field" data-priority="50">
+                                                    <label class="">Адреса&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                    <span class="woocommerce-input-wrapper">
+                                                        <input type="text" class="input-text" name="address" value="" placeholder="Введіть адресу" autocomplete="street-address">
+                                                    </span>
+                                                </p>
+                                              <!--Країна-->
+                                                <p class="form-row form-row-last validate-required" data-priority="70">
+                                                    <label class="">Країна&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                    <span class="woocommerce-input-wrapper">
+                                                        <input type="text" class="input-text" name="country" value="" placeholder="Введіть країну" autocomplete="address-level2">
+                                                    </span>
+                                                </p>
+                                              <!--Місто-->
+                                                <p class="form-row form-row-last validate-required" data-priority="70">
+                                                    <label class="">Місто&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                    <span class="woocommerce-input-wrapper">
+                                                        <input type="text" class="input-text" name="city" value="" placeholder="Введіть місто" autocomplete="address-level2">
+                                                    </span>
+                                                </p>
+                                              <!--Область-->
+                                                <p class="form-row form-row-last validate-required" id="billing_state_field" data-priority="80">
+                                                    <label class="">Область&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                    <span class="woocommerce-input-wrapper">
+                                                        <input type="text" class="input-text" name="state" value="" placeholder="Введіть область" autocomplete="address-level1">
+                                                    </span>
+                                                </p>
+                                                <!--                                                <p class="form-row form-row-wide address-field update_totals_on_change validate-required" id="billing_country_field" data-priority="40"><label for="billing_country" class="">Країна / Регіон&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><strong>Україна</strong><input type="hidden" name="billing_country" id="billing_country" value="UA" autocomplete="country" class="country_to_state" readonly="readonly"></span></p>-->
+<!--                                                <p class="form-row address-field validate-required form-row-wide" id="billing_address_1_field" data-priority="50" style="display: none;"><label for="billing_address_1" class="">Назва вулиці&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_address_1" id="billing_address_1" placeholder="Номер будинку та назва вулиці" value="" autocomplete="address-line1" data-placeholder="Номер будинку та назва вулиці"></span></p>-->
+<!--                                                <p class="form-row address-field form-row-wide" id="billing_address_2_field" data-priority="60" style="display: none;"><label for="billing_address_2" class="screen-reader-text">Будинок, офіс, блок, тощо.&nbsp;<span class="optional">(необов'язково)</span></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_address_2" id="billing_address_2" placeholder="Квартира, офіс, блок, тощо (опціонально)" value="" autocomplete="address-line2" data-placeholder="Квартира, офіс, блок, тощо (опціонально)"></span></p>-->
+<!--                                                <p class="form-row address-field validate-required form-row-wide" id="billing_city_field" data-priority="70" data-o_class="form-row form-row-wide address-field validate-required" style="display: none;"><label for="billing_city" class="">Місто / Село&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="billing_city" id="billing_city" placeholder="" value="" autocomplete="address-level2"></span></p>-->
+<!--                                                <p class="form-row form-row-wide validate-required validate-phone" id="billing_phone_field" data-priority="100"><label for="billing_phone" class="">Телефон&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="tel" class="input-text " name="billing_phone" id="billing_phone" placeholder="" value="+1 (826) 893-7648" autocomplete="tel"></span></p>-->
+
+                                                  <!--E-mail адреса-->
+                                                <p class="form-row form-row-wide validate-required validate-email" data-priority="110">
+                                                    <label class="">E-mail адреса&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                    <span class="woocommerce-input-wrapper">
+                                                        <input type="email" value="" class="input-text" name="email" placeholder="" autocomplete="email username">
+                                                    </span>
+                                                </p>
+
+                                                <p class="form-row form-row-wide validate-required validate-email" data-priority="110">
+                                                    <label class="">Телефон&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
+                                                    <span class="woocommerce-input-wrapper">
+                                                        <input type="text" value="" class="input-text" name="phone" placeholder="" autocomplete="email username">
+                                                    </span>
+                                                </p>
                                             </div>
 
                                             <div class="wcus-checkout-fields">
                                                 <h3>Вкажіть адресу доставки</h3>
-                                                <div class="">
-                                                    <p class="form-row form-row-wide validate-required">
-                                                        <div class="zen-ui-select zen-ui-select-1">
-                                                            <div style="width: 0px; height: 0px; overflow: hidden;"><input type="hidden" value="warehouse"></div>
-                                                            <div class="zen-ui-select__value"><span class="zen-ui-select__value-text">на відділення</span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129">
-                                                                    <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51, 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6, 1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8, 1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
-                                                                </svg></div>
-                                                            <div class="zen-ui-select__dropdown">
-                                                                <!---->
-                                                                <div class="zen-ui-select__options">
-                                                                    <div class="zen-ui-select__option zen-ui-select__option--current">
-                                                                        на відділення
-                                                                    </div>
-                                                                    <div class="zen-ui-select__option">
-                                                                        до дверей
-                                                                    </div>
-                                                                    <!---->
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </p> <input type="hidden" name="wcus_np_billing_custom_address_active" value="0">
-                                                    <div>
-                                                        <p class="form-row form-row-wide validate-required"><span class="woocommerce-input-wrapper"><input type="hidden" name="wcus_np_billing_city" value="8d5a980d-391c-11dd-90d9-001a92567626"> <input type="hidden" name="wcus_np_billing_city_name" value="Київ">
-                                                                <div class="zen-ui-select zen-ui-select-2">
-                                                                    <div style="width: 0px; height: 0px; overflow: hidden;"><input type="hidden" value="8d5a980d-391c-11dd-90d9-001a92567626"></div>
-                                                                    <div class="zen-ui-select__value"><span class="zen-ui-select__value-text">Київ</span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129">
-                                                                            <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51, 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6, 1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8, 1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
-                                                                        </svg></div>
-                                                                    <div class="zen-ui-select__dropdown">
-                                                                        <div class="zen-ui-select__search"><input type="text" placeholder="Введіть значення для пошуку" class="zen-ui-select__search-input"></div>
-                                                                        <div class="zen-ui-select__options">
-                                                                            <div class="zen-ui-select__option zen-ui-select__option--current">
-                                                                                Київ
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Кременчук
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Миколаїв
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Полтава
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Хмельницький
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Житомир
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Запоріжжя
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Херсон
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Біла Церква
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Одеса
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Вінниця
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Харків
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Суми
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Дніпро
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Львів
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Тернопіль
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Черкаси
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Івано-Франківськ
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Кривий Ріг
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Кам'янець-Подільський
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Краматорськ
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Луцьк
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Маріуполь
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Рівне
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Чернігів
-                                                                            </div>
-                                                                            <div class="zen-ui-select__option">
-                                                                                Чернівці
-                                                                            </div>
-                                                                            <!---->
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </span></p>
-                                                        <p class="form-row form-row-wide validate-required"><span class="woocommerce-input-wrapper"><input type="hidden" name="wcus_np_billing_warehouse" value="7b422fbe-e1b8-11e3-8c4a-0050568002cf"> <input type="hidden" name="wcus_np_billing_warehouse_name" value="Відділення №2: вул. Богатирська, 11">
-                                                                <div class="zen-ui-select zen-ui-select-3">
-                                                                    <div style="width: 0px; height: 0px; overflow: hidden;"><input type="hidden" value="7b422fbe-e1b8-11e3-8c4a-0050568002cf"></div>
-                                                                    <div class="zen-ui-select__value"><span class="zen-ui-select__value-text">Відділення №2: вул. Богатирська, 11</span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129">
-                                                                            <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51, 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6, 1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8, 1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
-                                                                        </svg></div>
-                                                                    <div class="zen-ui-select__dropdown">
-                                                                        <div class="zen-ui-select__search"><input type="text" placeholder="Введіть значення для пошуку" class="zen-ui-select__search-input"></div>
-                                                                        <div class="zen-ui-select__options">
-                                                                            <!---->
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </span></p>
-                                                        <p class="form-row form-row-wide validate-required" style="display: none;"><span class="woocommerce-input-wrapper"><input type="text" name="wcus_np_billing_custom_address" id="wcus_np_billing_custom_address" placeholder="Введіть адресу" class="input-text"></span></p>
-                                                    </div>
-                                                </div>
                                             </div>
 
                                         </div>
@@ -208,191 +102,6 @@
                                     <div class="col-2">
                                         <div class="c-cart__form c-cart__form--shipping-fields woocommerce-shipping-fields">
 
-                                            <label for="ship-to-different-address-checkbox" class="checkbox">
-                                                <h3 id="ship-to-different-address">
-                                                    <input id="ship-to-different-address-checkbox" class="input-checkbox" type="checkbox" name="ship_to_different_address" value="1">
-                                                    Доставити на іншу адресу? </h3>
-                                            </label>
-
-                                            <div class="shipping_address" style="display: none;">
-
-
-                                                <div class="c-cart__shipping-fields woocommerce-shipping-fields__field-wrapper">
-                                                    <p class="form-row form-row-first validate-required" id="shipping_first_name_field" data-priority="10"><label for="shipping_first_name" class="">Ім'я&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_first_name" id="shipping_first_name" placeholder="" value="Gillian" autocomplete="given-name"></span></p>
-                                                    <p class="form-row form-row-last validate-required" id="shipping_last_name_field" data-priority="20"><label for="shipping_last_name" class="">Прізвище&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_last_name" id="shipping_last_name" placeholder="" value="Mcfarland" autocomplete="family-name"></span></p>
-                                                    <p class="form-row form-row-wide address-field update_totals_on_change validate-required" id="shipping_country_field" data-priority="40"><label for="shipping_country" class="">Країна / Регіон&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><strong>Україна</strong><input type="hidden" name="shipping_country" id="shipping_country" value="UA" autocomplete="country" class="country_to_state" readonly="readonly"></span></p>
-                                                    <p class="form-row address-field validate-required form-row-wide" id="shipping_address_1_field" data-priority="50" style="display: none;"><label for="shipping_address_1" class="">Назва вулиці&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_address_1" id="shipping_address_1" placeholder="Номер будинку та назва вулиці" value="" autocomplete="address-line1" data-placeholder="Номер будинку та назва вулиці"></span></p>
-                                                    <p class="form-row address-field form-row-wide" id="shipping_address_2_field" data-priority="60" style="display: none;"><label for="shipping_address_2" class="screen-reader-text">Будинок, офіс, блок, тощо.&nbsp;<span class="optional">(необов'язково)</span></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_address_2" id="shipping_address_2" placeholder="Квартира, офіс, блок, тощо (опціонально)" value="" autocomplete="address-line2" data-placeholder="Квартира, офіс, блок, тощо (опціонально)"></span></p>
-                                                    <p class="form-row address-field validate-required form-row-wide" id="shipping_city_field" data-priority="70" data-o_class="form-row form-row-wide address-field validate-required" style="display: none;"><label for="shipping_city" class="">Місто / Село&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_city" id="shipping_city" placeholder="" value="" autocomplete="address-level2"></span></p>
-                                                    <p class="form-row address-field validate-required validate-state form-row-wide" id="shipping_state_field" data-priority="80" data-o_class="form-row form-row-wide address-field validate-required validate-state" style="display: none;"><label for="shipping_state" class="">Область / Округ&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><select name="shipping_state" id="shipping_state" class="state_select select2-hidden-accessible" autocomplete="address-level1" data-placeholder="Виберіть опцію…" data-input-classes="" data-label="Область / Округ" tabindex="-1" aria-hidden="true">
-                                                                <option value="">Виберіть опцію…</option>
-                                                                <option value="UA05">Вінницька область</option>
-                                                                <option value="UA07">Волинська область</option>
-                                                                <option value="UA09">Луганська область</option>
-                                                                <option value="UA12">Дніпропетровська область</option>
-                                                                <option value="UA14">Донецька область</option>
-                                                                <option value="UA18">Житомирська область</option>
-                                                                <option value="UA21">Закарпатська область</option>
-                                                                <option value="UA23">Запорізька область</option>
-                                                                <option value="UA26">Івано-Франківська область</option>
-                                                                <option value="UA30">місто Київ</option>
-                                                                <option value="UA32">Київська область</option>
-                                                                <option value="UA35">Кіровоградська область</option>
-                                                                <option value="UA40">місто Севастополь</option>
-                                                                <option value="UA43">Автономна Республіка Крим</option>
-                                                                <option value="UA46">Львівська область</option>
-                                                                <option value="UA48">Миколаївська область</option>
-                                                                <option value="UA51">Одеська область</option>
-                                                                <option value="UA53">Полтавська область</option>
-                                                                <option value="UA56">Рівненська область</option>
-                                                                <option value="UA59">Сумська область</option>
-                                                                <option value="UA61">Тернопільська область</option>
-                                                                <option value="UA63">Харківська область</option>
-                                                                <option value="UA65">Херсонська область</option>
-                                                                <option value="UA68">Хмельницька область</option>
-                                                                <option value="UA71">Черкаська область</option>
-                                                                <option value="UA74">Чернігівська область</option>
-                                                                <option value="UA77">Чернівецька область</option>
-                                                            </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-label="Область / Округ" role="combobox"><span class="select2-selection__rendered" id="select2-shipping_state-container" role="textbox" aria-readonly="true" title="Харківська область">Харківська область</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span></span></p>
-                                                    <p class="form-row address-field validate-required validate-postcode form-row-wide" id="shipping_postcode_field" data-priority="90" data-o_class="form-row form-row-wide address-field validate-required validate-postcode" style="display: none;"><label for="shipping_postcode" class="">Поштовий індекс&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label><span class="woocommerce-input-wrapper"><input type="text" class="input-text " name="shipping_postcode" id="shipping_postcode" placeholder="" value="" autocomplete="postal-code"></span></p>
-                                                </div>
-
-                                                <div class="wcus-checkout-fields" style="display: none;">
-                                                    <h3>Вкажіть адресу доставки</h3>
-                                                    <div class="">
-                                                        <p class="form-row form-row-wide validate-required">
-                                                            <div class="zen-ui-select zen-ui-select-4">
-                                                                <div style="width: 0px; height: 0px; overflow: hidden;"><input type="hidden" value="warehouse"></div>
-                                                                <div class="zen-ui-select__value"><span class="zen-ui-select__value-text">на відділення</span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129">
-                                                                        <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51, 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6, 1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8, 1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
-                                                                    </svg></div>
-                                                                <div class="zen-ui-select__dropdown">
-                                                                    <!---->
-                                                                    <div class="zen-ui-select__options">
-                                                                        <div class="zen-ui-select__option zen-ui-select__option--current">
-                                                                            на відділення
-                                                                        </div>
-                                                                        <div class="zen-ui-select__option">
-                                                                            до дверей
-                                                                        </div>
-                                                                        <!---->
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </p> <input type="hidden" name="wcus_np_shipping_custom_address_active" value="0">
-                                                        <div>
-                                                            <p class="form-row form-row-wide validate-required"><span class="woocommerce-input-wrapper"><input type="hidden" name="wcus_np_shipping_city" value="8d5a980d-391c-11dd-90d9-001a92567626"> <input type="hidden" name="wcus_np_shipping_city_name" value="Київ">
-                                                                    <div class="zen-ui-select zen-ui-select-5">
-                                                                        <div style="width: 0px; height: 0px; overflow: hidden;"><input type="hidden" value="8d5a980d-391c-11dd-90d9-001a92567626"></div>
-                                                                        <div class="zen-ui-select__value"><span class="zen-ui-select__value-text">Київ</span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129">
-                                                                                <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51, 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6, 1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8, 1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
-                                                                            </svg></div>
-                                                                        <div class="zen-ui-select__dropdown">
-                                                                            <div class="zen-ui-select__search"><input type="text" placeholder="Введіть значення для пошуку" class="zen-ui-select__search-input"></div>
-                                                                            <div class="zen-ui-select__options">
-                                                                                <div class="zen-ui-select__option zen-ui-select__option--current">
-                                                                                    Київ
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Кременчук
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Миколаїв
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Полтава
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Хмельницький
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Житомир
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Запоріжжя
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Херсон
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Біла Церква
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Одеса
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Вінниця
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Харків
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Суми
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Дніпро
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Львів
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Тернопіль
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Черкаси
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Івано-Франківськ
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Кривий Ріг
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Кам'янець-Подільський
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Краматорськ
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Луцьк
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Маріуполь
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Рівне
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Чернігів
-                                                                                </div>
-                                                                                <div class="zen-ui-select__option">
-                                                                                    Чернівці
-                                                                                </div>
-                                                                                <!---->
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </span></p>
-                                                            <p class="form-row form-row-wide validate-required"><span class="woocommerce-input-wrapper"><input type="hidden" name="wcus_np_shipping_warehouse" value="7b422fbe-e1b8-11e3-8c4a-0050568002cf"> <input type="hidden" name="wcus_np_shipping_warehouse_name" value="Відділення №2: вул. Богатирська, 11">
-                                                                    <div class="zen-ui-select zen-ui-select-6">
-                                                                        <div style="width: 0px; height: 0px; overflow: hidden;"><input type="hidden" value="7b422fbe-e1b8-11e3-8c4a-0050568002cf"></div>
-                                                                        <div class="zen-ui-select__value"><span class="zen-ui-select__value-text">Відділення №2: вул. Богатирська, 11</span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129">
-                                                                                <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51, 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6, 1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8, 1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
-                                                                            </svg></div>
-                                                                        <div class="zen-ui-select__dropdown">
-                                                                            <div class="zen-ui-select__search"><input type="text" placeholder="Введіть значення для пошуку" class="zen-ui-select__search-input"></div>
-                                                                            <div class="zen-ui-select__options">
-                                                                                <!---->
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </span></p>
-                                                            <p class="form-row form-row-wide validate-required" style="display: none;"><span class="woocommerce-input-wrapper"><input type="text" name="wcus_np_shipping_custom_address" id="wcus_np_shipping_custom_address" placeholder="Введіть адресу" class="input-text"></span></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
 
                                         </div>
                                         <div class="c-cart__form c-cart__form--additional-fields woocommerce-additional-fields">
@@ -400,7 +109,12 @@
 
 
                                             <div class="c-cart__additional-fields woocommerce-additional-fields__field-wrapper">
-                                                <p class="form-row notes" id="order_comments_field" data-priority=""><label for="order_comments" class="">Нотатки до замовлення&nbsp;<span class="optional">(необов'язково)</span></label><span class="woocommerce-input-wrapper"><textarea name="order_comments" class="input-text " id="order_comments" placeholder="Нотатки до вашого замовлення, наприклад спеціальні нотатки для доставки." rows="2" cols="5"></textarea></span></p>
+                                                <p class="form-row notes" id="order_comments_field" data-priority="">
+                                                    <label class="">Нотатки до замовлення&nbsp;<span class="optional">(необов'язково)</span></label>
+                                                    <span class="woocommerce-input-wrapper">
+                                                        <textarea name="extra_info" value="" class="input-text " placeholder="Нотатки до вашого замовлення, наприклад спеціальні нотатки для доставки." rows="2" cols="5"></textarea>
+                                                    </span>
+                                                </p>
                                             </div>
 
 
@@ -445,20 +159,27 @@
                                             <tr>
                                                 <td colspan="2" class="c-cart__totals-product-space"></td>
                                             </tr>
-                                            <tr class="c-cart__totals-product cart_item">
-
-                                                <td class="c-cart__totals-product-name">
-                                                    Термозахист з ефектом розгладження Keratin spray - 60-мл&nbsp; <strong class="c-cart__totals-product-quantity product-quantity">×&nbsp;1</strong>
-                                                    <dl class="variation">
-                                                        <dt class="variation-">Об`єм:</dt>
-                                                        <dd class="variation-">
-                                                            <p>60 мл</p>
-                                                        </dd>
-                                                    </dl>
-                                                </td>
-                                                <td class="c-cart__totals-price">
-                                                    <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>520.00</bdi></span> </td>
-                                            </tr>
+                                            {% for product_id, item in cart_data.items %}
+                                                <tr class="c-cart__totals-product cart_item">
+                                                    <td class="c-cart__totals-product-name">
+                                                        <a href="{% url 'core:product-detail' item.pid %}">{{ item.title }}</a>&nbsp;
+                                                        <strong class="c-cart__totals-product-quantity product-quantity">×&nbsp;{{ item.quantity }}</strong>
+                                                        {% if item.volume != 'None мл' %}
+                                                            <dl class="variation">
+                                                                <dt class="variation-">Об`єм:</dt>
+                                                                <dd class="variation-">
+                                                                    <p>{{ item.volume }} мл</p>
+                                                                </dd>
+                                                            </dl>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="c-cart__totals-price">
+                                                        <span class="woocommerce-Price-amount amount">
+                                                            <bdi><span class="woocommerce-Price-currencySymbol">₴</span>{{ item.total_price|floatformat:2 }}</bdi>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
                                         </tbody>
                                         <tfoot>
                                             <tr>
@@ -467,7 +188,7 @@
 
                                             <tr class="cart-subtotal">
                                                 <th class="c-cart__sub-sub-header">Проміжний підсумок</th>
-                                                <td class="c-cart__totals-price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>520.00</bdi></span></td>
+                                                <td class="c-cart__totals-price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>{{cart_total|floatformat:2}}</bdi></span></td>
                                             </tr>
 
 
@@ -501,7 +222,7 @@
 
                                             <tr class="order-total">
                                                 <th class="c-cart__sub-sub-header">Загалом</th>
-                                                <td class="c-cart__totals-price c-cart__totals-price--total" data-title="Загалом"><span id="wcus-order-total"><strong><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>520.00</bdi></span></strong> </span></td>
+                                                <td class="c-cart__totals-price c-cart__totals-price--total" data-title="Загалом"><span id="wcus-order-total"><strong><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>{{cart_total|floatformat:2}}</bdi></span></strong> </span></td>
                                             </tr>
 
                                             <tr>
