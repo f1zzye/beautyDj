@@ -346,19 +346,94 @@ def update_cart(request):
     )
 
 
+from django.shortcuts import redirect
+from django.contrib import messages
+import requests
+import json
+from datetime import datetime
+from .models import CartOrder, CartOrderItems
+
+import requests
+
+
+def get_nova_poshta_data(api_key, refs):
+    address_data = {}
+
+    # Получаем название области
+    if refs.get('state'):
+        response = requests.post('https://api.novaposhta.ua/v2.0/json/', json={
+            "apiKey": api_key,
+            "modelName": "Address",
+            "calledMethod": "getAreas",
+            "methodProperties": {}
+        })
+        if response.status_code == 200:
+            data = response.json()
+            if data.get('success'):
+                for area in data['data']:
+                    if area['Ref'] == refs['state']:
+                        address_data['state'] = area['Description']
+                        break
+
+    # Получаем название города
+    if refs.get('city'):
+        response = requests.post('https://api.novaposhta.ua/v2.0/json/', json={
+            "apiKey": api_key,
+            "modelName": "Address",
+            "calledMethod": "getCities",
+            "methodProperties": {
+                "Ref": refs['city']
+            }
+        })
+        if response.status_code == 200:
+            data = response.json()
+            if data.get('success') and data['data']:
+                address_data['city'] = data['data'][0]['Description']
+
+    # Получаем название отделения
+    if refs.get('address'):
+        response = requests.post('https://api.novaposhta.ua/v2.0/json/', json={
+            "apiKey": api_key,
+            "modelName": "Address",
+            "calledMethod": "getWarehouses",
+            "methodProperties": {
+                "Ref": refs['address']
+            }
+        })
+        if response.status_code == 200:
+            data = response.json()
+            if data.get('success') and data['data']:
+                address_data['address'] = data['data'][0]['Description']
+
+    return address_data
+
+
 def save_checkout_info(request):
     cart_total = 0
     total_amount = 0
+    API_KEY = "3506f7c429e7bd9d4bd22481c0458455"
 
     if request.method == 'POST':
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         fname = request.POST.get('fname')
         lname = request.POST.get('lname')
-        address = request.POST.get('address')
-        city = request.POST.get('city')
-        state = request.POST.get('state')
+        state_ref = request.POST.get('state')
+        city_ref = request.POST.get('cityRef')
+        address_ref = request.POST.get('address')
         extra_info = request.POST.get('extra_info')
+
+        # Получаем реальные названия из API Новой Почты
+        address_data = get_nova_poshta_data(API_KEY, {
+            'state': state_ref,
+            'city': city_ref,
+            'address': address_ref
+        })
+
+        # Используем полученные названия или оригинальные значения
+        state = address_data.get('state', state_ref)
+        city = address_data.get('city', request.POST.get('city', ''))
+        address = address_data.get('address', address_ref)
 
         request.session['email'] = email
         request.session['fname'] = fname
@@ -370,7 +445,6 @@ def save_checkout_info(request):
 
         if 'cart_data_obj' in request.session:
             for product_id, item in request.session['cart_data_obj'].items():
-                # Заменяем запятую на точку перед конвертацией
                 price = float(item['price'].replace(',', '.'))
                 total_amount += price * int(item['quantity'])
 
@@ -409,7 +483,6 @@ def save_checkout_info(request):
 
             return redirect('core:checkout', order.oid)
     return redirect('core:checkout', order.oid)
-
 
 def checkout(request, oid):
     order = CartOrder.objects.get(oid=oid)

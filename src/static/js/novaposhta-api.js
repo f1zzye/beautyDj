@@ -260,10 +260,14 @@ document.addEventListener('DOMContentLoaded', initNovaPoshtaApi);
 window.initNovaPoshtaApi = initNovaPoshtaApi;
 
 // phone validation
-document.addEventListener('DOMContentLoaded', function() {
+function initPhoneInput() {
     const phoneInput = document.getElementById('phone');
+    if (!phoneInput) return; // Проверка на существование элемента
+
     const prefix = '+38 0';
-    phoneInput.value = prefix;
+    if (!phoneInput.value) {
+        phoneInput.value = prefix;
+    }
 
     phoneInput.addEventListener('input', function(e) {
         let value = phoneInput.value;
@@ -298,4 +302,6 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
         }
     });
-});
+}
+
+document.addEventListener('DOMContentLoaded', initPhoneInput);

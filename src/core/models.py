@@ -182,7 +182,7 @@ class CartOrder(models.Model):
         validators=[RegexValidator(r"^\+?1?\d{9,15}$", _("Введіть дійсний номер телефону."))],
     )
 
-    address = models.CharField(_("Адреса"), max_length=100, null=True, blank=True)
+    address = models.CharField(_("Відділення НП"), max_length=100, null=True, blank=True)
     city = models.CharField(_("Місто"), max_length=100, null=True, blank=True)
     state = models.CharField(_("Область"), max_length=100, null=True, blank=True)
 

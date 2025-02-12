@@ -257,7 +257,10 @@ $(document).on('click', '.add-to-cart-btn:not(.single_add_to_cart_button)', func
 
                     // Ждем полного обновления DOM
                     setTimeout(() => {
-                        // Сначала инициализируем Nova Poshta API
+                        // Инициализируем телефонный инпут
+                        initPhoneInput();
+
+                        // Инициализируем Nova Poshta API
                         if(window.initNovaPoshtaApi) {
                             window.initNovaPoshtaApi();
 
