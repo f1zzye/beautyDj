@@ -19451,3 +19451,187 @@ body {
     display: flex;
     align-items: center;
 }
+
+/* Основные стили для контейнеров */
+.city-search-container {
+    position: relative;
+    width: 100%;
+}
+
+.city-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* Стили для инпутов и селектов */
+.woocommerce-input-wrapper select,
+.woocommerce-input-wrapper input,
+.city-input-wrapper input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    height: 45px;
+    margin: 0;
+}
+
+/* Специальные стили для select */
+.woocommerce-input-wrapper select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+    padding-right: 45px;
+}
+
+/* Стили для результатов поиска */
+.search-results {
+
+    width: 100%;
+    max-height: 250px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-top: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+    display: none;
+    z-index: 1000;
+}
+
+/* Элементы списка */
+.dropdown-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f8f8;
+}
+
+/* Состояния элементов */
+.woocommerce-input-wrapper select:hover,
+.woocommerce-input-wrapper input:hover,
+.city-input-wrapper input:hover {
+    border-color: #bdbdbd;
+}
+
+.woocommerce-input-wrapper select:focus,
+.woocommerce-input-wrapper input:focus,
+.city-input-wrapper input:focus {
+    border-color: #666;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Стили для disabled состояния */
+.woocommerce-input-wrapper select:disabled,
+.woocommerce-input-wrapper input:disabled,
+.city-input-wrapper input:disabled {
+    background-color: #f9f9f9;
+    border-color: #e0e0e0;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* Стили для скроллбара */
+.search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-results::-webkit-scrollbar-track {
+    background: #f5f5f5;
+    border-radius: 3px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 3px;
+}
+
+.search-results::-webkit-scrollbar-thumb:hover {
+    background: #c4c4c4;
+}
+
+/* Медиа-запросы для мобильных устройств */
+@media screen and (max-width: 768px) {
+    .woocommerce-input-wrapper select,
+    .woocommerce-input-wrapper input,
+    .city-input-wrapper input {
+        font-size: 16px;
+        padding: 10px 12px;
+        height: 42px;
+    }
+
+    .search-results {
+        max-height: 60vh;
+    }
+
+    .dropdown-item {
+        padding: 14px 15px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+}
+
+/* Дополнительные оптимизации для маленьких экранов */
+@media screen and (max-width: 480px) {
+    .woocommerce-input-wrapper select,
+    .woocommerce-input-wrapper input,
+    .city-input-wrapper input {
+        font-size: 16px;
+        height: 42px;
+        padding: 8px 12px;
+    }
+
+    .search-results {
+        max-height: 50vh;
+    }
+
+    .dropdown-item {
+        padding: 12px 15px;
+        min-height: 48px;
+    }
+}
+
+/* Улучшение доступности */
+@media (hover: none) {
+    .dropdown-item:hover {
+        background-color: transparent;
+    }
+
+    .dropdown-item:active {
+        background-color: #f0f0f0;
+    }
+}
+
+/* Фиксы для темного режима */
+@media (prefers-color-scheme: dark) {
+    select,
+    .search-results {
+        background-color: #fff;
+    }
+}
+
+.woocommerce-additional-fields__field-wrapper textarea {
+    resize: vertical;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}

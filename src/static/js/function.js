@@ -232,8 +232,11 @@ $(document).on('click', '.add-to-cart-btn:not(.single_add_to_cart_button)', func
 });
 
     $(document).on('click', '.delete-product', function(){
-        let product_id = $(this).attr('data-product')
-        let this_val = $(this)
+        let product_id = $(this).attr('data-product');
+        let this_val = $(this);
+
+        // Сохраняем данные формы перед удалением
+        let savedFormData = saveFormData();
 
         $.ajax({
             url: '/delete-from-cart',
@@ -242,19 +245,37 @@ $(document).on('click', '.add-to-cart-btn:not(.single_add_to_cart_button)', func
             },
             dataType: 'json',
             beforeSend: function(){
-                this_val.hide()
+                this_val.hide();
             },
             success: function(response){
                 if(response.is_empty) {
-                    $('#cart-list').html(response.data)
-                    $('.cart-items-count').text('0')
+                    $('#cart-list').html(response.data);
+                    $('.cart-items-count').text('0');
                 } else {
-                    $('#cart-list').html(response.data)
-                    $('.cart-items-count').text(response.totalcartitems)
+                    $('#cart-list').html(response.data);
+                    $('.cart-items-count').text(response.totalcartitems);
+
+                    // Ждем полного обновления DOM
+                    setTimeout(() => {
+                        // Сначала инициализируем Nova Poshta API
+                        if(window.initNovaPoshtaApi) {
+                            window.initNovaPoshtaApi();
+
+                            // После инициализации API восстанавливаем данные формы
+                            setTimeout(() => {
+                                restoreFormData(savedFormData);
+                            }, 100);
+                        }
+                    }, 100);
                 }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error removing from cart:', error);
+                this_val.show();
+                alert('Помилка при видаленні товару з кошика. Будь ласка, спробуйте ще раз.');
             }
-        })
-    })
+        });
+    });
 
 
 $(document).on('click', '.qty-plus', function() {

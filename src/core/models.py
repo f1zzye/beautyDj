@@ -173,8 +173,8 @@ class ProductImages(models.Model):
 
 class CartOrder(models.Model):
     user = models.ForeignKey(User, verbose_name=_("Користувач"), on_delete=models.SET_NULL, null=True)
-    fname = models.CharField(max_length=100, null=True, blank=True)
-    lname = models.CharField(max_length=100, null=True, blank=True)
+    fname = models.CharField(_("Ім'я"), max_length=100, null=True, blank=True)
+    lname = models.CharField(_("Прізвище"), max_length=100, null=True, blank=True)
     email = models.CharField(_("Електронна пошта"), max_length=100, null=True, blank=True)
     phone = models.CharField(
         _("Телефон"),
@@ -185,7 +185,6 @@ class CartOrder(models.Model):
     address = models.CharField(_("Адреса"), max_length=100, null=True, blank=True)
     city = models.CharField(_("Місто"), max_length=100, null=True, blank=True)
     state = models.CharField(_("Область"), max_length=100, null=True, blank=True)
-    country = models.CharField(_("Країна"), max_length=100, null=True, blank=True)
 
     extra_info = models.TextField(_("Додаткова інформація"), null=True, blank=True)
 

@@ -356,7 +356,6 @@ def save_checkout_info(request):
         fname = request.POST.get('fname')
         lname = request.POST.get('lname')
         address = request.POST.get('address')
-        country = request.POST.get('country')
         city = request.POST.get('city')
         state = request.POST.get('state')
         extra_info = request.POST.get('extra_info')
@@ -365,7 +364,6 @@ def save_checkout_info(request):
         request.session['fname'] = fname
         request.session['lname'] = lname
         request.session['address'] = address
-        request.session['country'] = country
         request.session['city'] = city
         request.session['state'] = state
         request.session['extra_info'] = extra_info
@@ -384,13 +382,12 @@ def save_checkout_info(request):
                 fname=fname,
                 lname=lname,
                 address=address,
-                country=country,
                 city=city,
                 state=state,
                 extra_info=extra_info,
             )
 
-            session_keys = ['email', 'phone', 'fname', 'lname', 'address', 'country', 'city', 'state', 'extra_info']
+            session_keys = ['email', 'phone', 'fname', 'lname', 'address', 'city', 'state', 'extra_info']
             for key in session_keys:
                 if key in request.session:
                     del request.session[key]
