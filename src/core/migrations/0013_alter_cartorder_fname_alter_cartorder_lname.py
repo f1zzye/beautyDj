@@ -13,15 +13,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="cartorder",
             name="fname",
-            field=models.CharField(
-                blank=True, max_length=100, null=True, verbose_name="Ім'я"
-            ),
+            field=models.CharField(blank=True, max_length=100, null=True, verbose_name="Ім'я"),
         ),
         migrations.AlterField(
             model_name="cartorder",
             name="lname",
-            field=models.CharField(
-                blank=True, max_length=100, null=True, verbose_name="Прізвище"
-            ),
+            field=models.CharField(blank=True, max_length=100, null=True, verbose_name="Прізвище"),
         ),
     ]

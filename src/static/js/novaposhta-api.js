@@ -11,19 +11,17 @@ function initNovaPoshtaApi() {
         office: document.getElementById("office")
     };
 
-    // Проверяем наличие необходимых элементов
     if (!elements.region || !elements.city.input || !elements.office) {
         return;
     }
 
-    // Константы
+
     const API_KEY = "3506f7c429e7bd9d4bd22481c0458455";
     const DEFAULT_OPTIONS = {
         loading: '<option value="">Завантаження...</option>',
         select: '<option value="">Оберіть відділення</option>'
     };
 
-    // Функции для работы с формой делаем глобальными
     window.saveFormData = function() {
         return {
             fname: $('input[name="fname"]').val(),
@@ -262,7 +260,7 @@ window.initNovaPoshtaApi = initNovaPoshtaApi;
 // phone validation
 function initPhoneInput() {
     const phoneInput = document.getElementById('phone');
-    if (!phoneInput) return; // Проверка на существование элемента
+    if (!phoneInput) return;
 
     const prefix = '+38 0';
     if (!phoneInput.value) {
@@ -277,7 +275,7 @@ function initPhoneInput() {
             return;
         }
 
-        value = value.replace(/\D/g, '').substring(3); // Удаляем +38 0
+        value = value.replace(/\D/g, '').substring(3);
 
         let formattedValue = prefix;
 

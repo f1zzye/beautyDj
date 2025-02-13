@@ -215,6 +215,7 @@ class CartOrderItems(models.Model):
     quantity = models.IntegerField(_("Кількість"), default=0)
     price = models.DecimalField(_("Ціна"), max_digits=99, decimal_places=2, default="1.99")
     total = models.DecimalField(_("Загалом"), max_digits=99, decimal_places=2, default="1.99")
+    volume = models.CharField(_("Об'єм"), max_length=20, null=True, blank=True)
 
     class Meta:
         verbose_name = _("Замовленний товар")

@@ -13,8 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="cartorder",
             name="address",
-            field=models.CharField(
-                blank=True, max_length=100, null=True, verbose_name="Відділення НП"
-            ),
+            field=models.CharField(blank=True, max_length=100, null=True, verbose_name="Відділення НП"),
         ),
     ]

@@ -13,8 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="cartorder",
             name="extra_info",
-            field=models.TextField(
-                blank=True, null=True, verbose_name="Додаткова інформація"
-            ),
+            field=models.TextField(blank=True, null=True, verbose_name="Додаткова інформація"),
         ),
     ]

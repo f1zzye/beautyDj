@@ -19568,7 +19568,6 @@ body {
     background: #c4c4c4;
 }
 
-/* Медиа-запросы для мобильных устройств */
 @media screen and (max-width: 768px) {
     .woocommerce-input-wrapper select,
     .woocommerce-input-wrapper input,
@@ -19590,7 +19589,6 @@ body {
     }
 }
 
-/* Дополнительные оптимизации для маленьких экранов */
 @media screen and (max-width: 480px) {
     .woocommerce-input-wrapper select,
     .woocommerce-input-wrapper input,
@@ -19610,7 +19608,6 @@ body {
     }
 }
 
-/* Улучшение доступности */
 @media (hover: none) {
     .dropdown-item:hover {
         background-color: transparent;
@@ -19621,7 +19618,6 @@ body {
     }
 }
 
-/* Фиксы для темного режима */
 @media (prefers-color-scheme: dark) {
     select,
     .search-results {
