@@ -19631,3 +19631,103 @@ body {
     width: 100%;
     box-sizing: border-box;
 }
+
+.c-cart__coupon-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+}
+
+.c-cart__coupon-form form {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+.c-cart__coupon-form input[type="text"] {
+    flex: 1;
+    min-width: 0;
+    max-width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.c-cart__coupon-form button {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 8px 15px;
+    width: auto;
+}
+
+/* Стили для сетки товаров */
+.c-cart__products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+/* Стили для карточки товара */
+.c-cart__product-card {
+    display: flex;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+/* Стили для изображения товара */
+.c-cart__product-image {
+    width: 120px;
+    min-width: 120px;
+    height: 120px;
+}
+
+.c-cart__product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Стили для информации о товаре */
+.c-cart__product-info {
+    padding: 15px;
+    flex: 1;
+}
+
+.c-cart__product-title {
+    margin: 0 0 10px 0;
+}
+
+.c-cart__product-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.c-cart__product-quantity,
+.c-cart__product-volume,
+.c-cart__product-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .c-cart__products-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.c-cart__header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+.woocommerce-Price-currencySymbol {
+    margin-right: 2px;
+}

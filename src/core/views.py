@@ -467,6 +467,10 @@ def checkout(request, oid):
     order = CartOrder.objects.get(oid=oid)
     order_items = CartOrderItems.objects.filter(order=order)
 
+    if request.method == 'POST':
+        code = request.POST.get('code')
+        print("CODE: ======>", code)
+
     context = {
         "order": order,
         "order_items": order_items,
