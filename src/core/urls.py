@@ -4,7 +4,7 @@ from core.views import (add_to_cart, ajax_contact, cart, category_product_list,
                         checkout, contacts, delete_item_from_cart,
                         filter_products, get_price_range, index,
                         product_list, products_detail, save_checkout_info,
-                        search, update_cart)
+                        search, update_cart, payment_result, payment_failed, payment_completed, liqpay_callback)
 
 app_name = "core"
 
@@ -24,4 +24,8 @@ urlpatterns = [
     path("update-cart/", update_cart, name="update-cart"),
     path("checkout/<oid>/", checkout, name="checkout"),
     path("save_checkout_info/", save_checkout_info, name="save_checkout_info"),
+    path('payment-result/<str:oid>/', payment_result, name='payment-result'),
+    path('payment-failed/<str:oid>/', payment_failed, name='payment-failed'),
+    path('payment-completed/<oid>/', payment_completed, name='payment-completed'),
+    path('billing/pay-callback/', liqpay_callback, name='liqpay_callback'),
 ]

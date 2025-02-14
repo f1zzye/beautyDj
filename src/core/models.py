@@ -269,7 +269,11 @@ class Coupon(models.Model):
 
     def is_valid(self):
         if self.end_date:
-            return self.active and now() < self.end_date
+            is_still_valid = now() < self.end_date
+            if not is_still_valid and self.active:
+                self.active = False
+                self.save()
+            return self.active and is_still_valid
         return self.active
 
     def __str__(self):

@@ -156,7 +156,14 @@
                                             </div>
 
 
-                                            <button type="submit" class="c-button c-button--big c-cart__place-order-btn button alt" name="woocommerce_checkout_place_order" id="place_order" value="Підтвердити замовлення" data-value="Підтвердити замовлення">Підтвердити замовлення</button>
+                                            <div class="payment-section">
+                                                <div class="liqpay-container" style="display: none;">
+                                                    {{ form_html|safe }}
+                                                </div>
+                                                <button type="button" class="c-button c-button--big c-cart__place-order-btn button alt" id="custom-liqpay-button">
+                                                    Оплатити карткою <i class="fas fa-credit-card" style="margin-left: 5px;"></i>
+                                                </button>
+                                            </div>
 
                                             <input type="hidden" id="woocommerce-process-checkout-nonce" name="woocommerce-process-checkout-nonce" value="b501c1580d"><input type="hidden" name="_wp_http_referer" value="/?wc-ajax=update_order_review">
                                         </div>
@@ -175,6 +182,20 @@
     </div>
 
 </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="//static.liqpay.ua/libjs/checkout.js" async></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var customButton = document.getElementById('custom-liqpay-button');
+        var liqpayForm = document.querySelector('.liqpay-container form');
+
+        customButton.addEventListener('click', function() {
+            liqpayForm.submit();
+        });
+    });
+</script>
 
 
 {% endblock %}

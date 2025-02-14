@@ -1,0 +1,25 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="failed-payment-container">
+    <div class="failed-payment-content">
+        <div class="failed-icon">
+            <i class="fas fa-times-circle"></i>
+        </div>
+        <h1 class="failed-title">Платіж не пройшов</h1>
+        <div class="failed-info">
+            <h2 class="failed-text">Ваш платіж був неуспішним.</h2>
+        </div>
+        <p class="support-info">
+             <a href="{% url 'core:contacts' %}" class="contact-link">Зв'яжіться з нами</a> якщо у вас виникли проблеми або запитання
+        </p>
+        <p>
+            <a class="button-home" href="{% url 'core:index' %}">
+                <i class="fas fa-home"></i>На головну
+            </a>
+        </p>
+    </div>
+</div>
+
+{% endblock %}

@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-dr%&m5pevsxk41%gg)i@c7_ed$!@lf^&y&^go)992ttz8t-x&5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ['3ea9-62-16-0-117.ngrok-free.app', "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -242,3 +242,7 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_FAIL_SILENTLY = False
+
+
+LIQPAY_PUBLIC_KEY = config('LIQPAY_PUBLIC_KEY')
+LIQPAY_PRIVATE_KEY = config('LIQPAY_PRIVATE_KEY')
