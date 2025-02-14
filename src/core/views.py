@@ -1,4 +1,5 @@
 from decouple import config
+from django.contrib import messages
 from django.db.models import F, Max, Min, Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -469,7 +470,24 @@ def checkout(request, oid):
 
     if request.method == 'POST':
         code = request.POST.get('code')
-        print("CODE: ======>", code)
+        coupon = Coupon.objects.filter(code=code, active=True).first()
+        if coupon:
+            if coupon in order.coupons.all():
+                messages.warning(request, 'Купон вже активовано')
+                return redirect('core:checkout', order.oid)
+            else:
+                discount = order.price * coupon.discount / 100
+
+                order.coupons.add(coupon)
+                order.price -= discount
+                order.saved += discount
+                order.save()
+
+                messages.success(request, 'Купон активовано')
+                return redirect('core:checkout', order.oid)
+        else:
+            messages.warning(request, 'Купон не існує')
+            return redirect('core:checkout', order.oid)
 
     context = {
         "order": order,

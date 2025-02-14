@@ -1,5 +1,4 @@
 function initNovaPoshtaApi() {
-    // Кэшируем DOM элементы
     const elements = {
         region: document.getElementById("region"),
         city: {

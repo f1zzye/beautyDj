@@ -47,11 +47,19 @@ class CategoryAdmin(admin.ModelAdmin):
     readonly_fields = ["cid"]
 
 
+class CartOrderItemsInline(admin.TabularInline):
+    model = CartOrderItems
+    extra = 0
+    readonly_fields = ['order_image']
+    fields = ['item', 'order_image', 'quantity', 'total', 'volume']
+
+
 @admin.register(CartOrder)
 class CartOrderAdmin(admin.ModelAdmin):
+    inlines = [CartOrderItemsInline]
     list_editable = ["paid_status", "product_status"]
     list_display = ["user", "price", "paid_status", "order_date", "product_status", "sku"]
-    readonly_fields = ["sku", "oid"]
+    readonly_fields = ["sku", "oid", "user"]
 
 
 @admin.register(CartOrderItems)
