@@ -19957,3 +19957,18 @@ body {
         font-size: 14px;
     }
 }
+
+/**/
+
+
+.add-to-wishlist .ip-heart_hover {
+    display: none;
+}
+
+.add-to-wishlist.active .ip-heart {
+    display: none;
+}
+
+.add-to-wishlist.active .ip-heart_hover {
+    display: inline-block;
+}

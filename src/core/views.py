@@ -1,21 +1,22 @@
-from decouple import config
-from django.conf import settings
-from django.contrib import messages
-from django.db.models import F, Max, Min, Q
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import redirect, render, get_object_or_404
-from django.template.loader import render_to_string
-import requests
-from django.urls import reverse
-from liqpay.liqpay import LiqPay
 import base64
 import hashlib
 import json
 
+import requests
+from decouple import config
+from django.conf import settings
+from django.contrib import messages
+from django.db.models import F, Max, Min, Q
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from liqpay.liqpay import LiqPay
+
 from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
                          Product, WishList)
 from userauths.models import ContactUs
-from django.views.decorators.csrf import csrf_exempt
 
 
 def index(request):
@@ -354,6 +355,41 @@ def update_cart(request):
     )
 
 
+def wishlist(request):
+    wishlist = WishList.objects.filter(user=request.user)
+    wishlist_count = wishlist.count()
+
+    context = {
+        'wishlist': wishlist,
+        'wishlist_count': wishlist_count,
+    }
+    return render(request, 'core/wishlist.html', context)
+
+
+def add_to_wishlist(request):
+    id = request.GET['id']
+    product = Product.objects.get(id=id)
+
+    context = {}
+
+    wishlist_count = WishList.objects.filter(product=product, user=request.user).count()
+    print(wishlist_count)
+
+    if wishlist_count > 0:
+        context = {
+            'bool': True
+        }
+    else:
+        new_wishlist = WishList.objects.create(
+            product=product,
+            user=request.user,
+        )
+        context = {
+            'bool': True
+        }
+    return JsonResponse(context)
+
+
 def get_nova_poshta_data(api_key, refs):
     address_data = {}
 
@@ -418,11 +454,7 @@ def save_checkout_info(request):
         address_ref = request.POST.get("address")
         extra_info = request.POST.get("extra_info")
 
-        address_data = get_nova_poshta_data(API_KEY, {
-            "state": state_ref,
-            "city": city_ref,
-            "address": address_ref
-        })
+        address_data = get_nova_poshta_data(API_KEY, {"state": state_ref, "city": city_ref, "address": address_ref})
 
         state = address_data.get("state", state_ref)
         city = address_data.get("city", request.POST.get("city", ""))
@@ -461,7 +493,7 @@ def save_checkout_info(request):
                     quantity=item["quantity"],
                     price=price,
                     total=item_total,
-                    volume=item.get("volume", "")
+                    volume=item.get("volume", ""),
                 )
 
             del request.session["cart_data_obj"]
@@ -475,14 +507,14 @@ def checkout(request, oid):
     order = CartOrder.objects.get(oid=oid)
     order_items = CartOrderItems.objects.filter(order=order)
 
-    if request.method == 'POST':
-        code = request.POST.get('code')
+    if request.method == "POST":
+        code = request.POST.get("code")
         coupon = Coupon.objects.filter(code=code, active=True).first()
 
         if coupon and coupon.is_valid():
             if coupon in order.coupons.all():
-                messages.warning(request, 'Купон вже активовано')
-                return redirect('core:checkout', order.oid)
+                messages.warning(request, "Купон вже активовано")
+                return redirect("core:checkout", order.oid)
             else:
                 discount = order.price * coupon.discount / 100
 
@@ -491,70 +523,70 @@ def checkout(request, oid):
                 order.saved += discount
                 order.save()
 
-                messages.success(request, 'Купон активовано')
-                return redirect('core:checkout', order.oid)
+                messages.success(request, "Купон активовано")
+                return redirect("core:checkout", order.oid)
         else:
-            messages.warning(request, 'Купон не існує або вже не дійсний')
-            return redirect('core:checkout', order.oid)
+            messages.warning(request, "Купон не існує або вже не дійсний")
+            return redirect("core:checkout", order.oid)
 
     liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
     params = {
-        'action': 'pay',
-        'amount': str(order.price),
-        'currency': 'UAH',
-        'description': f'Оплата замовлення №{order.oid}',
-        'order_id': order.oid,
-        'version': '3',
-        'sandbox': 0,  # Удалить для продакшн
+        "action": "pay",
+        "amount": str(order.price),
+        "currency": "UAH",
+        "description": f"Оплата замовлення №{order.oid}",
+        "order_id": order.oid,
+        "version": "3",
+        "sandbox": 0,  # Удалить для продакшн
         # 'server_url': request.build_absolute_uri(reverse("core:liqpay_callback")),
-        'server_url': request.build_absolute_uri('https://3ea9-62-16-0-117.ngrok-free.app/billing/pay-callback/'),
-        'result_url': request.build_absolute_uri(reverse("core:payment-result", args=[order.oid]))
+        "server_url": request.build_absolute_uri("https://3ea9-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
+        "result_url": request.build_absolute_uri(reverse("core:payment-result", args=[order.oid])),
     }
     form_html = liqpay.cnb_form(params)
 
     context = {
         "order": order,
         "order_items": order_items,
-        'form_html': form_html,
+        "form_html": form_html,
     }
     return render(request, "core/checkout.html", context)
 
 
 @csrf_exempt
 def liqpay_callback(request):
-    print('Callback function entered')
-    data = request.POST.get('data')
-    signature = request.POST.get('signature')
-    print('Data:', data)
-    print('Signature:', signature)
+    print("Callback function entered")
+    data = request.POST.get("data")
+    signature = request.POST.get("signature")
+    print("Data:", data)
+    print("Signature:", signature)
 
     sign_str = settings.LIQPAY_PRIVATE_KEY + data + settings.LIQPAY_PRIVATE_KEY
-    sign = base64.b64encode(hashlib.sha1(sign_str.encode('utf-8')).digest()).decode('utf-8')
-    print('Generated Sign:', sign)
+    sign = base64.b64encode(hashlib.sha1(sign_str.encode("utf-8")).digest()).decode("utf-8")
+    print("Generated Sign:", sign)
 
     if sign != signature:
-        print('Invalid callback signature')
+        print("Invalid callback signature")
         return HttpResponse(status=400)
 
-    decoded_data = base64.b64decode(data).decode('utf-8')
+    decoded_data = base64.b64decode(data).decode("utf-8")
     response = json.loads(decoded_data)
-    print('Callback data:', response)
+    print("Callback data:", response)
 
     try:
-        order = CartOrder.objects.get(oid=response['order_id'])
+        order = CartOrder.objects.get(oid=response["order_id"])
     except CartOrder.DoesNotExist:
-        print('Order not found')
+        print("Order not found")
         return HttpResponse(status=404)
 
-    if response['status'] == 'success':
+    if response["status"] == "success":
         order.paid_status = True
         order.save()
-    elif response['status'] == 'failure':
-        print('Payment failed')
-    elif response['status'] in ['sandbox', 'wait_accept', 'processing', 'wait_secure']:
-        print('Payment status:', response['status'])
+    elif response["status"] == "failure":
+        print("Payment failed")
+    elif response["status"] in ["sandbox", "wait_accept", "processing", "wait_secure"]:
+        print("Payment status:", response["status"])
     else:
-        print('Unknown payment status:', response['status'])
+        print("Unknown payment status:", response["status"])
 
     return HttpResponse()
 
@@ -562,9 +594,9 @@ def liqpay_callback(request):
 def payment_result(request, oid):
     order = get_object_or_404(CartOrder, oid=oid)
     if order.paid_status:
-        return redirect('core:payment-completed', oid=oid)
+        return redirect("core:payment-completed", oid=oid)
     else:
-        return redirect('core:payment-failed', oid=oid)
+        return redirect("core:payment-failed", oid=oid)
 
 
 def payment_completed(request, oid):
@@ -574,13 +606,11 @@ def payment_completed(request, oid):
         order.save()
 
     context = {
-        'order': order,
+        "order": order,
     }
 
-    return render(request, 'core/payment-completed.html', context)
+    return render(request, "core/payment-completed.html", context)
 
 
 def payment_failed(request, oid):
-    return render(request, 'core/payment-failed.html')
-
-
+    return render(request, "core/payment-failed.html")

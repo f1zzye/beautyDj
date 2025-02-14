@@ -223,7 +223,7 @@ class CartOrderItems(models.Model):
         verbose_name_plural = _("Замовленні товари")
 
     def order_image(self):
-        image_url = self.image.replace('/media/', '', 1) if self.image.startswith('/media/') else self.image
+        image_url = self.image.replace("/media/", "", 1) if self.image.startswith("/media/") else self.image
         return mark_safe(f'<img src="{settings.MEDIA_URL}{image_url}" width="50" height="50" />')
 
     ################################## Wishlishs, Address, Coupon ##########################################

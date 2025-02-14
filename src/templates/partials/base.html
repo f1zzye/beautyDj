@@ -360,7 +360,13 @@
                                 <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow"><i class="ip-user">
                                         <!-- --></i></a> </div>
                             <div class="c-header__wishlist">
-                                <a class="c-header__button-link" href="wishlist/index.htm"><i class="ip-wishlist c-header__wishlist-icon"></i><span class="js-wishlist-info"></span></a>
+                                <a class="c-header__button-link" href="{% url 'core:wishlist' %}">
+                                    <i class="ip-wishlist c-header__wishlist-icon">
+                                    </i>
+                                    <span class="js-wishlist-info">
+                                        <span class="c-header__cart-count">{{ wishlist.count }}</span>
+                                    </span>
+                                </a>
                             </div>
                             <div class="c-header__cart js-cart">
                                 <a class="c-header__button-link" href="{% url 'core:cart' %}">
@@ -461,7 +467,13 @@
                         <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow"><i class="ip-user">
                                 <!-- --></i></a> </div>
                     <div class="c-header__wishlist">
-                        <a class="c-header__button-link" href="wishlist/index.htm"><i class="ip-wishlist c-header__wishlist-icon"></i><span class="js-wishlist-info"></span></a>
+                        <a class="c-header__button-link" href="{% url 'core:wishlist' %}">
+                            <i class="ip-wishlist c-header__wishlist-icon">
+                            </i>
+                            <span class="js-wishlist-info">
+                                <span class="c-header__cart-count">{{ wishlist.count }}</span>
+                            </span>
+                        </a>
                     </div>
                     <div class="c-header__cart js-cart">
                         <a class="c-header__button-link" href="{% url 'core:cart' %}">
@@ -594,7 +606,13 @@
                                     <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow"><i class="ip-user">
                                             <!-- --></i></a> </div>
                                 <div class="c-header__wishlist">
-                                    <a class="c-header__button-link" href="wishlist/index.htm"><i class="ip-wishlist c-header__wishlist-icon"></i><span class="js-wishlist-info"></span></a>
+                                    <a class="c-header__button-link" href="{% url 'core:wishlist' %}">
+                                        <i class="ip-wishlist c-header__wishlist-icon">
+                                        </i>
+                                        <span class="js-wishlist-info">
+                                            <span class="c-header__cart-count">{{ wishlist.count }}</span>
+                                        </span>
+                                    </a>
                                 </div>
                                 <div class="c-header__cart js-cart">
                                     <a class="c-header__button-link" href="{% url 'core:cart' %}">

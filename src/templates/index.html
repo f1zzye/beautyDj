@@ -139,8 +139,11 @@
                                                                         <a href="shop/insight-rebalancing-shampoo-%D1%88%D0%B0%D0%BC%D0%BF%D1%83%D0%BD%D1%8C-%D0%B4%D0%BB%D1%8F-%D0%B6%D0%B8%D1%80%D0%BD%D0%BE%D1%97-%D1%88%D0%BA%D1%96%D1%80%D0%B8-%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%B8/index.htm" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                                                                             <img loading="lazy" decoding="async" width="260" height="260" src="{{ product.image.url }}" class="c-product-grid__thumb c-product-grid__thumb--cover" alt="" srcset="{{ product.image.url }}" sizes="(max-width: 260px) 100vw, 260px">
                                                                         </a>
-                                                                        <div class="c-product-grid__thumb-button-list ">
-                                                                            <button class="js-wishlist-btn c-wishlist__btn c-wishlist__item-5516-btn h-cb c-product-grid__thumb-button" data-product-id="5516" data-title="Wishlist">
+                                                                        <div class="c-product-grid__thumb-button-list">
+                                                                            <button class="c-wishlist__btn h-cb c-product-grid__thumb-button add-to-wishlist"
+                                                                                    data-product-item="{{product.id}}"
+                                                                                    data-title="Wishlist"
+                                                                                    {% if product in request.user.wishlist_set.all %}active{% endif %}>
                                                                                 <i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i>
                                                                                 <i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i>
                                                                             </button>

@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-dr%&m5pevsxk41%gg)i@c7_ed$!@lf^&y&^go)992ttz8t-x&5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3ea9-62-16-0-117.ngrok-free.app', "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["3ea9-62-16-0-117.ngrok-free.app", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -225,6 +225,8 @@ LOGIN_URL = "userauths:sign-in"
 
 LOGIN_REDIRECT_URL = "core:index"
 
+SESSION_COOKIE_AGE = 86400
+
 SOCIAL_AUTH_URL_NAMESPACE = "social"
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
@@ -244,5 +246,5 @@ EMAIL_PORT = 587
 EMAIL_FAIL_SILENTLY = False
 
 
-LIQPAY_PUBLIC_KEY = config('LIQPAY_PUBLIC_KEY')
-LIQPAY_PRIVATE_KEY = config('LIQPAY_PRIVATE_KEY')
+LIQPAY_PUBLIC_KEY = config("LIQPAY_PUBLIC_KEY")
+LIQPAY_PRIVATE_KEY = config("LIQPAY_PRIVATE_KEY")

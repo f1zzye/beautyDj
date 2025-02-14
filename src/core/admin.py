@@ -50,8 +50,8 @@ class CategoryAdmin(admin.ModelAdmin):
 class CartOrderItemsInline(admin.TabularInline):
     model = CartOrderItems
     extra = 0
-    readonly_fields = ['order_image']
-    fields = ['item', 'order_image', 'quantity', 'total', 'volume']
+    readonly_fields = ["order_image"]
+    fields = ["item", "order_image", "quantity", "total", "volume"]
 
 
 @admin.register(CartOrder)

@@ -347,3 +347,30 @@ function updateCart(product_key, quantity, button) {
 }
 
 
+$(document).on('click', '.add-to-wishlist', function() {
+    let product_id = $(this).attr('data-product-item');
+    let this_val = $(this);
+
+    console.log('Product ID:', product_id);
+
+    $.ajax({
+        url: '/add-to-wishlist',
+        data: {
+            'id': product_id
+        },
+        dataType: 'json',
+        beforeSend: function() {
+            // Добавляем класс active для изменения стиля сердечка
+            this_val.addClass('active');
+            // Меняем стиль иконки на черное сердечко
+            this_val.find('.ip-heart').hide();
+            this_val.find('.ip-heart_hover').show();
+        },
+        success: function(response) {
+            if (response.bool === true) {
+                console.log('Added to wishlist');
+            }
+        }
+    });
+});
+
