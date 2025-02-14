@@ -360,9 +360,7 @@ $(document).on('click', '.add-to-wishlist', function() {
         },
         dataType: 'json',
         beforeSend: function() {
-            // Добавляем класс active для изменения стиля сердечка
             this_val.addClass('active');
-            // Меняем стиль иконки на черное сердечко
             this_val.find('.ip-heart').hide();
             this_val.find('.ip-heart_hover').show();
         },

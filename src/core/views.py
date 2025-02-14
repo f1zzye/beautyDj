@@ -539,7 +539,7 @@ def checkout(request, oid):
         "version": "3",
         "sandbox": 0,  # Удалить для продакшн
         # 'server_url': request.build_absolute_uri(reverse("core:liqpay_callback")),
-        "server_url": request.build_absolute_uri("https://3ea9-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
+        "server_url": request.build_absolute_uri("https://8f7a-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
         "result_url": request.build_absolute_uri(reverse("core:payment-result", args=[order.oid])),
     }
     form_html = liqpay.cnb_form(params)
