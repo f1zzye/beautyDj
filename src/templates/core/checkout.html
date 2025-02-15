@@ -197,5 +197,25 @@
     });
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const termsCheckbox = document.getElementById('terms');
+        const paymentButton = document.getElementById('custom-liqpay-button');
+
+        paymentButton.classList.add('c-button--disabled');
+        paymentButton.disabled = true;
+
+        termsCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                paymentButton.classList.remove('c-button--disabled');
+                paymentButton.disabled = false;
+            } else {
+                paymentButton.classList.add('c-button--disabled');
+                paymentButton.disabled = true;
+            }
+        });
+    });
+</script>
+
 
 {% endblock %}
