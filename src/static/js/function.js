@@ -171,15 +171,24 @@ function handleAddToCart(this_val, isProductPage, currentVariationData = null) {
     const index_val = this_val.attr('data-index');
 
     // Get product data
-    const quantity = $('.product-quantity-' + index_val).val();
+    const quantity = $('.product-quantity-' + index_val).val() || '1';
     const product_title = $('.product-title-' + index_val).val();
     const product_id = $('.product-id-' + index_val).val();
     const product_pid = $('.product-pid-' + index_val).val();
     const product_image = currentVariationData ? currentVariationData.image : $('.product-image-' + index_val).val();
-    const product_price = currentVariationData ? currentVariationData.price : $('.current-product-price-' + index_val).text();
 
-    // Получаем объем для обычного товара
-    const base_volume = $('.product-volume-' + index_val).val();
+    // Получаем цену из hidden input
+    let product_price = currentVariationData ? currentVariationData.price : $('.current-product-price-' + index_val).val();
+
+    // Проверяем наличие цены
+    if (!product_price || product_price === '') {
+        console.error('Price is missing for product:', product_id);
+        alert('Помилка: відсутня ціна товару');
+        return;
+    }
+
+    // Получаем объем
+    const base_volume = $('.product-volume-' + index_val).val() || '';
 
     // Prepare ajax data
     const ajaxData = {
@@ -189,7 +198,6 @@ function handleAddToCart(this_val, isProductPage, currentVariationData = null) {
         'quantity': quantity,
         'title': product_title,
         'price': product_price,
-        // Используем объем из вариации если она есть, иначе базовый объем
         'volume': currentVariationData ? currentVariationData.volume : base_volume
     };
 
@@ -200,7 +208,7 @@ function handleAddToCart(this_val, isProductPage, currentVariationData = null) {
 
     // Ajax request
     $.ajax({
-        url: '/add-to-cart',
+        url: '/add-to-cart/',
         data: ajaxData,
         dataType: 'json',
         beforeSend: function() {
@@ -217,6 +225,7 @@ function handleAddToCart(this_val, isProductPage, currentVariationData = null) {
         },
         error: function(xhr, status, error) {
             console.error('Error adding to cart:', error);
+            console.error('Ajax data:', ajaxData); // Добавим для отладки
             this_val.prop('disabled', false);
             alert('Помилка при додаванні товару до кошика. Будь ласка, спробуйте ще раз.');
         },
@@ -347,28 +356,84 @@ function updateCart(product_key, quantity, button) {
 }
 
 
-$(document).on('click', '.add-to-wishlist', function() {
-    let product_id = $(this).attr('data-product-item');
-    let this_val = $(this);
+$(document).ready(function() {
+    // Добавление в вишлист
+    $(document).on('click', '.add-to-wishlist', function(e) {
+        e.preventDefault();
+        let $this = $(this);
+        let productId = $this.data('product-item');
 
-    console.log('Product ID:', product_id);
+        $.ajax({
+            url: '/add-to-wishlist/',
+            data: {
+                'id': productId
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                $this.prop('disabled', true);
+            },
+            success: function(response) {
+                if (!response.authenticated) {
+                    // Редирект на страницу входа
+                    window.location.href = response.redirect_url;
+                    return;
+                }
 
-    $.ajax({
-        url: '/add-to-wishlist',
-        data: {
-            'id': product_id
-        },
-        dataType: 'json',
-        beforeSend: function() {
-            this_val.addClass('active');
-            this_val.find('.ip-heart').hide();
-            this_val.find('.ip-heart_hover').show();
-        },
-        success: function(response) {
-            if (response.bool === true) {
-                console.log('Added to wishlist');
+                if (response.added) {
+                    $this.addClass('active');
+                    $('.js-wishlist-info .c-header__cart-count').text(response.wishlist_count);
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function() {
+                alert('Виникла помилка. Спробуйте пізніше.');
+            },
+            complete: function() {
+                $this.prop('disabled', false);
             }
-        }
+        });
+    });
+
+    // Удаление из вишлиста
+    $(document).on('click', '.js-wishlist-remove', function(e) {
+        e.preventDefault();
+        let $this = $(this);
+        let productId = $this.data('product-id');
+
+        $.ajax({
+            url: '/remove-from-wishlist/',
+            data: {
+                'id': productId
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                $this.prop('disabled', true);
+            },
+            success: function(response) {
+                if (!response.authenticated) {
+                    window.location.href = '/userauths/sign-in/';
+                    return;
+                }
+
+                if (response.is_empty) {
+                    $('.l-section__content').html(response.html);
+                } else {
+                    $this.closest('.c-wishlist__shop-tr').fadeOut(300, function() {
+                        $(this).remove();
+                    });
+                }
+
+                // Обновляем счетчик в шапке
+                $('.js-wishlist-info .c-header__cart-count').text(response.wishlist_count);
+            },
+            error: function() {
+                alert('Виникла помилка при видаленні товару.');
+            },
+            complete: function() {
+                $this.prop('disabled', false);
+            }
+        });
     });
 });
 

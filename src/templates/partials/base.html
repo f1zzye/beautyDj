@@ -364,7 +364,13 @@
                                     <i class="ip-wishlist c-header__wishlist-icon">
                                     </i>
                                     <span class="js-wishlist-info">
-                                        <span class="c-header__cart-count">{{ wishlist.count }}</span>
+                                        <span class="c-header__cart-count">
+                                            {% if request.user.is_authenticated %}
+                                                {{ wishlist.count }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                        </span>
                                     </span>
                                 </a>
                             </div>
@@ -471,7 +477,13 @@
                             <i class="ip-wishlist c-header__wishlist-icon">
                             </i>
                             <span class="js-wishlist-info">
-                                <span class="c-header__cart-count">{{ wishlist.count }}</span>
+                                <span class="c-header__cart-count">
+                                    {% if request.user.is_authenticated %}
+                                        {{ wishlist.count }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </span>
                             </span>
                         </a>
                     </div>
@@ -610,7 +622,13 @@
                                         <i class="ip-wishlist c-header__wishlist-icon">
                                         </i>
                                         <span class="js-wishlist-info">
-                                            <span class="c-header__cart-count">{{ wishlist.count }}</span>
+                                            <span class="c-header__cart-count">
+                                                {% if request.user.is_authenticated %}
+                                                    {{ wishlist.count }}
+                                                {% else %}
+                                                    0
+                                                {% endif %}
+                                            </span>
                                         </span>
                                     </a>
                                 </div>

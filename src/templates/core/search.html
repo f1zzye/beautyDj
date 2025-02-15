@@ -137,9 +137,10 @@
 											</span>
 										</a>
 										<div class="c-product-grid__thumb-button-list">
-											<button class="js-wishlist-btn c-wishlist__btn h-cb c-product-grid__thumb-button"
-													data-product-id="{{ product.id }}"
-													data-title="Wishlist">
+											<button class="c-wishlist__btn h-cb c-product-grid__thumb-button add-to-wishlist"
+													data-product-item="{{ product.id }}"
+													data-title="Wishlist"
+													{% if request.user.is_authenticated and product in request.user.wishlist_set.all %}active{% endif %}>
 												<i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i>
 												<i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i>
 											</button>
@@ -189,8 +190,15 @@
 								{% else %}
 								<div class="c-product-grid__item c-product-grid__item--sidebar c-product-grid__item--4-per-row c-product-grid__item--normal c-product-grid__item--always c-product-grid__item--2-per-row product type-product post-4592 status-publish first instock product_cat-daeng-gi-meo-ri product_cat-brands product_cat-dlya_volossya product_cat-conditioner has-post-thumbnail sale shipping-taxable purchasable product-type-variable">
 									<div class="c-product-grid__thumb-wrap c-product-grid__thumb-wrap--buttons"><a href="{% url 'core:product-detail' product.pid %}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><img width="260" height="260" src="{{ product.image.url }}" class="c-product-grid__thumb c-product-grid__thumb--cover" alt="" decoding="async" srcset="{{ product.image.url }}" sizes="(max-width: 260px) 100vw, 260px"></span></a>
-										<div class="c-product-grid__thumb-button-list ">
-											<button class="js-wishlist-btn c-wishlist__btn c-wishlist__item-4592-btn h-cb c-product-grid__thumb-button" data-product-id="4592" data-title="Wishlist"><i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i><i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i></button> </div>
+										<div class="c-product-grid__thumb-button-list">
+											<button class="c-wishlist__btn h-cb c-product-grid__thumb-button add-to-wishlist"
+													data-product-item="{{ product.id }}"
+													data-title="Wishlist"
+													{% if request.user.is_authenticated and product in request.user.wishlist_set.all %}active{% endif %}>
+												<i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i>
+												<i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i>
+											</button>
+										</div>
 									</div><!-- .c-product-grid__thumb-wrap -->
 									<a data-quantity="1" class="h-cb c-product-grid__atc button product_type_variable add-to-cart-btn" data-index="{{ product.id }}" rel="nofollow">
 										<input type="hidden" value="1" class="product-quantity-{{ product.id }}">

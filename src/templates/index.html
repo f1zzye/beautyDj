@@ -203,9 +203,10 @@
                                                                                      sizes="(max-width: 260px) 100vw, 260px">
                                                                             </a>
                                                                             <div class="c-product-grid__thumb-button-list">
-                                                                                <button class="js-wishlist-btn c-wishlist__btn c-wishlist__item-5516-btn h-cb c-product-grid__thumb-button"
-                                                                                        data-product-id="{{ product.id }}"
-                                                                                        data-title="Wishlist">
+                                                                                <button class="c-wishlist__btn h-cb c-product-grid__thumb-button add-to-wishlist"
+                                                                                        data-product-item="{{ product.id }}"
+                                                                                        data-title="Wishlist"
+                                                                                        {% if product in request.user.wishlist_set.all %}active{% endif %}>
                                                                                     <i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i>
                                                                                     <i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i>
                                                                                 </button>
@@ -325,9 +326,10 @@
                                                                             </span>
                                                                         </a>
                                                                         <div class="c-product-grid__thumb-button-list">
-                                                                            <button class="js-wishlist-btn c-wishlist__btn h-cb c-product-grid__thumb-button"
-                                                                                    data-product-id="{{ extra.id }}"
-                                                                                    data-title="Wishlist">
+                                                                            <button class="c-wishlist__btn h-cb c-product-grid__thumb-button add-to-wishlist"
+                                                                                    data-product-item="{{ extra.id }}"
+                                                                                    data-title="Wishlist"
+                                                                                    {% if extra in request.user.wishlist_set.all %}active{% endif %}>
                                                                                 <i class="ip-heart c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i>
                                                                                 <i class="ip-heart_hover c-product-grid__icon c-product-grid__icon--wishlist c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i>
                                                                             </button>

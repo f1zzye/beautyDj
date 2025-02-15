@@ -13,6 +13,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from liqpay.liqpay import LiqPay
+from django.contrib.auth.decorators import login_required
 
 from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
                          Product, WishList)
@@ -220,38 +221,54 @@ def ajax_contact(request):
 
 
 def add_to_cart(request):
-    cart_product = {}
+    try:
+        cart_product = {}
 
-    product_id = request.GET["id"]
-    variation_id = request.GET.get("variation_id", "")
-    cart_key = f"{product_id}_{variation_id}" if variation_id else product_id
+        product_id = request.GET["id"]
+        variation_id = request.GET.get("variation_id", "")
+        cart_key = f"{product_id}_{variation_id}" if variation_id else product_id
 
-    cart_product[cart_key] = {
-        "title": request.GET["title"],
-        "quantity": int(request.GET["quantity"]),
-        "price": request.GET["price"],
-        "image": request.GET["image"],
-        "pid": request.GET["pid"],
-        "volume": request.GET.get("volume", ""),
-        "variation_id": variation_id,
-        "total_price": float(request.GET["price"].replace(",", ".")) * int(request.GET["quantity"]),
-    }
+        price_str = request.GET.get("price", "0")
+        try:
+            # Удаляем пробелы и преобразуем запятые в точки
+            price = float(price_str.strip().replace(",", ".") or "0")
+        except (ValueError, TypeError):
+            price = 0.0
 
-    if "cart_data_obj" in request.session:
-        cart_data = request.session["cart_data_obj"]
-        if cart_key in cart_data:
-            cart_data[cart_key]["quantity"] = int(cart_product[cart_key]["quantity"])
-            price = float(cart_data[cart_key]["price"].replace(",", "."))
-            cart_data[cart_key]["total_price"] = price * cart_data[cart_key]["quantity"]
+        quantity = int(request.GET.get("quantity", 1))
+
+        cart_product[cart_key] = {
+            "title": request.GET["title"],
+            "quantity": quantity,
+            "price": str(price),
+            "image": request.GET["image"],
+            "pid": request.GET["pid"],
+            "volume": request.GET.get("volume", ""),
+            "variation_id": variation_id,
+            "total_price": price * quantity,
+        }
+
+        if "cart_data_obj" in request.session:
+            cart_data = request.session["cart_data_obj"]
+            if cart_key in cart_data:
+                cart_data[cart_key]["quantity"] = quantity
+                cart_data[cart_key]["total_price"] = price * quantity
+            else:
+                cart_data.update(cart_product)
+            request.session["cart_data_obj"] = cart_data
         else:
-            cart_data.update(cart_product)
-        request.session["cart_data_obj"] = cart_data
-    else:
-        request.session["cart_data_obj"] = cart_product
+            request.session["cart_data_obj"] = cart_product
 
-    return JsonResponse(
-        {"data": request.session["cart_data_obj"], "totalcartitems": len(request.session["cart_data_obj"])}
-    )
+        return JsonResponse({
+            "data": request.session["cart_data_obj"],
+            "totalcartitems": len(request.session["cart_data_obj"])
+        })
+
+    except Exception as e:
+        return JsonResponse({
+            "error": str(e),
+            "message": "Помилка при додаванні товару до кошика"
+        }, status=400)
 
 
 def cart(request):
@@ -355,39 +372,100 @@ def update_cart(request):
     )
 
 
+@login_required(login_url='userauths:sign-in')
 def wishlist(request):
     wishlist = WishList.objects.filter(user=request.user)
     wishlist_count = wishlist.count()
 
     context = {
-        'wishlist': wishlist,
-        'wishlist_count': wishlist_count,
+        "wishlist": wishlist,
+        "wishlist_count": wishlist_count,
+        "is_wishlist_empty": wishlist_count == 0
     }
-    return render(request, 'core/wishlist.html', context)
+    return render(request, "core/wishlist.html", context)
 
 
 def add_to_wishlist(request):
-    id = request.GET['id']
-    product = Product.objects.get(id=id)
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            "authenticated": False,
+            "message": "Для додавання в список бажань необхідно увійти в акаунт",
+            "redirect_url": "/user/sign-in/"
+        })
 
-    context = {}
+    product_id = request.GET.get("id")
 
-    wishlist_count = WishList.objects.filter(product=product, user=request.user).count()
-    print(wishlist_count)
+    try:
+        product = Product.objects.get(id=product_id)
+        wishlist_item = WishList.objects.filter(product=product, user=request.user)
 
-    if wishlist_count > 0:
-        context = {
-            'bool': True
-        }
-    else:
-        new_wishlist = WishList.objects.create(
-            product=product,
-            user=request.user,
+        if wishlist_item.exists():
+            return JsonResponse({
+                "authenticated": True,
+                "added": False,
+                "message": "Товар вже у списку бажань",
+                "wishlist_count": WishList.objects.filter(user=request.user).count()
+            })
+        else:
+            WishList.objects.create(
+                product=product,
+                user=request.user,
+            )
+            return JsonResponse({
+                "authenticated": True,
+                "added": True,
+                "message": "Товар додано до списку бажань",
+                "wishlist_count": WishList.objects.filter(user=request.user).count()
+            })
+
+    except Product.DoesNotExist:
+        return JsonResponse({
+            "authenticated": True,
+            "added": False,
+            "message": "Товар не знайдено"
+        })
+
+
+def remove_from_wishlist(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            "authenticated": False,
+            "message": "Необхідно увійти в акаунт"
+        })
+
+    product_id = request.GET.get("id")
+
+    try:
+        wishlist_item = WishList.objects.get(
+            product_id=product_id,
+            user=request.user
         )
-        context = {
-            'bool': True
-        }
-    return JsonResponse(context)
+        wishlist_item.delete()
+
+        wishlist_count = WishList.objects.filter(user=request.user).count()
+        is_wishlist_empty = wishlist_count == 0
+
+        if is_wishlist_empty:
+            empty_wishlist_html = render_to_string("core/async/empty-wishlist.html")
+            return JsonResponse({
+                "authenticated": True,
+                "is_empty": True,
+                "html": empty_wishlist_html,
+                "wishlist_count": 0
+            })
+
+        return JsonResponse({
+            "authenticated": True,
+            "is_empty": False,
+            "message": "Товар видалено зі списку бажань",
+            "wishlist_count": wishlist_count
+        })
+
+    except WishList.DoesNotExist:
+        return JsonResponse({
+            "authenticated": True,
+            "error": "Товар не знайдено у списку бажань"
+        })
 
 
 def get_nova_poshta_data(api_key, refs):
@@ -539,7 +617,7 @@ def checkout(request, oid):
         "version": "3",
         "sandbox": 0,  # Удалить для продакшн
         # 'server_url': request.build_absolute_uri(reverse("core:liqpay_callback")),
-        "server_url": request.build_absolute_uri("https://8f7a-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
+        "server_url": request.build_absolute_uri("https://e21b-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
         "result_url": request.build_absolute_uri(reverse("core:payment-result", args=[order.oid])),
     }
     form_html = liqpay.cnb_form(params)

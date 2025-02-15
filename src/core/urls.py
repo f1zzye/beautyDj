@@ -1,11 +1,12 @@
 from django.urls import include, path
 
-from core.views import (add_to_cart, ajax_contact, cart, category_product_list,
-                        checkout, contacts, delete_item_from_cart,
-                        filter_products, get_price_range, index,
-                        liqpay_callback, payment_completed, payment_failed,
-                        payment_result, product_list, products_detail,
-                        save_checkout_info, search, update_cart, wishlist, add_to_wishlist)
+from core.views import (add_to_cart, add_to_wishlist, ajax_contact, cart,
+                        category_product_list, checkout, contacts,
+                        delete_item_from_cart, filter_products,
+                        get_price_range, index, liqpay_callback,
+                        payment_completed, payment_failed, payment_result,
+                        product_list, products_detail, save_checkout_info,
+                        search, update_cart, wishlist, remove_from_wishlist)
 
 app_name = "core"
 
@@ -24,9 +25,9 @@ urlpatterns = [
     path("delete-from-cart/", delete_item_from_cart, name="delete-from-cart"),
     path("update-cart/", update_cart, name="update-cart"),
 
-    path("wishlist/", wishlist, name="wishlist"),
-    path("add-to-wishlist/", add_to_wishlist, name="add-to-wishlist"),
-
+    path('wishlist/', wishlist, name='wishlist'),
+    path('add-to-wishlist/', add_to_wishlist, name='add-to-wishlist'),
+    path('remove-from-wishlist/', remove_from_wishlist, name='remove-from-wishlist'),
 
     path("checkout/<oid>/", checkout, name="checkout"),
     path("save_checkout_info/", save_checkout_info, name="save_checkout_info"),

@@ -19972,3 +19972,14 @@ body {
 .add-to-wishlist.active .ip-heart_hover {
     display: inline-block;
 }
+
+.c-wishlist__shop-td--product-thumbnail {
+    padding-right: 10px !important;
+}
+
+.c-wishlist__shop-td--product-name {
+    padding-left: 10px !important;
+    vertical-align: middle;
+}
+
+
