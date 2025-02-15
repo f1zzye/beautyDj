@@ -289,6 +289,44 @@ $(document).on('click', '.add-to-cart-btn:not(.single_add_to_cart_button)', func
         });
     });
 
+    $(document).on('click', '#clear-cart-button', function(e){
+    e.preventDefault();
+
+    let savedFormData = saveFormData();
+
+    $.ajax({
+        url: '/clear-cart/',
+        dataType: 'json',
+        beforeSend: function(){
+            $('#clear-cart-button').prop('disabled', true);
+        },
+        success: function(response){
+            $('#cart-list').html(response.data);
+            $('.cart-items-count').text('0');
+
+            setTimeout(() => {
+                initPhoneInput();
+
+                if(window.initNovaPoshtaApi) {
+                    window.initNovaPoshtaApi();
+
+                    setTimeout(() => {
+                        restoreFormData(savedFormData);
+                    }, 100);
+                }
+            }, 100);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error clearing cart:', error);
+            $('#clear-cart-button').prop('disabled', false);
+            alert('Помилка при очищенні кошика. Будь ласка, спробуйте ще раз.');
+        },
+        complete: function() {
+            $('#clear-cart-button').prop('disabled', false);
+        }
+    });
+});
+
 
 $(document).on('click', '.qty-plus', function() {
     let input = $(this).siblings('input.qty');

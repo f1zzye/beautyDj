@@ -336,6 +336,20 @@ def delete_item_from_cart(request):
     return JsonResponse({"data": html, "totalcartitems": len(cart_data), "cart_total": cart_total, "is_empty": False})
 
 
+def clear_cart(request):
+    if "cart_data_obj" in request.session:
+        del request.session["cart_data_obj"]
+        request.session.modified = True
+
+    empty_cart_html = render_to_string("core/async/empty-cart.html")
+    return JsonResponse({
+        "data": empty_cart_html,
+        "totalcartitems": 0,
+        "cart_total": 0,
+        "is_empty": True
+    })
+
+
 def update_cart(request):
     product_key = str(request.GET["id"])
     product_quantity = int(request.GET["quantity"])

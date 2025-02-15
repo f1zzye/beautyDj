@@ -6,7 +6,7 @@ from core.views import (add_to_cart, add_to_wishlist, ajax_contact, cart,
                         get_price_range, index, liqpay_callback,
                         payment_completed, payment_failed, payment_result,
                         product_list, products_detail, save_checkout_info,
-                        search, update_cart, wishlist, remove_from_wishlist)
+                        search, update_cart, wishlist, remove_from_wishlist, clear_cart)
 
 app_name = "core"
 
@@ -23,6 +23,7 @@ urlpatterns = [
     path("add-to-cart/", add_to_cart, name="add-to-cart"),
     path("cart/", cart, name="cart"),
     path("delete-from-cart/", delete_item_from_cart, name="delete-from-cart"),
+    path('clear-cart/', clear_cart, name='clear_cart'),
     path("update-cart/", update_cart, name="update-cart"),
 
     path('wishlist/', wishlist, name='wishlist'),
