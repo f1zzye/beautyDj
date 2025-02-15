@@ -663,22 +663,37 @@
                     {% for message in messages %}
                         <div class="alert-box">
                             <div class="alert alert-{{ message.tags }}">
-                                <strong>{{ message }}</strong>
+                                {% if message.tags == 'success' %}
+                                    <i class="fas fa-check-circle alert-icon"></i>
+                                {% elif message.tags == 'error' %}
+                                    <i class="fas fa-times-circle alert-icon"></i>
+                                {% elif message.tags == 'warning' %}
+                                    <i class="fas fa-exclamation-circle alert-icon"></i>
+                                {% elif message.tags == 'info' %}
+                                    <i class="fas fa-info-circle alert-icon"></i>
+                                {% endif %}
+                                <span class="alert-message">{{ message }}</span>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
-            {% endif %}
 
-            <script>
-                $(document).ready(function() {
-                    setTimeout(function() {
-                        $('.fade-alert-container .alert').fadeOut('slow', function() {
-                            $('.fade-alert-container').remove();
-                        });
-                    }, 3000);
-                });
-            </script>
+                <script>
+                    $(document).ready(function() {
+                        setTimeout(function() {
+                            $('.alert').each(function(index) {
+                                var $alert = $(this);
+                                setTimeout(function() {
+                                    $alert.css('animation', 'fadeOut 0.3s ease-out forwards');
+                                    setTimeout(function() {
+                                        $alert.parent().remove();
+                                    }, 300);
+                                }, index * 200);
+                            });
+                        }, 3000);
+                    });
+                </script>
+            {% endif %}
         </header>
 
 {% block content %}
