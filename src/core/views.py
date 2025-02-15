@@ -387,9 +387,9 @@ def wishlist(request):
 
 def add_to_wishlist(request):
     if not request.user.is_authenticated:
+        messages.warning(request, "Увійдіть або зараєструйтесь, щоб додати товар до списку бажань")
         return JsonResponse({
             "authenticated": False,
-            "message": "Для додавання в список бажань необхідно увійти в акаунт",
             "redirect_url": "/user/sign-in/"
         })
 
@@ -428,9 +428,10 @@ def add_to_wishlist(request):
 
 def remove_from_wishlist(request):
     if not request.user.is_authenticated:
+        messages.warning(request, "Увійдіть або зараєструйтесь, щоб додати товар до списку бажань")
         return JsonResponse({
             "authenticated": False,
-            "message": "Необхідно увійти в акаунт"
+            "redirect_url": "/user/sign-in/"
         })
 
     product_id = request.GET.get("id")

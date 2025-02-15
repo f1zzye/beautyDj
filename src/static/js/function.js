@@ -357,14 +357,15 @@ function updateCart(product_key, quantity, button) {
 
 
 $(document).ready(function() {
-    // Добавление в вишлист
+    // Обработка клика по кнопке вишлиста
     $(document).on('click', '.add-to-wishlist', function(e) {
         e.preventDefault();
         let $this = $(this);
         let productId = $this.data('product-item');
+        let url = $this.hasClass('active') ? '/remove-from-wishlist/' : '/add-to-wishlist/';
 
         $.ajax({
-            url: '/add-to-wishlist/',
+            url: url,
             data: {
                 'id': productId
             },
@@ -374,16 +375,32 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (!response.authenticated) {
-                    // Редирект на страницу входа
                     window.location.href = response.redirect_url;
                     return;
                 }
 
-                if (response.added) {
-                    $this.addClass('active');
-                    $('.js-wishlist-info .c-header__cart-count').text(response.wishlist_count);
+                // Обновляем счетчик в шапке
+                $('.js-wishlist-info .c-header__cart-count').text(response.wishlist_count);
+
+                if (url === '/add-to-wishlist/') {
+                    if (response.added) {
+                        $this.addClass('active');
+                    }
                 } else {
-                    alert(response.message);
+                    if (!response.error) {
+                        $this.removeClass('active');
+
+                        // Если мы на странице вишлиста
+                        if (window.location.pathname.includes('wishlist')) {
+                            if (response.is_empty) {
+                                $('.l-section__content').html(response.html);
+                            } else {
+                                $this.closest('.c-wishlist__shop-tr').fadeOut(300, function() {
+                                    $(this).remove();
+                                });
+                            }
+                        }
+                    }
                 }
             },
             error: function() {
@@ -395,7 +412,7 @@ $(document).ready(function() {
         });
     });
 
-    // Удаление из вишлиста
+    // Удаление из вишлиста на странице вишлиста
     $(document).on('click', '.js-wishlist-remove', function(e) {
         e.preventDefault();
         let $this = $(this);
@@ -412,7 +429,7 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (!response.authenticated) {
-                    window.location.href = '/userauths/sign-in/';
+                    window.location.href = response.redirect_url;
                     return;
                 }
 
@@ -426,6 +443,9 @@ $(document).ready(function() {
 
                 // Обновляем счетчик в шапке
                 $('.js-wishlist-info .c-header__cart-count').text(response.wishlist_count);
+
+                // Обновляем состояние кнопки на карточке товара, если она есть на странице
+                $('.add-to-wishlist[data-product-item="' + productId + '"]').removeClass('active');
             },
             error: function() {
                 alert('Виникла помилка при видаленні товару.');
@@ -436,4 +456,3 @@ $(document).ready(function() {
         });
     });
 });
-
