@@ -6,6 +6,7 @@ import requests
 from decouple import config
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db.models import F, Max, Min, Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -13,7 +14,6 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from liqpay.liqpay import LiqPay
-from django.contrib.auth.decorators import login_required
 
 from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
                          Product, WishList)
@@ -259,16 +259,12 @@ def add_to_cart(request):
         else:
             request.session["cart_data_obj"] = cart_product
 
-        return JsonResponse({
-            "data": request.session["cart_data_obj"],
-            "totalcartitems": len(request.session["cart_data_obj"])
-        })
+        return JsonResponse(
+            {"data": request.session["cart_data_obj"], "totalcartitems": len(request.session["cart_data_obj"])}
+        )
 
     except Exception as e:
-        return JsonResponse({
-            "error": str(e),
-            "message": "Помилка при додаванні товару до кошика"
-        }, status=400)
+        return JsonResponse({"error": str(e), "message": "Помилка при додаванні товару до кошика"}, status=400)
 
 
 def cart(request):
@@ -342,12 +338,7 @@ def clear_cart(request):
         request.session.modified = True
 
     empty_cart_html = render_to_string("core/async/empty-cart.html")
-    return JsonResponse({
-        "data": empty_cart_html,
-        "totalcartitems": 0,
-        "cart_total": 0,
-        "is_empty": True
-    })
+    return JsonResponse({"data": empty_cart_html, "totalcartitems": 0, "cart_total": 0, "is_empty": True})
 
 
 def update_cart(request):
@@ -386,26 +377,19 @@ def update_cart(request):
     )
 
 
-@login_required(login_url='userauths:sign-in')
+@login_required(login_url="userauths:sign-in")
 def wishlist(request):
     wishlist = WishList.objects.filter(user=request.user)
     wishlist_count = wishlist.count()
 
-    context = {
-        "wishlist": wishlist,
-        "wishlist_count": wishlist_count,
-        "is_wishlist_empty": wishlist_count == 0
-    }
+    context = {"wishlist": wishlist, "wishlist_count": wishlist_count, "is_wishlist_empty": wishlist_count == 0}
     return render(request, "core/wishlist.html", context)
 
 
 def add_to_wishlist(request):
     if not request.user.is_authenticated:
         messages.warning(request, "Увійдіть або зараєструйтесь, щоб додати товар до списку бажань")
-        return JsonResponse({
-            "authenticated": False,
-            "redirect_url": "/user/sign-in/"
-        })
+        return JsonResponse({"authenticated": False, "redirect_url": "/user/sign-in/"})
 
     product_id = request.GET.get("id")
 
@@ -414,47 +398,41 @@ def add_to_wishlist(request):
         wishlist_item = WishList.objects.filter(product=product, user=request.user)
 
         if wishlist_item.exists():
-            return JsonResponse({
-                "authenticated": True,
-                "added": False,
-                "message": "Товар вже у списку бажань",
-                "wishlist_count": WishList.objects.filter(user=request.user).count()
-            })
+            return JsonResponse(
+                {
+                    "authenticated": True,
+                    "added": False,
+                    "message": "Товар вже у списку бажань",
+                    "wishlist_count": WishList.objects.filter(user=request.user).count(),
+                }
+            )
         else:
             WishList.objects.create(
                 product=product,
                 user=request.user,
             )
-            return JsonResponse({
-                "authenticated": True,
-                "added": True,
-                "message": "Товар додано до списку бажань",
-                "wishlist_count": WishList.objects.filter(user=request.user).count()
-            })
+            return JsonResponse(
+                {
+                    "authenticated": True,
+                    "added": True,
+                    "message": "Товар додано до списку бажань",
+                    "wishlist_count": WishList.objects.filter(user=request.user).count(),
+                }
+            )
 
     except Product.DoesNotExist:
-        return JsonResponse({
-            "authenticated": True,
-            "added": False,
-            "message": "Товар не знайдено"
-        })
+        return JsonResponse({"authenticated": True, "added": False, "message": "Товар не знайдено"})
 
 
 def remove_from_wishlist(request):
     if not request.user.is_authenticated:
         messages.warning(request, "Увійдіть або зараєструйтесь, щоб додати товар до списку бажань")
-        return JsonResponse({
-            "authenticated": False,
-            "redirect_url": "/user/sign-in/"
-        })
+        return JsonResponse({"authenticated": False, "redirect_url": "/user/sign-in/"})
 
     product_id = request.GET.get("id")
 
     try:
-        wishlist_item = WishList.objects.get(
-            product_id=product_id,
-            user=request.user
-        )
+        wishlist_item = WishList.objects.get(product_id=product_id, user=request.user)
         wishlist_item.delete()
 
         wishlist_count = WishList.objects.filter(user=request.user).count()
@@ -462,25 +440,21 @@ def remove_from_wishlist(request):
 
         if is_wishlist_empty:
             empty_wishlist_html = render_to_string("core/async/empty-wishlist.html")
-            return JsonResponse({
-                "authenticated": True,
-                "is_empty": True,
-                "html": empty_wishlist_html,
-                "wishlist_count": 0
-            })
+            return JsonResponse(
+                {"authenticated": True, "is_empty": True, "html": empty_wishlist_html, "wishlist_count": 0}
+            )
 
-        return JsonResponse({
-            "authenticated": True,
-            "is_empty": False,
-            "message": "Товар видалено зі списку бажань",
-            "wishlist_count": wishlist_count
-        })
+        return JsonResponse(
+            {
+                "authenticated": True,
+                "is_empty": False,
+                "message": "Товар видалено зі списку бажань",
+                "wishlist_count": wishlist_count,
+            }
+        )
 
     except WishList.DoesNotExist:
-        return JsonResponse({
-            "authenticated": True,
-            "error": "Товар не знайдено у списку бажань"
-        })
+        return JsonResponse({"authenticated": True, "error": "Товар не знайдено у списку бажань"})
 
 
 def get_nova_poshta_data(api_key, refs):
@@ -707,3 +681,7 @@ def payment_completed(request, oid):
 
 def payment_failed(request, oid):
     return render(request, "core/payment-failed.html")
+
+
+def customer_dashboard(request):
+    return render(request, "core/dashboard.html")
