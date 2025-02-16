@@ -7,7 +7,7 @@ from decouple import config
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import F, Max, Min, Q
+from django.db.models import F, Max, Min, Q, Sum
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
@@ -606,7 +606,7 @@ def checkout(request, oid):
         "version": "3",
         "sandbox": 0,  # Удалить для продакшн
         # 'server_url': request.build_absolute_uri(reverse("core:liqpay_callback")),
-        "server_url": request.build_absolute_uri("https://e21b-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
+        "server_url": request.build_absolute_uri("https://463a-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
         "result_url": request.build_absolute_uri(reverse("core:payment-result", args=[order.oid])),
     }
     form_html = liqpay.cnb_form(params)
@@ -691,3 +691,17 @@ def customer_dashboard(request):
         "orders": orders,
     }
     return render(request, "core/dashboard.html", context)
+
+
+def order_detail(request, id):
+    order = CartOrder.objects.get(user=request.user, id=id)
+    order_items = CartOrderItems.objects.filter(order=order)
+
+    total_amount = order_items.aggregate(total=Sum('total'))['total']
+
+    context = {
+        "order_items": order_items,
+        "total_amount": total_amount,
+        "order": order,
+    }
+    return render(request, 'core/order-detail.html', context)

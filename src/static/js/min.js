@@ -5022,4 +5022,3 @@ document.getElementById('togglePassword').addEventListener('click', function () 
     this.classList.toggle('fa-lock');
     this.classList.toggle('fa-unlock');
 });
-

@@ -1,0 +1,63 @@
+<div class="c-account__col-content">
+    <p>Замовлення №<mark class="order-number">{{order.id}}</mark></p>
+
+
+    <section class="woocommerce-order-details">
+
+        <h2 class="woocommerce-order-details__title">Подробиці замовлення</h2>
+
+        <table class="woocommerce-table woocommerce-table--order-details shop_table order_details">
+
+            <thead>
+                <tr>
+                    <th class="woocommerce-table__product-name product-name">Товар</th>
+                    <th class="woocommerce-table__product-table product-total">Загалом</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for order in order_items %}
+                <tr class="woocommerce-table__line-item order_item">
+
+                    <td class="woocommerce-table__product-name product-name">
+                        <a>{{order.item}}</a> <strong class="product-quantity">×&nbsp;{{order.quantity}}</strong>
+                        <ul class="wc-item-meta">
+                            {% if order.volume and order.volume != 'None мл' and order.volume != 'None' and order.volume != '' %}
+                                <li><strong class="wc-item-meta-label">Об`єм:</strong>
+                                    <p>{{ order.volume}}</p>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </td>
+
+                    <td class="woocommerce-table__product-total product-total">
+                        <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>{{ order.total }}</bdi></span> </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+            <tfoot>
+<!--                <tr>-->
+<!--                    <th scope="row">Разом:</th>-->
+<!--                    <td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">₴</span>993.00</span></td>-->
+<!--                </tr>-->
+                <tr>
+                    <th scope="row">Доставка:</th>
+                    <td>Нова Пошта</td>
+                </tr>
+                <tr>
+                    <th scope="row">Спосіб оплати:</th>
+                    <td>Онлайн-оплата карткою</td>
+                </tr>
+                <tr>
+                    <th scope="row">Всього:</th>
+                    <td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">₴</span>{{ total_amount|floatformat:2 }}</span></td>
+                </tr>
+            </tfoot>
+        </table>
+    </section>
+
+</div>

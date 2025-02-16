@@ -20,6 +20,9 @@
                                     <a class="c-account__navigation-link">
                                         Замовлення </a>
                                 </li>
+                                <li class="c-account__navigation-item" data-tab="order-details" style="display: none;">
+                                    <a class="c-account__navigation-link">Деталі замовлення</a>
+                                </li>
                             </ul>
                         </nav>
                     </div>
@@ -30,10 +33,14 @@
                             <div class="account-header">
                                 <div class="user-info">
                                     <div class="user-avatar">
-                                        <img src="{% static 'imgs/defaultuser.jpg' %}" alt="User avatar">
+                                        {% if profile.image %}
+                                            <img src="{{ profile.image.url }}" alt="User avatar">
+                                        {% else %}
+                                            <img src="{% static 'imgs/defaultuser.jpg' %}" alt="User avatar">
+                                        {% endif %}
                                     </div>
                                     <div class="user-details">
-                                        <h2>Доброго дня, f1zzye!</h2>
+                                        <h2>Доброго дня, {{ request.user|title }}!</h2>
                                         <span class="user-balance">ㅤ</span>
                                     </div>
                                 </div>
@@ -75,11 +82,15 @@
                                             <td data-title="Перевірка"><i class="fas fa-times-circle status-icon text-danger"></i></td>
                                         {% endif %}
                                         <td data-title="Загалом"><span class="woocommerce-Price-amount">{{ order.price }}&nbsp;₴</span></td>
-                                        <td data-title="Дії"><a href="/dashboard/order/164" class="woocommerce-button button view">Перегляд</a></td>
+                                        <td data-title="Дії">
+                                            <a href="#" class="woocommerce-button button view" data-order-id="{{ order.id }}">Перегляд</a>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="tab-content" id="order-details">
                         </div>
                     </div>
                 </div>
@@ -89,6 +100,60 @@
 </div>
 
 <style>
+
+#order-details {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.order-details-header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.order-details-header mark {
+    background: #f5f5f5;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+.woocommerce-order-details__title {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.woocommerce-table--order-details {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.woocommerce-table--order-details th,
+.woocommerce-table--order-details td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.woocommerce-column {
+    margin-bottom: 30px;
+}
+
+.woocommerce-column__title {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+    #order-details {
+        padding: 15px;
+        margin: 15px;
+        border-radius: 8px;
+    }
+}
 
 /* Основные стили */
 .c-account__col-content {
@@ -562,19 +627,54 @@
 document.addEventListener('DOMContentLoaded', function() {
     const navItems = document.querySelectorAll('.c-account__navigation-item');
     const tabContents = document.querySelectorAll('.tab-content');
+    const orderDetailsTab = document.querySelector('[data-tab="order-details"]');
 
+    // Функция для показа таба
+    function showTab(tabId) {
+        navItems.forEach(nav => {
+            if (nav.getAttribute('data-tab') === tabId) {
+                nav.style.display = 'block';
+                nav.classList.add('is-active');
+            } else {
+                nav.classList.remove('is-active');
+                if (nav.getAttribute('data-tab') === 'order-details') {
+                    nav.style.display = 'none';
+                }
+            }
+        });
+
+        tabContents.forEach(tab => {
+            tab.classList.remove('active');
+            if (tab.id === tabId) {
+                tab.classList.add('active');
+            }
+        });
+    }
+
+    // Обработчик клика по навигации
     navItems.forEach(item => {
         item.addEventListener('click', function() {
-            // Удаляем активный класс у всех пунктов навигации
-            navItems.forEach(nav => nav.classList.remove('is-active'));
-            // Добавляем активный класс текущему пункту
-            this.classList.add('is-active');
-
-            // Скрываем все табы
-            tabContents.forEach(tab => tab.classList.remove('active'));
-            // Показываем нужный таб
             const tabId = this.getAttribute('data-tab');
-            document.getElementById(tabId).classList.add('active');
+            showTab(tabId);
+        });
+    });
+
+    // Обработчик клика по кнопке "Перегляд"
+    document.querySelectorAll('.woocommerce-button.view').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const orderId = this.getAttribute('data-order-id');
+
+            // Показываем таб деталей заказа
+            orderDetailsTab.style.display = 'block';
+            showTab('order-details');
+
+            // Загружаем детали заказа
+            fetch(`/dashboard/order/${orderId}`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('order-details').innerHTML = html;
+                });
         });
     });
 });
