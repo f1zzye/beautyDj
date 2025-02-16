@@ -471,7 +471,12 @@
 </li>
 </ul> -->
                             </li>
-                            <li id="menu-item-5402" class="c-mobile-menu__item menu-item-5402"><a href="my-account/index.htm">Мiй аккаунт</a></li>
+                            {% if request.user.is_authenticated %}
+                                <li id="menu-item-5402" class="c-mobile-menu__item menu-item-5402"><a href="{% url 'core:dashboard' %}">Мiй аккаунт</a></li>
+                            {% else %}
+                                <li id="menu-item-540" class="c-mobile-menu__item menu-item-5402"><a href="{% url 'userauths:sign-in' %}">Мiй аккаунт</a></li>
+                            {% endif %}
+
                             <li id="menu-item-5404" class="c-mobile-menu__item menu-item-5404"><a href="{% url 'core:contacts' %}">Контакти</a></li>
                         </ul>
                     </nav>
@@ -597,7 +602,11 @@
 </ul> -->
 
                                     </li>
-                                    <li class="c-top-menu__item menu-item-5402 js-menu-item"><a href="my-account/index.htm">Мiй аккаунт</a></li>
+                            {% if request.user.is_authenticated %}
+                                    <li class="c-top-menu__item menu-item-5402 js-menu-item"><a href="{% url 'core:dashboard' %}">Мiй аккаунт</a></li>
+                            {% else %}
+                                    <li class="c-top-menu__item menu-item-5402 js-menu-item"><a href="{% url 'userauths:sign-in' %}">Мiй аккаунт</a></li>
+                            {% endif %}
                                     <li class="c-top-menu__item menu-item-5404 js-menu-item"><a href="{% url 'core:contacts' %}">Контакти</a></li>
                                 </ul>
                             </nav>
