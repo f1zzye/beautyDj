@@ -2,11 +2,12 @@ from django.urls import include, path
 
 from core.views import (add_to_cart, add_to_wishlist, ajax_contact, cart,
                         category_product_list, checkout, clear_cart, contacts,
-                        delete_item_from_cart, filter_products,
-                        get_price_range, index, liqpay_callback,
-                        payment_completed, payment_failed, payment_result,
-                        product_list, products_detail, remove_from_wishlist,
-                        save_checkout_info, search, update_cart, wishlist, customer_dashboard, order_detail)
+                        customer_dashboard, delete_item_from_cart,
+                        filter_products, get_price_range, index,
+                        liqpay_callback, order_detail, payment_completed,
+                        payment_failed, payment_result, product_list,
+                        products_detail, remove_from_wishlist,
+                        save_checkout_info, search, update_cart, wishlist)
 
 app_name = "core"
 
@@ -34,6 +35,6 @@ urlpatterns = [
     path("payment-failed/<str:oid>/", payment_failed, name="payment-failed"),
     path("payment-completed/<oid>/", payment_completed, name="payment-completed"),
     path("billing/pay-callback/", liqpay_callback, name="liqpay_callback"),
-    path('dashboard/', customer_dashboard, name='dashboard'),
-    path('dashboard/order/<int:id>', order_detail, name='order-detail'),
+    path("dashboard/", customer_dashboard, name="dashboard"),
+    path("dashboard/order/<int:id>", order_detail, name="order-detail"),
 ]

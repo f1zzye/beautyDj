@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.db.models import Max, Min
 
 from core.models import (Address, Brand, CartOrder, CartOrderItems, Category,
-                         Product, ProductImages, WishList)
+                         Product, WishList)
 
 
 def default(request):

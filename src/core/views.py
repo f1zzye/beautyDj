@@ -63,7 +63,6 @@ def category_product_list(request, cid):
 def products_detail(request, pid):
     product = Product.objects.get(pid=pid)
     products = Product.objects.filter(category=product.category).exclude(pid=pid).distinct()[:5]
-    p_image = product.p_images.all()
 
     variants = product.variants.filter(status=True)
 
@@ -98,7 +97,6 @@ def products_detail(request, pid):
 
     context = {
         "product": product,
-        "p_image": p_image,
         "products": products,
         "variants": variants,
         "default_image": product.image.url,
@@ -697,11 +695,11 @@ def order_detail(request, id):
     order = CartOrder.objects.get(user=request.user, id=id)
     order_items = CartOrderItems.objects.filter(order=order)
 
-    total_amount = order_items.aggregate(total=Sum('total'))['total']
+    total_amount = order_items.aggregate(total=Sum("total"))["total"]
 
     context = {
         "order_items": order_items,
         "total_amount": total_amount,
         "order": order,
     }
-    return render(request, 'core/order-detail.html', context)
+    return render(request, "core/order-detail.html", context)

@@ -1,13 +1,7 @@
 from django.contrib import admin
 
 from core.models import (Address, Brand, CartOrder, CartOrderItems, Category,
-                         Coupon, Product, ProductImages, ProductVariant,
-                         WishList)
-
-
-class ProductImagesAdmin(admin.TabularInline):
-    model = ProductImages
-    extra = 1
+                         Coupon, Product, ProductVariant, WishList)
 
 
 class ProductVariantInline(admin.TabularInline):
@@ -19,7 +13,7 @@ class ProductVariantInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductsAdmin(admin.ModelAdmin):
-    inlines = [ProductVariantInline, ProductImagesAdmin]
+    inlines = [ProductVariantInline]
     list_display = [
         "user",
         "title",

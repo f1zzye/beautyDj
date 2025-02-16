@@ -157,18 +157,6 @@ class ProductVariant(models.Model):
             return ((self.old_price - self.price) / self.old_price) * 100
         return 0
 
-
-class ProductImages(models.Model):
-    images = models.ImageField(_("Зображення"), upload_to="product-images", default="product.jpg")
-    product = models.ForeignKey(
-        Product, verbose_name=_("Продукт"), related_name="p_images", on_delete=models.SET_NULL, null=True
-    )
-    data = models.DateTimeField(_("Дата"), auto_now_add=True)
-
-    class Meta:
-        verbose_name = _("Зображення продукту")
-        verbose_name_plural = _("Зображення продуктів")
-
     ################################## Cart, Order, OrderItems and Address ############################
 
 
