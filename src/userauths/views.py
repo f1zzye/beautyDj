@@ -66,7 +66,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     messages.success(request, "Ви вийшли з системи.")
-    return redirect("userauths:sign-in")
+    return redirect("core:index")
 
 
 # class ResetPasswordView(SuccessMessageMixin, PasswordResetView):

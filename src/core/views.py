@@ -683,5 +683,11 @@ def payment_failed(request, oid):
     return render(request, "core/payment-failed.html")
 
 
+@login_required
 def customer_dashboard(request):
-    return render(request, "core/dashboard.html")
+    orders = CartOrder.objects.filter(user=request.user)
+
+    context = {
+        "orders": orders,
+    }
+    return render(request, "core/dashboard.html", context)

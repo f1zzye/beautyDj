@@ -357,8 +357,16 @@
                             </div>
 
                             <div class="c-header__auth-button">
-                                <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow"><i class="ip-user">
-                                        <!-- --></i></a> </div>
+                                {% if request.user.is_authenticated %}
+                                    <a class="c-header__button-link c-header__button-link--account" title="Dashboard" href="{% url 'core:dashboard' %}" rel="nofollow">
+                                        <i class="ip-user"><!-- --></i>
+                                    </a>
+                                {% else %}
+                                    <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow">
+                                        <i class="ip-user"><!-- --></i>
+                                    </a>
+                                {% endif %}
+                            </div>
                             <div class="c-header__wishlist">
                                 <a class="c-header__button-link" href="{% url 'core:wishlist' %}">
                                     <i class="ip-wishlist c-header__wishlist-icon">
@@ -470,8 +478,16 @@
                 </div>
                 <div class="c-header__menu-bottom">
                     <div class="c-header__auth-button">
-                        <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow"><i class="ip-user">
-                                <!-- --></i></a> </div>
+                        {% if request.user.is_authenticated %}
+                            <a class="c-header__button-link c-header__button-link--account" title="Dashboard" href="{% url 'core:dashboard' %}" rel="nofollow">
+                                <i class="ip-user"><!-- --></i>
+                            </a>
+                        {% else %}
+                            <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow">
+                                <i class="ip-user"><!-- --></i>
+                            </a>
+                        {% endif %}
+                    </div>
                     <div class="c-header__wishlist">
                         <a class="c-header__button-link" href="{% url 'core:wishlist' %}">
                             <i class="ip-wishlist c-header__wishlist-icon">
@@ -615,8 +631,16 @@
                                 </div>
 
                                 <div class="c-header__auth-button">
-                                    <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow"><i class="ip-user">
-                                            <!-- --></i></a> </div>
+                                    {% if request.user.is_authenticated %}
+                                        <a class="c-header__button-link c-header__button-link--account" title="Dashboard" href="{% url 'core:dashboard' %}" rel="nofollow">
+                                            <i class="ip-user"><!-- --></i>
+                                        </a>
+                                    {% else %}
+                                        <a class="c-header__button-link c-header__button-link--account" title="Login" href="{% url 'userauths:sign-in' %}" rel="nofollow">
+                                            <i class="ip-user"><!-- --></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
                                 <div class="c-header__wishlist">
                                     <a class="c-header__button-link" href="{% url 'core:wishlist' %}">
                                         <i class="ip-wishlist c-header__wishlist-icon">
