@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -24,3 +25,23 @@ class ContactUs(models.Model):
 
     def __str__(self):
         return self.full_name
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name=_("Користувач"))
+    image = models.ImageField(upload_to="image", null=True, blank=True, verbose_name=_("Зображення"))
+    fname = models.CharField(max_length=100, null=True, blank=True, verbose_name=_("Ім'я"))
+    lname = models.CharField(max_length=100, null=True, blank=True, verbose_name=_("Прізвище"))
+    phone = models.CharField(
+        _("Телефон"),
+        max_length=15,
+        null=True, blank=True,
+        validators=[RegexValidator(r"^\+?1?\d{9,15}$", _("Введіть дійсний номер телефону."))],
+    )
+
+    class Meta:
+        verbose_name = _("Профіль")
+        verbose_name_plural = _("Профілі")
+
+    def __str__(self):
+        return f"{self.user.username} - {self.phone}"

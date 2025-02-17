@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-dr%&m5pevsxk41%gg)i@c7_ed$!@lf^&y&^go)992ttz8t-x&5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["463a-62-16-0-117.ngrok-free.app", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["f5e2-62-16-0-117.ngrok-free.app", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -172,6 +172,7 @@ JAZZMIN_SETTINGS = {
         "core.Coupon": "fas fa-ticket-alt",
         "userauths.User": "fas fa-user",
         "userauths.ContactUs": "fas fa-envelope",
+        "userauths.Profile": "fas fa-id-card",
         "auth.Group": "fas fa-users",
         "auth": "fas fa-users-cog",
         "auth.Group": "fas fa-users",

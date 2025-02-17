@@ -17,7 +17,7 @@ from liqpay.liqpay import LiqPay
 
 from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
                          Product, WishList)
-from userauths.models import ContactUs
+from userauths.models import ContactUs, Profile
 
 
 def index(request):
@@ -604,7 +604,7 @@ def checkout(request, oid):
         "version": "3",
         "sandbox": 0,  # Удалить для продакшн
         # 'server_url': request.build_absolute_uri(reverse("core:liqpay_callback")),
-        "server_url": request.build_absolute_uri("https://463a-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
+        "server_url": request.build_absolute_uri("https://f5e2-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
         "result_url": request.build_absolute_uri(reverse("core:payment-result", args=[order.oid])),
     }
     form_html = liqpay.cnb_form(params)
@@ -684,9 +684,11 @@ def payment_failed(request, oid):
 @login_required
 def customer_dashboard(request):
     orders = CartOrder.objects.filter(user=request.user)
+    profile = Profile.objects.get(user=request.user)
 
     context = {
         "orders": orders,
+        "profile": profile,
     }
     return render(request, "core/dashboard.html", context)
 
@@ -703,3 +705,12 @@ def order_detail(request, id):
         "order": order,
     }
     return render(request, "core/order-detail.html", context)
+
+
+# def settings(request):
+#     profile = Profile.objects.get(user=request.user)
+#
+#     context = {
+#         "profile": profile,
+#     }
+#     return render(request, "core/settings.html")

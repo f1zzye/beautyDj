@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from userauths.models import ContactUs, User
+from userauths.models import ContactUs, Profile, User
 
 
 @admin.register(User)
@@ -15,3 +15,6 @@ class UserAdmin(admin.ModelAdmin):
 @admin.register(ContactUs)
 class ContactUsAdmin(admin.ModelAdmin):
     list_display = ["full_name", "email"]
+
+
+admin.site.register(Profile)

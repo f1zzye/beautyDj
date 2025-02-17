@@ -37,4 +37,5 @@ urlpatterns = [
     path("billing/pay-callback/", liqpay_callback, name="liqpay_callback"),
     path("dashboard/", customer_dashboard, name="dashboard"),
     path("dashboard/order/<int:id>", order_detail, name="order-detail"),
+    # path("dashboard/settings/", settings, name="settings"),
 ]
