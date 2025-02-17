@@ -10,6 +10,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.translation import gettext_lazy as _
 
 from userauths.forms import UserRegisterForm
+from userauths.models import Profile
 from userauths.services.emails import (send_confirmation_email,
                                        send_password_reset_email)
 
@@ -23,6 +24,7 @@ def register_view(request):
             new_user = form.save(commit=False)
             new_user.is_active = False
             new_user.save()
+
             username = form.cleaned_data.get("username")
             messages.success(
                 request, f"Будь ласка, підтвердіть свою електронну пошту, щоб активувати обліковий запис."

@@ -20214,10 +20214,6 @@ body {
     }
 
     /* Стили для цены */
-    .woocommerce-Price-amount {
-        font-weight: 600;
-        font-size: 14px;
-    }
 
     /* Стили для кнопки просмотра */
     .woocommerce-orders-table td[data-title="Дії"] {

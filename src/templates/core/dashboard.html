@@ -36,11 +36,7 @@
                             <div class="account-header">
                                 <div class="user-info">
                                     <div class="user-avatar">
-                                        {% if profile.image %}
-                                            <img src="{{ profile.image.url }}" alt="User avatar">
-                                        {% else %}
-                                            <img src="{% static 'imgs/defaultuser.jpg' %}" alt="User avatar">
-                                        {% endif %}
+                                        <img src="{% static 'imgs/defaultuser.png' %}" alt="User avatar">
                                     </div>
                                     <div class="user-details">
                                         <h2>Доброго дня, {{ request.user|title }}!</h2>
@@ -110,6 +106,55 @@ document.addEventListener('DOMContentLoaded', function() {
     const orderDetailsTab = document.querySelector('[data-tab="order-details"]');
     const settingsTab = document.querySelector('[data-tab="settings"]');
 
+    // Функция инициализации валидации телефона
+    function initPhoneInput() {
+        const phoneInput = document.getElementById('phone-input');
+        if (!phoneInput) return;
+
+        const prefix = '+38 0';
+        if (!phoneInput.value) {
+            phoneInput.value = prefix;
+        }
+
+        // Очищаем предыдущие обработчики
+        const newPhoneInput = phoneInput.cloneNode(true);
+        phoneInput.parentNode.replaceChild(newPhoneInput, phoneInput);
+
+        newPhoneInput.addEventListener('input', function(e) {
+            let value = this.value;
+
+            if (!value.startsWith(prefix)) {
+                this.value = prefix;
+                return;
+            }
+
+            value = value.replace(/\D/g, '').substring(3);
+
+            let formattedValue = prefix;
+
+            if (value.length > 0) {
+                formattedValue += value.substring(0, 2) + ' ';
+            }
+            if (value.length > 2) {
+                formattedValue += value.substring(2, 5) + ' ';
+            }
+            if (value.length > 5) {
+                formattedValue += value.substring(5, 7) + ' ';
+            }
+            if (value.length > 7) {
+                formattedValue += value.substring(7, 9);
+            }
+
+            this.value = formattedValue.trim();
+        });
+
+        newPhoneInput.addEventListener('keydown', function(e) {
+            if (this.selectionStart < prefix.length && (e.key === 'Backspace' || e.key === 'Delete')) {
+                e.preventDefault();
+            }
+        });
+    }
+
     // Функция для показа таба
     function showTab(tabId) {
         navItems.forEach(nav => {
@@ -140,21 +185,72 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Функция настройки обработчика отправки формы
+    function setupFormSubmitHandler() {
+        const form = document.querySelector('.woocommerce-EditAccountForm');
+        if (form) {
+            initPhoneInput();  // Инициализируем валидацию при настройке формы
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                fetch('/dashboard/settings/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('settings').innerHTML = html;
+                    setupFormSubmitHandler();
+
+                    if (!document.querySelector('.alert-danger')) {
+                        showTab('profile');
+                        window.location.reload();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        }
+    }
+
     // Обработчик клика по кнопке "Налаштування"
     document.querySelector('.action-button').addEventListener('click', function(e) {
         e.preventDefault();
         settingsTab.style.display = 'block';
         showTab('settings');
 
-        // Загружаем настройки через AJAX
         fetch('/dashboard/settings/')
             .then(response => response.text())
             .then(html => {
                 document.getElementById('settings').innerHTML = html;
+                setupFormSubmitHandler();
+                initPhoneInput();  // Инициализируем валидацию после загрузки формы
             });
     });
 
-    // Существующий обработчик для кнопки "Перегляд"
+    // Функция получения CSRF токена
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Обработчик для кнопки "Перегляд"
     document.querySelectorAll('.woocommerce-button.view').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();

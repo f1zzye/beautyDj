@@ -34,9 +34,8 @@ class Profile(models.Model):
     lname = models.CharField(max_length=100, null=True, blank=True, verbose_name=_("Прізвище"))
     phone = models.CharField(
         _("Телефон"),
-        max_length=15,
+        max_length=20,
         null=True, blank=True,
-        validators=[RegexValidator(r"^\+?1?\d{9,15}$", _("Введіть дійсний номер телефону."))],
     )
 
     class Meta:

@@ -18,6 +18,9 @@ from liqpay.liqpay import LiqPay
 from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
                          Product, WishList)
 from userauths.models import ContactUs, Profile
+from core.forms import ProfileForm
+
+from django.utils.translation import gettext_lazy as _
 
 
 def index(request):
@@ -604,7 +607,7 @@ def checkout(request, oid):
         "version": "3",
         "sandbox": 0,  # Удалить для продакшн
         # 'server_url': request.build_absolute_uri(reverse("core:liqpay_callback")),
-        "server_url": request.build_absolute_uri("https://f5e2-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
+        "server_url": request.build_absolute_uri("https://9d08-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
         "result_url": request.build_absolute_uri(reverse("core:payment-result", args=[order.oid])),
     }
     form_html = liqpay.cnb_form(params)
@@ -707,10 +710,36 @@ def order_detail(request, id):
     return render(request, "core/order-detail.html", context)
 
 
-# def settings(request):
-#     profile = Profile.objects.get(user=request.user)
-#
-#     context = {
-#         "profile": profile,
-#     }
-#     return render(request, "core/settings.html")
+def dashboard_settings(request):
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        profile = Profile.objects.create(user=request.user)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            try:
+                profile = form.save(commit=False)
+                profile.user = request.user
+                profile.save()
+                messages.success(request, _('Профіль успішно оновлено'))
+                if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return redirect('core:dashboard')
+            except Exception as e:
+                print(f"Error saving profile: {e}")
+                messages.error(request, _('Помилка при збереженні профілю'))
+        else:
+            print(f"Form errors: {form.errors}")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{form.fields[field].label}: {error}")
+    else:
+        form = ProfileForm(instance=profile)
+
+    context = {
+        'form': form,
+        'profile': profile,
+    }
+
+    return render(request, "core/settings.html", context)

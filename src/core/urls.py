@@ -7,7 +7,7 @@ from core.views import (add_to_cart, add_to_wishlist, ajax_contact, cart,
                         liqpay_callback, order_detail, payment_completed,
                         payment_failed, payment_result, product_list,
                         products_detail, remove_from_wishlist,
-                        save_checkout_info, search, update_cart, wishlist)
+                        save_checkout_info, search, update_cart, wishlist, dashboard_settings)
 
 app_name = "core"
 
@@ -37,5 +37,5 @@ urlpatterns = [
     path("billing/pay-callback/", liqpay_callback, name="liqpay_callback"),
     path("dashboard/", customer_dashboard, name="dashboard"),
     path("dashboard/order/<int:id>", order_detail, name="order-detail"),
-    # path("dashboard/settings/", settings, name="settings"),
+    path("dashboard/settings/", dashboard_settings, name="settings"),
 ]
