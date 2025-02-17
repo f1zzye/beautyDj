@@ -18654,68 +18654,61 @@ a.woocommerce-store-notice__dismiss-link {
     font-size: 24px; /* Adjust the size as needed */
 }
 
+/* Стили для всплывающих уведомлений */
 .fade-alert-container {
-                        position: fixed;
-                        top: 20px;
-                        right: 20px;
-                        z-index: 9999;
-                        min-width: 280px;
-                        max-width: 400px;
-                    }
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 280px;
+    max-width: 400px;
+}
 
 .alert-box {
     margin-bottom: 10px;
 }
 
-.alert {
+/* Переопределяем базовые стили для всплывающих уведомлений */
+.fade-alert-container .alert {
     display: flex;
     align-items: center;
     padding: 15px 20px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    background: white;
-    border-left: 4px solid #000;
+    background: white !important;
+    border-left: 4px solid #000 !important;
     animation: slideIn 0.3s ease-out;
+    color: #000 !important;
 }
 
-.alert-icon {
+.fade-alert-container .alert-icon {
     margin-right: 12px;
     font-size: 20px;
+    color: #000 !important;
 }
 
-.alert-message {
-    color: #000;
+.fade-alert-container .alert-message {
+    color: #000 !important;
 }
 
-/* Стили для разных типов уведомлений */
-.alert-success {
-    border-left-color: #000;
-}
-.alert-success .alert-icon {
-    color: #000;
-}
-
-.alert-error {
-    border-left-color: #000;
-}
-.alert-error .alert-icon {
-    color: #000;
+/* Переопределяем стили для всех типов всплывающих уведомлений */
+.fade-alert-container .alert-success,
+.fade-alert-container .alert-error,
+.fade-alert-container .alert-warning,
+.fade-alert-container .alert-info {
+    border-left-color: #000 !important;
+    background: white !important;
+    color: #000 !important;
 }
 
-.alert-warning {
-    border-left-color: #000;
-}
-.alert-warning .alert-icon {
-    color: #000;
-}
-
-.alert-info {
-    border-left-color: #000;
-}
-.alert-info .alert-icon {
-    color: #000;
+.fade-alert-container .alert-success .alert-icon,
+.fade-alert-container .alert-error .alert-icon,
+.fade-alert-container .alert-warning .alert-icon,
+.fade-alert-container .alert-info .alert-icon {
+    color: #000 !important;
 }
 
+/* Анимации для всплывающих уведомлений */
 @keyframes slideIn {
     from {
         transform: translateX(100%);
@@ -18735,6 +18728,103 @@ a.woocommerce-store-notice__dismiss-link {
     to {
         transform: translateX(100%);
         opacity: 0;
+    }
+}
+
+/* Стили для сообщений валидации */
+.alert:not(.fade-alert-container .alert) {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.alert:not(.fade-alert-container .alert) h6 {
+    margin: 0;
+    font-size: 14px;
+}
+
+.alert:not(.fade-alert-container .alert) .fas {
+    margin-right: 5px;
+}
+
+.alert-heading {
+    color: inherit;
+}
+
+.alert-link {
+    font-weight: 700;
+}
+
+.alert-dismissible {
+    padding-right: 3rem;
+}
+
+.alert-dismissible .btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    padding: 1.25rem 1rem;
+}
+
+/* Цветовые варианты для сообщений валидации */
+.alert-primary:not(.fade-alert-container .alert) {
+    color: #084298;
+    background-color: #cfe2ff;
+    border-color: #b6d4fe;
+}
+
+.alert-secondary:not(.fade-alert-container .alert) {
+    color: #41464b;
+    background-color: #e2e3e5;
+    border-color: #d3d6d8;
+}
+
+.alert-success:not(.fade-alert-container .alert) {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+
+.alert-info:not(.fade-alert-container .alert) {
+    color: #055160;
+    background-color: #cff4fc;
+    border-color: #b6effb;
+}
+
+.alert-warning:not(.fade-alert-container .alert) {
+    color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+}
+
+.alert-danger:not(.fade-alert-container .alert) {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+
+.alert-light:not(.fade-alert-container .alert) {
+    color: #636464;
+    background-color: #fefefe;
+    border-color: #fdfdfe;
+}
+
+.alert-dark:not(.fade-alert-container .alert) {
+    color: #141619;
+    background-color: #d3d3d4;
+    border-color: #bcbebf;
+}
+
+/* Медиа-запросы */
+@media (max-width: 768px) {
+    .alert:not(.fade-alert-container .alert) {
+        font-size: 14px;
+        padding: 8px;
     }
 }
 
@@ -20421,4 +20511,14 @@ body {
         font-size: 14px;
         padding: 6px 12px;
     }
+}
+
+.highlight {
+    color: #000;
+    font-weight: 500;
+}
+
+.user-balance {
+    color: #666;
+    line-height: 1.5;
 }

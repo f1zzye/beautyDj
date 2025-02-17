@@ -35,12 +35,12 @@
                         <div class="tab-content active" id="profile">
                             <div class="account-header">
                                 <div class="user-info">
-                                    <div class="user-avatar">
-                                        <img src="{% static 'imgs/defaultuser.png' %}" alt="User avatar">
-                                    </div>
+
                                     <div class="user-details">
                                         <h2>Доброго дня, {{ request.user|title }}!</h2>
-                                        <span class="user-balance">ㅤ</span>
+                                        <span class="user-balance">
+                                            З облікового запису ви можете легко перевіряти та <span class="highlight">переглядати останні замовлення</span>, а також <span class="highlight">редагувати свій пароль і дані облікового запису</span>.ㅤ
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="user-actions">
