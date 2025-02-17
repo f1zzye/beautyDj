@@ -6,6 +6,7 @@ import requests
 from decouple import config
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.db.models import F, Max, Min, Q, Sum
 from django.http import HttpResponse, JsonResponse
@@ -718,19 +719,71 @@ def dashboard_settings(request):
 
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
+        password_changed = False
+
+        password_current = request.POST.get('password_current')
+        password_1 = request.POST.get('password_1')
+        password_2 = request.POST.get('password_2')
+
+        if any([password_current, password_1, password_2]):
+            if not password_current:
+                messages.error(request, _("Введіть поточний пароль"))
+                context = {'form': form, 'profile': profile}
+                return render(request, "core/settings.html", context)
+
+            if not request.user.check_password(password_current):
+                messages.error(request, _("Невірний поточний пароль"))
+                context = {'form': form, 'profile': profile}
+                return render(request, "core/settings.html", context)
+
+            if not password_1:
+                messages.error(request, _("Введіть новий пароль"))
+                context = {'form': form, 'profile': profile}
+                return render(request, "core/settings.html", context)
+
+            if not password_2:
+                messages.error(request, _("Підтвердіть новий пароль"))
+                context = {'form': form, 'profile': profile}
+                return render(request, "core/settings.html", context)
+
+            if password_1 != password_2:
+                messages.error(request, _("Паролі не співпадають"))
+                context = {'form': form, 'profile': profile}
+                return render(request, "core/settings.html", context)
+
+            if len(password_1) < 8:
+                messages.error(request, _("Пароль повинен містити щонайменше 8 символів"))
+                context = {'form': form, 'profile': profile}
+                return render(request, "core/settings.html", context)
+
+            try:
+                request.user.set_password(password_1)
+                request.user.save()
+                update_session_auth_hash(request, request.user)
+                password_changed = True
+            except Exception as e:
+                messages.error(request, _("Помилка при зміні пароля"))
+                print(f"Error changing password: {e}")
+                context = {'form': form, 'profile': profile}
+                return render(request, "core/settings.html", context)
+
         if form.is_valid():
             try:
                 profile = form.save(commit=False)
                 profile.user = request.user
                 profile.save()
-                messages.success(request, _('Профіль успішно оновлено'))
+
+                if password_changed:
+                    messages.success(request, _("Пароль успішно змінено"))
+                else:
+                    messages.success(request, _('Профіль успішно оновлено'))
+
                 if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                     return redirect('core:dashboard')
             except Exception as e:
-                print(f"Error saving profile: {e}")
                 messages.error(request, _('Помилка при збереженні профілю'))
+                print(f"Error saving profile: {e}")
         else:
-            print(f"Form errors: {form.errors}")
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"{form.fields[field].label}: {error}")

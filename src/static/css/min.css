@@ -20213,8 +20213,6 @@ body {
         font-size: 18px;
     }
 
-    /* Стили для цены */
-
     /* Стили для кнопки просмотра */
     .woocommerce-orders-table td[data-title="Дії"] {
         border-bottom: none;

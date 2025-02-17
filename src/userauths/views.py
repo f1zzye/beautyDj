@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.hashers import check_password
 
 from userauths.forms import UserRegisterForm
 from userauths.models import Profile
@@ -122,3 +123,26 @@ def activate(request, uidb64, token):
     else:
         messages.error(request, "Посилання для активації недійсне!")
         return redirect("core:index")
+
+
+def change_password(request):
+    user = request.user
+
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        confirm_new_password = request.POST.get('confirm_new_password')
+
+        if confirm_new_password != new_password:
+            messages.warning(request, "Password does not match!")
+            return redirect('useradmin:change_password')
+
+        if check_password(old_password, user.password):
+            user.set_password(new_password)
+            user.save()
+            messages.success(request, "Password changed successfully!")
+            return redirect('useradmin:change_password')
+        else:
+            messages.warning(request, "Old Password Is Incorrect!")
+            return redirect('useradmin:change_password')
+    return render(request, "useradmin/change_password.html")
