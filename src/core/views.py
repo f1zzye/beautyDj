@@ -796,3 +796,11 @@ def dashboard_settings(request):
     }
 
     return render(request, "core/settings.html", context)
+
+
+def about_us(request):
+    return render(request, "core/about-us.html")
+
+
+def payment_delivery(request):
+    return render(request, "core/payment-delivery.html")
