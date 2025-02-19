@@ -98,7 +98,18 @@
 
                                             <tr class="cart-subtotal">
                                                 <th class="c-cart__sub-sub-header">Проміжний підсумок</th>
-                                                <td class="c-cart__totals-price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">₴</span>{{order.price}}</bdi></span></td>
+                                                <td class="c-cart__totals-price">
+                                                    <span class="woocommerce-Price-amount amount">
+                                                        <bdi>
+                                                            <span class="woocommerce-Price-currencySymbol">₴</span>
+                                                            {% if order.saved > 0 %}
+                                                                {{order.original_price}}
+                                                            {% else %}
+                                                                {{order.price}}
+                                                            {% endif %}
+                                                        </bdi>
+                                                    </span>
+                                                </td>
                                             </tr>
 
                                             <tr>
@@ -144,12 +155,12 @@
 
                                             <div class="woocommerce-terms-and-conditions-wrapper">
                                                 <div class="woocommerce-privacy-policy-text">
-                                                    <p>Ваші особисті дані використовуватимуться для опрацювання ваших замовлень, спрощення вашої роботи із сайтом та для інших цілей, описаних у нашій <a href="https://www.onlyone.beauty/faq/" class="woocommerce-privacy-policy-link" target="_blank">політика конфіденційності</a>.</p>
+                                                    <p>Ваші особисті дані використовуватимуться для опрацювання ваших замовлень, спрощення вашої роботи із сайтом та для інших цілей, описаних у нашій <a href="{% url 'core:payment-and-delivery' %}" class="woocommerce-privacy-policy-link" target="_blank">політика конфіденційності</a>.</p>
                                                 </div>
                                                 <p class="c-form__terms-and-conditions form-row validate-required">
                                                     <label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
                                                         <input type="checkbox" class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" name="terms" id="terms">
-                                                        <span class="woocommerce-terms-and-conditions-checkbox-text">Я прочитав (ла) і погоджуюся з правилами сайту <a href="https://www.onlyone.beauty/faq/" class="woocommerce-terms-and-conditions-link" target="_blank">правила та умови</a></span>&nbsp;<span class="required">*</span>
+                                                        <span class="woocommerce-terms-and-conditions-checkbox-text">Я прочитав (ла) і погоджуюся з правилами сайту <a href="{% url 'core:payment-and-delivery' %}" class="woocommerce-terms-and-conditions-link" target="_blank">правила та умови</a></span>&nbsp;<span class="required">*</span>
                                                     </label>
                                                     <input type="hidden" name="terms-field" value="1">
                                                 </p>

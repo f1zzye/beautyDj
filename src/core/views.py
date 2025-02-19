@@ -585,6 +585,9 @@ def checkout(request, oid):
                 messages.warning(request, "Купон вже активовано")
                 return redirect("core:checkout", order.oid)
             else:
+                if order.saved == 0:
+                    order.original_price = order.price
+
                 discount = order.price * coupon.discount / 100
 
                 order.coupons.add(coupon)
@@ -608,7 +611,7 @@ def checkout(request, oid):
         "version": "3",
         "sandbox": 0,  # Удалить для продакшн
         # 'server_url': request.build_absolute_uri(reverse("core:liqpay_callback")),
-        "server_url": request.build_absolute_uri("https://9d08-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
+        "server_url": request.build_absolute_uri("https://506f-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
         "result_url": request.build_absolute_uri(reverse("core:payment-result", args=[order.oid])),
     }
     form_html = liqpay.cnb_form(params)
@@ -687,7 +690,7 @@ def payment_failed(request, oid):
 
 @login_required
 def customer_dashboard(request):
-    orders = CartOrder.objects.filter(user=request.user)
+    orders = CartOrder.objects.filter(user=request.user).order_by('-order_date')
     profile = Profile.objects.get(user=request.user)
 
     context = {

@@ -132,30 +132,39 @@
                                                                             <p class="form-row form-row-first validate-required" id="billing_first_name_field" data-priority="10">
                                                                                 <label class="">Ім'я&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
                                                                                 <span class="woocommerce-input-wrapper">
-                                                                                    <input type="text" class="input-text" name="fname" value='{{ request.user.profile.fname|default:"" }}' placeholder="" autocomplete="given-name">
+                                                                                    <input type="text" required class="input-text" name="fname" value='{{ request.user.profile.fname|default:"" }}' placeholder="" autocomplete="given-name">
                                                                                 </span>
                                                                             </p>
                                                                             <!--Прізвище-->
                                                                             <p class="form-row form-row-last validate-required" id="billing_last_name_field" data-priority="20">
                                                                                 <label class="">Прізвище&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
                                                                                 <span class="woocommerce-input-wrapper">
-                                                                                    <input type="text" class="input-text" name="lname" value='{{ request.user.profile.lname|default:"" }}' placeholder="" autocomplete="family-name">
+                                                                                    <input type="text" required class="input-text" name="lname" value='{{ request.user.profile.lname|default:"" }}' placeholder="" autocomplete="family-name">
                                                                                 </span>
                                                                             </p>
 
                                                                             <p class="form-row form-row-wide validate-required validate-email" data-priority="110">
                                                                                 <label class="">E-mail адреса&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
                                                                                 <span class="woocommerce-input-wrapper">
-                                                                                    <input type="email" value="" class="input-text" name="email" placeholder="" autocomplete="email username">
+                                                                                    <input type="email" required value="" class="input-text" name="email" placeholder="" autocomplete="email username">
                                                                                 </span>
                                                                             </p>
 
                                                                             <p class="form-row form-row-wide validate-required validate-email" data-priority="110">
                                                                                 <label class="">Телефон&nbsp;<abbr class="required" title="обов'язкове">*</abbr></label>
                                                                                 <span class="woocommerce-input-wrapper">
-                                                                                    <input type="text" value='{{ request.user.profile.phone|default:"" }}' class="input-text" name="phone" id="phone" placeholder="+38 0" autocomplete="email username">
+                                                                                    <input type="text"
+                                                                                           value='{{ request.user.profile.phone|default:"" }}'
+                                                                                           class="input-text"
+                                                                                           name="phone"
+                                                                                           id="phone"
+                                                                                           placeholder="+38 0"
+                                                                                           required
+                                                                                           pattern="^\+38\s0\d{2}\s\d{3}\s\d{2}\s\d{2}$"
+                                                                                           autocomplete="tel">
                                                                                 </span>
                                                                             </p>
+
                                                                         </div>
 
                                                                         <div class="wcus-checkout-fields">

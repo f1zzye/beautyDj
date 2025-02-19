@@ -177,7 +177,8 @@ class CartOrder(models.Model):
 
     extra_info = models.TextField(_("Додаткова інформація"), null=True, blank=True)
 
-    price = models.DecimalField(_("Ціна"), max_digits=99, decimal_places=2, default="1.99")
+    price = models.DecimalField(_("Остаточна Ціна"), max_digits=99, decimal_places=2, default="1.99")
+    original_price = models.DecimalField(_("Початкова ціна"), max_digits=99, decimal_places=2, default="0.00")
     saved = models.DecimalField(_("Заощаджено"), max_digits=12, decimal_places=2, default="0.00")
     coupons = models.ManyToManyField("core.Coupon", verbose_name=_("Купони"), blank=True)
 

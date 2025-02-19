@@ -4109,13 +4109,16 @@ p+.woocommerce-Addresses {
     .c-cart__col-1 {
         max-width: 400px;
         width: 100%;
+
     }
 
     .c-cart__col-2 {
-        margin-top: 70px;
+        margin-top: 0; /* Убираем верхний отступ */
         margin-bottom: 10px;
         position: relative;
         z-index: 1;
+
+        width: 100%; /* Добавляем ширину */
     }
 
     .c-cart__col-2 .c-cart__totals,
@@ -4156,6 +4159,63 @@ p+.woocommerce-Addresses {
         display: block;
     }
 }
+
+/*@media (max-width:767px) {*/
+/*    .c-cart__wrap {*/
+/*        flex-direction: column;*/
+/*        align-items: center;*/
+/*    }*/
+
+/*    .c-cart__col-1 {*/
+/*        max-width: 400px;*/
+/*        width: 100%;*/
+/*    }*/
+
+/*    .c-cart__col-2 {*/
+/*        margin-top: 70px;*/
+/*        margin-bottom: 10px;*/
+/*        position: relative;*/
+/*        z-index: 1;*/
+/*    }*/
+
+/*    .c-cart__col-2 .c-cart__totals,*/
+/*    .c-cart__col-2 .c-cart__collaterals {*/
+/*        overflow: hidden;*/
+/*    }*/
+
+/*    .c-cart__col-2:before {*/
+/*        content: '';*/
+/*        display: block;*/
+/*        position: absolute;*/
+/*        left: -30px;*/
+/*        right: -30px;*/
+/*        top: -30px;*/
+/*        bottom: -30px;*/
+/*        background-color: white;*/
+/*        z-index: 0;*/
+/*    }*/
+
+/*    .c-cart__collaterals {*/
+/*        padding: 0;*/
+/*    }*/
+
+/*    .blockUI.blockOverlay {*/
+/*        background-color: white !important;*/
+/*        z-index: 95 !important;*/
+/*    }*/
+
+/*    .woocommerce-cart-form .blockUI.blockOverlay {*/
+/*        background-color: var(--background-color) !important;*/
+/*    }*/
+
+/*    .c-cart__customer-details {*/
+/*        padding: 0;*/
+/*    }*/
+
+/*    .c-cart__shop-update {*/
+/*        display: block;*/
+/*    }*/
+/*}*/
 
 @media (max-width:359px) {
 
