@@ -20,11 +20,16 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from core.views import page_not_found
+
+handler404 = page_not_found
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("core.urls")),
     path("user/", include("userauths.urls")),
     path("oauth/", include("social_django.urls", namespace="social")),
+    path("404/", page_not_found, name="page_not_found"),
 ]
 
 if settings.DEBUG:
