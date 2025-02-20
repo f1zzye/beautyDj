@@ -550,6 +550,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 const $this = $(this);
 
+                console.log($this);
+
                 resetAddToCartState();
 
                 if ($this.hasClass('active')) {
@@ -575,7 +577,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     currentVariationData = {
                         variation_id: $this.data('variation-id'),
                         price: $this.data('price'),
-                        old_price: $this.data('old-price'),
+                        old_price: $this.data('old-price') || '{{ product.old_price }}',
                         image: $this.data('image'),
                         volume: $this.data('volume')
                     };
