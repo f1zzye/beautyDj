@@ -69,22 +69,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {% for order in orders %}
-                                    <tr>
-                                        <td data-title="Замовлення">#{{ order.id }}</td>
-                                        <td data-title="Дата">{{ order.order_date|date:"d-m-Y"}}</td>
-                                        <td data-title="Статус"><span class="order-status processing">{{ order.product_status|title }}</span></td>
-                                        {% if order.paid_status == True %}
-                                            <td data-title="Перевірка"><i class="fas fa-check-circle status-icon success"></i></td>
-                                        {% else %}
-                                            <td data-title="Перевірка"><i class="fas fa-times-circle status-icon text-danger"></i></td>
-                                        {% endif %}
-                                        <td data-title="Загалом"><span class="woocommerce-Price-amount">{{ order.price }}&nbsp;₴</span></td>
-                                        <td data-title="Дії">
-                                            <a href="#" class="woocommerce-button button view" data-order-id="{{ order.id }}">Перегляд</a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
+                                    {% if orders %}
+                                        {% for order in orders %}
+                                            <tr>
+                                                <td data-title="Замовлення">#{{ order.id }}</td>
+                                                <td data-title="Дата">{{ order.order_date|date:"d-m-Y"}}</td>
+                                                <td data-title="Статус"><span class="order-status processing">{{ order.product_status|title }}</span></td>
+                                                {% if order.paid_status == True %}
+                                                    <td data-title="Перевірка"><i class="fas fa-check-circle status-icon success"></i></td>
+                                                {% else %}
+                                                    <td data-title="Перевірка"><i class="fas fa-times-circle status-icon text-danger"></i></td>
+                                                {% endif %}
+                                                <td data-title="Загалом"><span class="woocommerce-Price-amount">{{ order.price }}&nbsp;₴</span></td>
+                                                <td data-title="Дії">
+                                                    <a href="#" class="woocommerce-button button view" data-order-id="{{ order.id }}">Перегляд</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="6" class="woocommerce-orders-empty-message">
+                                                Замовлень поки немає
+                                            </td>
+                                        </tr>
+                                    {% endif %}
                                 </tbody>
                             </table>
                         </div>
@@ -98,6 +106,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

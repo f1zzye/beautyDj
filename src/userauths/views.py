@@ -52,6 +52,11 @@ def login_view(request):
 
         try:
             user = User.objects.get(email=email)
+            if not user.is_active:
+                messages.warning(request,
+                                 "Будь ласка, підтвердіть свою електронну пошту для активації облікового запису.")
+                return render(request, "userauths/sign-in.html")
+
             user = authenticate(request, email=email, password=password)
 
             if user is not None:
@@ -59,9 +64,9 @@ def login_view(request):
                 messages.success(request, f"Ласкаво просимо, {user.username}")
                 return redirect("core:index")
             else:
-                messages.warning(request, "Користувач не існує, створіть обліковий запис.")
-        except:
-            messages.warning(request, f"Користувач з {email} не існує.")
+                messages.error(request, "Невірний пароль. Спробуйте ще раз.")
+        except User.DoesNotExist:
+            messages.warning(request, f"Користувач з email {email} не існує.")
 
     return render(request, "userauths/sign-in.html")
 
@@ -134,15 +139,15 @@ def change_password(request):
         confirm_new_password = request.POST.get('confirm_new_password')
 
         if confirm_new_password != new_password:
-            messages.warning(request, "Password does not match!")
+            messages.warning(request, "Пароль не підходить!")
             return redirect('useradmin:change_password')
 
         if check_password(old_password, user.password):
             user.set_password(new_password)
             user.save()
-            messages.success(request, "Password changed successfully!")
+            messages.success(request, "Пароль успішно змінено!")
             return redirect('useradmin:change_password')
         else:
-            messages.warning(request, "Old Password Is Incorrect!")
+            messages.warning(request, "Старий пароль невірний!")
             return redirect('useradmin:change_password')
     return render(request, "useradmin/change_password.html")
