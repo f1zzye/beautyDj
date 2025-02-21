@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-dr%&m5pevsxk41%gg)i@c7_ed$!@lf^&y&^go)992ttz8t-x&5"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["506f-62-16-0-117.ngrok-free.app", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["33db-62-16-0-117.ngrok-free.app", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -139,11 +139,22 @@ LOCALE_PATHS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+# моя машина
+
 STATIC_URL = "static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+# статика для работы с nginx
+
+# STATIC_URL = '/static/'
+#
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+#
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
+
 
 MEDIA_URL = "/media/"
 

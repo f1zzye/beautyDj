@@ -2,6 +2,10 @@
 {% load static %}
 {% block content %}
 
+{% block extra_js %}
+    <script src="{% static 'js/search-filter-redirect.js' %}"></script>
+{% endblock %}
+
 	<div class="l-inner">
 
 	    <div class="woocommerce-notices-wrapper">

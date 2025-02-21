@@ -52,16 +52,16 @@ def product_list(request):
     return render(request, "core/product_list.html", context)
 
 
-def category_product_list(request, cid):
-    category = Category.objects.get(cid=cid)
-    products = Product.objects.filter(product_status="опубліковано", category=category)
-
-    context = {
-        "category": category,
-        "products": products,
-        "selected_category": category.id,
-    }
-    return render(request, "core/category-product-list.html", context)
+# def category_product_list(request, cid):
+#     category = Category.objects.get(cid=cid)
+#     products = Product.objects.filter(product_status="опубліковано", category=category)
+#
+#     context = {
+#         "category": category,
+#         "products": products,
+#         "selected_category": category.id,
+#     }
+#     return render(request, "core/category-product-list.html", context)
 
 
 def products_detail(request, pid):
@@ -142,8 +142,18 @@ def filter_products(request):
     sort_by = request.GET.get("orderby", "menu_order")
     min_price = request.GET.get("min_price")
     max_price = request.GET.get("max_price")
+    search_query = request.GET.get("search_query")  # Добавляем поисковый запрос
 
     products = Product.objects.filter(product_status="опубліковано").distinct()
+
+    # Применяем поисковый фильтр, если есть запрос
+    if search_query:
+        products = products.filter(
+            Q(title__icontains=search_query)
+            | Q(title__icontains=search_query.lower())
+            | Q(title__icontains=search_query.upper())
+            | Q(title__iregex=search_query)
+        )
 
     if min_price:
         products = products.filter(price__gte=min_price)
@@ -172,7 +182,10 @@ def filter_products(request):
     elif products_count in [2, 3, 4]:
         word_ending = "и"
 
-    data = render_to_string("core/async/product-list.html", {"products": products})
+    data = render_to_string("core/async/product-list.html", {
+        "products": products,
+        "search_query": search_query
+    })
     count_text = f"Ми знайшли для вас <strong>{products_count}</strong> товар{word_ending}!"
 
     return JsonResponse({"data": data, "count_text": count_text})
@@ -611,7 +624,7 @@ def checkout(request, oid):
         "version": "3",
         "sandbox": 0,  # Удалить для продакшн
         # 'server_url': request.build_absolute_uri(reverse("core:liqpay_callback")),
-        "server_url": request.build_absolute_uri("https://506f-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
+        "server_url": request.build_absolute_uri("https://33db-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
         "result_url": request.build_absolute_uri(reverse("core:payment-result", args=[order.oid])),
     }
     form_html = liqpay.cnb_form(params)

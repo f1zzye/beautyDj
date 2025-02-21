@@ -7,29 +7,28 @@ services:
     working_dir: /beautyDj
     command: ["./commands/start_server.sh"]
     ports:
-      - 8010:8000
+      - "8010:8000"
     volumes:
       - ./src:/beautyDj/src
       - ./commands:/beautyDj/commands
-      - static_content:/beautyDj/static
-      - media_content:/beautyDj/media
+      - static_volume:/beautyDj/src/static
+      - media_volume:/beautyDj/src/media
     env_file:
       - ./src/.env
 
   nginx:
     image: nginx:1.19
+    container_name: beauty_nginx
     volumes:
-      - static_content:/beautyDj/src/static
-      - media_content:/beautyDj/src/media
-      - ./nginx:/etc/nginx/conf.d
+      - static_volume:/usr/share/nginx/html/static:ro
+      - media_volume:/usr/share/nginx/html/media:ro
+      - ./nginx:/etc/nginx/conf.d:ro
     ports:
-      - 80:80
-      - 443:443
-    env_file:
-      - ./src/.env
+      - "80:80"
+      - "443:443"
     depends_on:
       - backend
 
 volumes:
-    static_content: { }
-    media_content: { }
+  static_volume:
+  media_volume:

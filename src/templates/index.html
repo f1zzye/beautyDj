@@ -71,9 +71,19 @@
                                                 <div class="c-ip-image-list-1__list c-ip-image-list-1__list--carousel  js-image-list-1 h-carousel h-carousel--dots-hide h-carousel--nav-hide">
                                                 {% for category in categories %}
                                                     <div class="c-ip-image-list-1__item c-ip-image-list-1__item--carousel">
-                                                        <a href="{% url 'core:category-product-list' category.cid %}" class="c-ip-image-list-1__link">
+                                                        <a href="{% url 'core:product-list' %}?category[]={{ category.id }}" class="c-ip-image-list-1__link">
                                                             <div class="c-ip-image-list-1__thumb">
-                                                                <img loading="lazy" decoding="async" class="c-ip-image-list-1__image" width="115" height="115" src="{{ category.image.url }}" srcset="{{ category.image.url }}" sizes="auto, (max-width: 115px) 100vw, 115px" alt="photo_2024-11-15_12-24-26" loading="lazy"> </div>
+                                                                <img loading="lazy"
+                                                                     decoding="async"
+                                                                     class="c-ip-image-list-1__image"
+                                                                     width="115"
+                                                                     height="115"
+                                                                     src="{{ category.image.url }}"
+                                                                     srcset="{{ category.image.url }}"
+                                                                     sizes="auto, (max-width: 115px) 100vw, 115px"
+                                                                     alt="{{ category.title }}"
+                                                                     loading="lazy">
+                                                            </div>
                                                             <div class="c-ip-image-list-1__title">{{ category.title }}</div>
                                                         </a>
                                                     </div>
