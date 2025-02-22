@@ -1,4 +1,4 @@
-### 🖼 Mood Beauty
+### 🎀 Mood Beauty
 
 ## Stack:
 
