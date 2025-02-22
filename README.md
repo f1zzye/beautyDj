@@ -37,8 +37,8 @@ All actions should be executed from the source directory of the project and only
 
 ## License
 
-This project uses the [MIT] license(https://github.com/Sauberr/gallery/blob/master/LICENSE)
+This project uses the [MIT] license(https://github.com/f1zzye/beautyDj/blob/master/LICENSE)
 
 ## Contact 
 
-To contact the author of the project, write to email 𝚍𝚖𝚒𝚝𝚛𝚒𝚢𝚋𝚒𝚛𝚒𝚕𝚔𝚘@𝚐𝚖𝚊𝚒𝚕.𝚌𝚘𝚖.
+To contact the author of the project, write to email kosenko2401@gmail.com
