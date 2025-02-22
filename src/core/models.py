@@ -167,8 +167,8 @@ class CartOrder(models.Model):
     email = models.CharField(_("Електронна пошта"), max_length=100, null=True, blank=True)
     phone = models.CharField(
         _("Телефон"),
-        max_length=15,
-        validators=[RegexValidator(r"^\+?1?\d{9,15}$", _("Введіть дійсний номер телефону."))],
+        max_length=20,
+        # validators=[RegexValidator(r"^\+?1?\d{9,15}$", _("Введіть дійсний номер телефону."))],
     )
 
     address = models.CharField(_("Відділення НП"), max_length=100, null=True, blank=True)

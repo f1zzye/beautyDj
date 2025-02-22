@@ -53,12 +53,16 @@
                     <td>Онлайн-оплата карткою</td>
                 </tr>
                 <tr>
+                    <th scope="row">Проміжний підсумок:</th>
+                    <td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">₴</span>{{ total_amount|floatformat:2 }}</span></td>
+                </tr>
+                <tr>
                     <th scope="row">Знижка:</th>
                     <td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">₴</span>{{order.saved}}</span></td>
                 </tr>
                 <tr>
                     <th scope="row">Всього:</th>
-                    <td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">₴</span>{{ total_amount|floatformat:2 }}</span></td>
+                    <td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">₴</span>{{ order.price }}</span></td>
                 </tr>
             </tfoot>
         </table>
