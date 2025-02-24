@@ -17,9 +17,7 @@ class Migration(migrations.Migration):
             field=models.CharField(
                 max_length=20,
                 validators=[
-                    django.core.validators.RegexValidator(
-                        "^\\+?1?\\d{9,15}$", "Введіть дійсний номер телефону."
-                    )
+                    django.core.validators.RegexValidator("^\\+?1?\\d{9,15}$", "Введіть дійсний номер телефону.")
                 ],
                 verbose_name="Телефон",
             ),

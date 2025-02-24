@@ -35,7 +35,8 @@ class Profile(models.Model):
     phone = models.CharField(
         _("Телефон"),
         max_length=20,
-        null=True, blank=True,
+        null=True,
+        blank=True,
     )
 
     class Meta:

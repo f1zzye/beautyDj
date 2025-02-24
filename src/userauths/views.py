@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login, logout
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -8,7 +9,6 @@ from django.urls import reverse_lazy
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.hashers import check_password
 
 from userauths.forms import UserRegisterForm
 from userauths.models import Profile
@@ -53,8 +53,9 @@ def login_view(request):
         try:
             user = User.objects.get(email=email)
             if not user.is_active:
-                messages.warning(request,
-                                 "Будь ласка, підтвердіть свою електронну пошту для активації облікового запису.")
+                messages.warning(
+                    request, "Будь ласка, підтвердіть свою електронну пошту для активації облікового запису."
+                )
                 return render(request, "userauths/sign-in.html")
 
             user = authenticate(request, email=email, password=password)
@@ -133,21 +134,21 @@ def activate(request, uidb64, token):
 def change_password(request):
     user = request.user
 
-    if request.method == 'POST':
-        old_password = request.POST.get('old_password')
-        new_password = request.POST.get('new_password')
-        confirm_new_password = request.POST.get('confirm_new_password')
+    if request.method == "POST":
+        old_password = request.POST.get("old_password")
+        new_password = request.POST.get("new_password")
+        confirm_new_password = request.POST.get("confirm_new_password")
 
         if confirm_new_password != new_password:
             messages.warning(request, "Пароль не підходить!")
-            return redirect('useradmin:change_password')
+            return redirect("useradmin:change_password")
 
         if check_password(old_password, user.password):
             user.set_password(new_password)
             user.save()
             messages.success(request, "Пароль успішно змінено!")
-            return redirect('useradmin:change_password')
+            return redirect("useradmin:change_password")
         else:
             messages.warning(request, "Старий пароль невірний!")
-            return redirect('useradmin:change_password')
+            return redirect("useradmin:change_password")
     return render(request, "useradmin/change_password.html")

@@ -1,14 +1,14 @@
 from django.urls import include, path
 
-from core.views import (add_to_cart, add_to_wishlist, ajax_contact, cart,
-                        checkout, clear_cart, contacts,
-                        customer_dashboard, delete_item_from_cart,
-                        filter_products, get_price_range, index,
-                        liqpay_callback, order_detail, payment_completed,
-                        payment_failed, payment_result, product_list,
-                        products_detail, remove_from_wishlist,
-                        save_checkout_info, search, update_cart, wishlist, dashboard_settings, about_us,
-                        payment_delivery)
+from core.views import (about_us, add_to_cart, add_to_wishlist, ajax_contact,
+                        cart, checkout, clear_cart, contacts,
+                        customer_dashboard, dashboard_settings,
+                        delete_item_from_cart, filter_products,
+                        get_price_range, index, liqpay_callback, order_detail,
+                        payment_completed, payment_delivery, payment_failed,
+                        payment_result, product_list, products_detail,
+                        remove_from_wishlist, save_checkout_info, search,
+                        update_cart, wishlist)
 
 app_name = "core"
 

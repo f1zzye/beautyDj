@@ -4485,50 +4485,58 @@ IdeaparkQueue.init();
         });
     };
     root.ideapark_init_woocommerce_widget_carousel = function() {
-        $('.js-woocommerce-carousel:not(.owl-carousel)').each(function() {
-            var $this = $(this);
-            if ($('.product', $this).length > 1) {
-                var autoplay = $this.data('autoplay') === 'yes';
-                var animation_timeout = $this.data('animation-timeout');
-                var params = {
-                    center: false,
-                    autoWidth: false,
-                    loop: false,
-                    rtl: ideapark_is_rtl,
-                    nav: !$this.hasClass('h-carousel--nav-hide'),
-                    dots: !$this.hasClass('h-carousel--dots-hide'),
-                    navText: ideapark_nav_text,
-                    onInitialized: ideapark_owl_hide_arrows,
-                    responsive: {
-                        0: {
-                            items: 2,
-                            margin: 10
-                        },
-                        768: {
-                            items: 3,
-                            margin: 20
-                        },
-                        992: {
-                            items: 4,
-                            margin: 30
-                        }
+    $('.js-woocommerce-carousel:not(.owl-carousel)').each(function() {
+        var $this = $(this);
+        if ($('.product', $this).length > 1) {
+            var autoplay = $this.data('autoplay') === 'yes';
+            var animation_timeout = $this.data('animation-timeout');
+            var params = {
+                center: false,
+                autoWidth: false,
+                loop: false,
+                rtl: ideapark_is_rtl,
+                nav: !$this.hasClass('h-carousel--nav-hide'),
+                dots: !$this.hasClass('h-carousel--dots-hide'),
+                navText: ideapark_nav_text,
+                onInitialized: ideapark_owl_hide_arrows,
+                responsive: {
+                    0: { // Мобильные
+                        items: 2,
+                        margin: 10
+                    },
+                    576: { // Малые планшеты
+                        items: 2,
+                        margin: 15
+                    },
+                    768: { // Планшеты
+                        items: 2,
+                        margin: 20
+                    },
+                    991: { // Большие планшеты
+                        items: 3,
+                        margin: 25
+                    },
+                    992: { // Десктоп
+                        items: 4,
+                        margin: 30
                     }
-                };
-
-                if (autoplay) {
-                    params.autoplay = true;
-                    params.autoplayTimeout = animation_timeout;
                 }
+            };
 
-                $this.addClass('owl-carousel')
-                     .on('resized.owl.carousel', ideapark_owl_hide_arrows)
-                     .owlCarousel(params)
-                     .on('changed.owl.carousel', function() {
-                         $this.find('.owl-nav,.owl-dots').removeClass('disabled');
-                     });
+            if (autoplay) {
+                params.autoplay = true;
+                params.autoplayTimeout = animation_timeout;
             }
-        });
-    };
+
+            $this.addClass('owl-carousel')
+                 .on('resized.owl.carousel', ideapark_owl_hide_arrows)
+                 .owlCarousel(params)
+                 .on('changed.owl.carousel', function() {
+                     $this.find('.owl-nav,.owl-dots').removeClass('disabled');
+                 });
+        }
+    });
+};
     root.ideapark_init_team_widget_carousel = function() {
         $('.js-team-carousel:not(.owl-carousel)').each(function() {
             var $this = $(this);

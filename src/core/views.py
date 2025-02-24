@@ -8,21 +8,20 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import F, Max, Min, Q, Sum
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from liqpay.liqpay3 import LiqPay
 
+from core.forms import ProfileForm
 from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
                          Product, WishList)
 from userauths.models import ContactUs, Profile
-from core.forms import ProfileForm
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-from django.utils.translation import gettext_lazy as _
 
 
 def index(request):
@@ -45,11 +44,19 @@ def index(request):
 
 
 def product_list(request):
+    # Получаем параметры фильтрации
+    categories = request.GET.getlist("category[]")
     products_list = Product.objects.filter(product_status="опубліковано")
 
-    paginator = Paginator(products_list, 5)
+    # Применяем фильтр по категориям, если они выбраны
+    if categories:
+        products_list = products_list.filter(category__id__in=categories)
 
-    page = request.GET.get('page', 1)
+    # Определяем количество товаров на странице
+    items_per_page = 15  # или другое желаемое количество
+
+    paginator = Paginator(products_list, items_per_page)
+    page = request.GET.get("page", 1)
 
     try:
         products = paginator.page(page)
@@ -61,20 +68,9 @@ def product_list(request):
     context = {
         "products": products,
         "total_products": products_list.count(),
+        "show_pagination": products_list.count() > items_per_page,
     }
     return render(request, "core/product_list.html", context)
-
-
-# def category_product_list(request, cid):
-#     category = Category.objects.get(cid=cid)
-#     products = Product.objects.filter(product_status="опубліковано", category=category)
-#
-#     context = {
-#         "category": category,
-#         "products": products,
-#         "selected_category": category.id,
-#     }
-#     return render(request, "core/category-product-list.html", context)
 
 
 def products_detail(request, pid):
@@ -155,28 +151,24 @@ def filter_products(request):
     sort_by = request.GET.get("orderby", "menu_order")
     min_price = request.GET.get("min_price")
     max_price = request.GET.get("max_price")
-    search_query = request.GET.get("search_query")
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
 
     products = Product.objects.filter(product_status="опубліковано").distinct()
-
-    if search_query:
-        products = products.filter(
-            Q(title__icontains=search_query)
-            | Q(title__icontains=search_query.lower())
-            | Q(title__icontains=search_query.upper())
-            | Q(title__iregex=search_query)
-        )
-
-    if min_price:
-        products = products.filter(price__gte=min_price)
-    if max_price:
-        products = products.filter(price__lte=max_price)
 
     if categories:
         products = products.filter(category__id__in=categories)
     if brands:
         products = products.filter(brand__id__in=brands)
+    if min_price and min_price.strip():
+        try:
+            products = products.filter(price__gte=float(min_price))
+        except ValueError:
+            pass
+    if max_price and max_price.strip():
+        try:
+            products = products.filter(price__lte=float(max_price))
+        except ValueError:
+            pass
 
     if sort_by == "rating":
         products = products.order_by("title")
@@ -185,9 +177,26 @@ def filter_products(request):
     elif sort_by == "price-desc":
         products = products.order_by("price")
     else:
-        products = products.order_by("date")
+        products = products.order_by("-date")
 
-    paginator = Paginator(products, 5)
+    products_count = products.count()
+
+    if products_count == 0:
+        return JsonResponse(
+            {
+                "data": "<div class='no-products'></div>",
+                "pagination": "",
+                "count_text": "<p class='woocommerce-result-count' id='products-count'>Показано 0-0 із 0 товарів</p>",
+                "total_pages": 0,
+                "current_page": 1,
+                "show_pagination": False,
+            }
+        )
+
+    items_per_page = 15
+    show_pagination = products_count > items_per_page
+
+    paginator = Paginator(products, items_per_page)
     try:
         products_page = paginator.page(page)
     except PageNotAnInteger:
@@ -195,32 +204,46 @@ def filter_products(request):
     except EmptyPage:
         products_page = paginator.page(paginator.num_pages)
 
-    products_count = products.count()
+    data = render_to_string("core/async/product-list.html", {"products": products_page, "request": request})
 
-    word_ending = "ів"
+    pagination_html = ""
+    if show_pagination:
+        pagination_html = render_to_string(
+            "core/async/pagination.html",
+            {
+                "products": products_page,
+                "show_pagination": True,
+                "current_filters": {
+                    "categories": categories,
+                    "brands": brands,
+                    "min_price": min_price,
+                    "max_price": max_price,
+                    "sort_by": sort_by,
+                },
+            },
+        )
+
+    word_ending = ""
     if products_count == 1:
         word_ending = ""
     elif products_count in [2, 3, 4]:
         word_ending = "и"
-
-    # Рендеринг шаблонов
-    data = render_to_string("core/async/product-list.html", {
-        "products": products_page,
-        "search_query": search_query
-    })
-
-    pagination_html = render_to_string("core/async/pagination.html", {
-        "products": products_page
-    })
+    else:
+        word_ending = "ів"
 
     count_text = f"""<p class="woocommerce-result-count" id="products-count">
-        Показано {products_page.start_index()}-{products_page.end_index()} із {products_count} товар{'и' if products_count in [2, 3, 4] else 'ів' if products_count != 1 else ''}</p>"""
+        Показано {products_page.start_index()}-{products_page.end_index()} із {products_count} товар{word_ending}</p>"""
 
-    return JsonResponse({
-        "data": data,
-        "pagination": pagination_html,
-        "count_text": count_text
-    })
+    return JsonResponse(
+        {
+            "data": data,
+            "pagination": pagination_html,
+            "count_text": count_text,
+            "total_pages": paginator.num_pages if show_pagination else 1,
+            "current_page": products_page.number if show_pagination else 1,
+            "show_pagination": show_pagination,
+        }
+    )
 
 
 def get_price_range(request):
@@ -657,7 +680,7 @@ def checkout(request, oid):
         "version": "3",
         "sandbox": 0,  # Удалить для продакшн
         # 'server_url': request.build_absolute_uri(reverse("core:liqpay_callback")),
-        "server_url": request.build_absolute_uri("https://da7f-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
+        "server_url": request.build_absolute_uri("https://c414-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
         "result_url": request.build_absolute_uri(reverse("core:payment-result", args=[order.oid])),
     }
     form_html = liqpay.cnb_form(params)
@@ -736,7 +759,7 @@ def payment_failed(request, oid):
 
 @login_required
 def customer_dashboard(request):
-    orders = CartOrder.objects.filter(user=request.user).order_by('-order_date')
+    orders = CartOrder.objects.filter(user=request.user).order_by("-order_date")
     profile = Profile.objects.get(user=request.user)
 
     context = {
@@ -766,43 +789,43 @@ def dashboard_settings(request):
     except Profile.DoesNotExist:
         profile = Profile.objects.create(user=request.user)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         password_changed = False
 
-        password_current = request.POST.get('password_current')
-        password_1 = request.POST.get('password_1')
-        password_2 = request.POST.get('password_2')
+        password_current = request.POST.get("password_current")
+        password_1 = request.POST.get("password_1")
+        password_2 = request.POST.get("password_2")
 
         if any([password_current, password_1, password_2]):
             if not password_current:
                 messages.error(request, _("Введіть поточний пароль"))
-                context = {'form': form, 'profile': profile}
+                context = {"form": form, "profile": profile}
                 return render(request, "core/settings.html", context)
 
             if not request.user.check_password(password_current):
                 messages.error(request, _("Невірний поточний пароль"))
-                context = {'form': form, 'profile': profile}
+                context = {"form": form, "profile": profile}
                 return render(request, "core/settings.html", context)
 
             if not password_1:
                 messages.error(request, _("Введіть новий пароль"))
-                context = {'form': form, 'profile': profile}
+                context = {"form": form, "profile": profile}
                 return render(request, "core/settings.html", context)
 
             if not password_2:
                 messages.error(request, _("Підтвердіть новий пароль"))
-                context = {'form': form, 'profile': profile}
+                context = {"form": form, "profile": profile}
                 return render(request, "core/settings.html", context)
 
             if password_1 != password_2:
                 messages.error(request, _("Паролі не співпадають"))
-                context = {'form': form, 'profile': profile}
+                context = {"form": form, "profile": profile}
                 return render(request, "core/settings.html", context)
 
             if len(password_1) < 8:
                 messages.error(request, _("Пароль повинен містити щонайменше 8 символів"))
-                context = {'form': form, 'profile': profile}
+                context = {"form": form, "profile": profile}
                 return render(request, "core/settings.html", context)
 
             try:
@@ -813,7 +836,7 @@ def dashboard_settings(request):
             except Exception as e:
                 messages.error(request, _("Помилка при зміні пароля"))
                 print(f"Error changing password: {e}")
-                context = {'form': form, 'profile': profile}
+                context = {"form": form, "profile": profile}
                 return render(request, "core/settings.html", context)
 
         if form.is_valid():
@@ -825,12 +848,12 @@ def dashboard_settings(request):
                 if password_changed:
                     messages.success(request, _("Пароль успішно змінено"))
                 else:
-                    messages.success(request, _('Профіль успішно оновлено'))
+                    messages.success(request, _("Профіль успішно оновлено"))
 
-                if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                    return redirect('core:dashboard')
+                if not request.headers.get("X-Requested-With") == "XMLHttpRequest":
+                    return redirect("core:dashboard")
             except Exception as e:
-                messages.error(request, _('Помилка при збереженні профілю'))
+                messages.error(request, _("Помилка при збереженні профілю"))
                 print(f"Error saving profile: {e}")
         else:
             for field, errors in form.errors.items():
@@ -840,8 +863,8 @@ def dashboard_settings(request):
         form = ProfileForm(instance=profile)
 
     context = {
-        'form': form,
-        'profile': profile,
+        "form": form,
+        "profile": profile,
     }
 
     return render(request, "core/settings.html", context)

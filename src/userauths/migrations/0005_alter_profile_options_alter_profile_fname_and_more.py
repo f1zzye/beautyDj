@@ -19,30 +19,22 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="profile",
             name="fname",
-            field=models.CharField(
-                blank=True, max_length=100, null=True, verbose_name="Ім'я"
-            ),
+            field=models.CharField(blank=True, max_length=100, null=True, verbose_name="Ім'я"),
         ),
         migrations.AlterField(
             model_name="profile",
             name="image",
-            field=models.ImageField(
-                blank=True, null=True, upload_to="image", verbose_name="Зображення"
-            ),
+            field=models.ImageField(blank=True, null=True, upload_to="image", verbose_name="Зображення"),
         ),
         migrations.AlterField(
             model_name="profile",
             name="lname",
-            field=models.CharField(
-                blank=True, max_length=100, null=True, verbose_name="Прізвище"
-            ),
+            field=models.CharField(blank=True, max_length=100, null=True, verbose_name="Прізвище"),
         ),
         migrations.AlterField(
             model_name="profile",
             name="phone",
-            field=models.CharField(
-                blank=True, max_length=100, null=True, verbose_name="Телефон"
-            ),
+            field=models.CharField(blank=True, max_length=100, null=True, verbose_name="Телефон"),
         ),
         migrations.AlterField(
             model_name="profile",
@@ -56,8 +48,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="profile",
             name="username",
-            field=models.CharField(
-                blank=True, max_length=100, null=True, verbose_name="Ім'я користувача"
-            ),
+            field=models.CharField(blank=True, max_length=100, null=True, verbose_name="Ім'я користувача"),
         ),
     ]

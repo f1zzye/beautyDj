@@ -274,7 +274,51 @@
 	                    </div>
 	                </div>
 	                <nav class="woocommerce-pagination">
-						{% include "core/async/pagination.html" with products=products %}
+						{% if show_pagination %}
+							{% if products.paginator.num_pages > 1 %}
+							<ul class='page-numbers'>
+								{% if products.has_previous %}
+									<li>
+										<a class="page-numbers" href="?{% if request.GET.category %}category[]={{ request.GET.category.0 }}&{% endif %}page=1">
+											<i class="ip-menu-left page-numbers__prev-ico"></i>
+										</a>
+									</li>
+									<li>
+										<a class="page-numbers" href="?{% if request.GET.category %}category[]={{ request.GET.category.0 }}&{% endif %}page={{ products.previous_page_number }}">
+											{{ products.previous_page_number }}
+										</a>
+									</li>
+								{% endif %}
+
+								<li>
+									<span aria-current="page" class="page-numbers current">{{ products.number }}</span>
+								</li>
+
+								{% if products.has_next %}
+									<li>
+										<a class="page-numbers" href="?{% if request.GET.category %}category[]={{ request.GET.category.0 }}&{% endif %}page={{ products.next_page_number }}">
+											{{ products.next_page_number }}
+										</a>
+									</li>
+									{% if products.next_page_number != products.paginator.num_pages %}
+										{% if products.next_page_number|add:1 != products.paginator.num_pages %}
+											<li><span class="page-numbers dots">&hellip;</span></li>
+										{% endif %}
+										<li>
+											<a class="page-numbers" href="?{% if request.GET.category %}category[]={{ request.GET.category.0 }}&{% endif %}page={{ products.paginator.num_pages }}">
+												{{ products.paginator.num_pages }}
+											</a>
+										</li>
+									{% endif %}
+									<li>
+										<a class="next page-numbers" href="?{% if request.GET.category %}category[]={{ request.GET.category.0 }}&{% endif %}page={{ products.next_page_number }}">
+											<i class="ip-menu-right page-numbers__prev-ico"></i>
+										</a>
+									</li>
+								{% endif %}
+							</ul>
+							{% endif %}
+						{% endif %}
 					</nav>
 	            </div>
 	        </div>
@@ -283,30 +327,9 @@
 	    <div class="l-section l-section--container entry-content c-product-grid__cat-desc c-product-grid__cat-desc--below"></div>
 	</div>
 
-<script>
-
-function updateQueryString(key, value) {
-    let uri = window.location.href;
-    let re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-    let separator = uri.indexOf('?') !== -1 ? "&" : "?";
-
-    if (uri.match(re)) {
-        return uri.replace(re, '$1' + key + "=" + value + '$2');
-    } else {
-        return uri + separator + key + "=" + value;
-    }
-}
-
-document.querySelectorAll('.page-numbers').forEach(link => {
-    link.addEventListener('click', function(e) {
-        if (!this.classList.contains('current')) {
-            e.preventDefault();
-            let page = this.href.split('page=')[1] || 1;
-            let newUrl = updateQueryString('page', page);
-            window.location.href = newUrl;
-        }
-    });
-});
-</script>
+{% block js %}
+    <script src="{% static 'js/pagination.js' %}"></script>
+    <script src="{% static 'js/function.js' %}"></script>
+{% endblock %}
 
 {% endblock %}
