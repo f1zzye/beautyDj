@@ -19805,6 +19805,193 @@ body {
     margin-right: 2px;
 }
 
+@media (max-width: 1024px) {
+    .c-cart__products-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .c-cart__product-card {
+        min-height: 140px;
+        padding: 12px;
+    }
+
+    .c-cart__product-image {
+        width: 90px;
+        min-width: 90px;
+        height: 90px;
+        margin-right: 15px;
+    }
+
+    .c-cart__product-info {
+        padding: 8px;
+        min-width: 0;
+    }
+
+    .c-cart__totals-product-name {
+        font-size: 11px;
+        line-height: 1.4;
+        margin-bottom: 10px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .c-cart__totals-product-quantity {
+        font-size: 14px;
+        margin: 8px 0;
+    }
+
+    .variation {
+        margin: 8px 0;
+        font-size: 14px;
+    }
+
+    .c-cart__totals-price {
+        font-size: 16px;
+        margin-top: auto;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .c-cart__products-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .c-cart__product-card {
+        min-height: 130px;
+    }
+
+    .c-cart__product-image {
+        width: 80px;
+        min-width: 80px;
+        height: 80px;
+    }
+
+    .c-cart__product-info {
+        padding: 8px;
+    }
+
+    .c-cart__totals-product-name {
+        font-size: 14px;
+    }
+
+    .c-cart__totals-product-quantity {
+        font-size: 13px;
+    }
+
+    .variation {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 1024px) {
+    /* Увеличиваем ширину основного контейнера */
+    .c-cart__customer-details {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    /* Настраиваем поля формы */
+    .c-cart__billing-fields {
+        width: 100%;
+    }
+
+    /* Увеличиваем размер полей ввода */
+    .form-row {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    /* Настраиваем поля с именем и фамилией */
+    .form-row-first,
+    .form-row-last {
+        width: 100%;
+        float: none;
+    }
+
+    /* Стили для input полей */
+    .input-text,
+    select {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        min-height: 45px;
+    }
+
+    /* Стили для textarea */
+    textarea.input-text {
+        min-height: 100px;
+    }
+
+    /* Стили для label */
+    label {
+        font-size: 15px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    /* Настройка выпадающих списков */
+    select {
+        width: 100%;
+        background-position: right 10px center;
+    }
+
+    /* Улучшаем отображение поля поиска города */
+    .city-input-wrapper {
+        width: 100%;
+    }
+
+    #cityInput {
+        width: 100%;
+    }
+
+    /* Кнопка оформления заказа */
+    .c-cart__checkout-btn {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        margin-top: 20px;
+    }
+
+    /* Дополнительные поля */
+    .c-cart__additional-fields {
+        margin-top: 30px;
+    }
+
+    /* Заголовки секций */
+    .c-cart__header,
+    .wcus-checkout-fields h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+}
+
+/* Дополнительные стили для маленьких планшетов */
+@media (max-width: 768px) {
+    .c-cart__customer-details {
+        padding: 0 10px;
+    }
+
+    .input-text,
+    select {
+        padding: 10px;
+        font-size: 15px;
+        min-height: 42px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    .c-cart__header,
+    .wcus-checkout-fields h3 {
+        font-size: 18px;
+    }
+}
+
 
 /*payment-completed.html*/
 
