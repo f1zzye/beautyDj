@@ -185,7 +185,7 @@ class CartOrder(models.Model):
     paid_status = models.BooleanField(_("Статус оплати"), default=False)
     order_date = models.DateTimeField(_("Дата замовлення"), auto_now_add=True)
     product_status = models.CharField(
-        _("Статус продукту"), choices=STATUS_CHOICE, max_length=30, default="розглядається", null=True, blank=True
+        _("Статус продукту"), choices=STATUS_CHOICE, max_length=30, default="обробка", null=True, blank=True
     )
 
     sku = ShortUUIDField(_("SKU"), null=True, blank=True, length=5, prefix="SKU", max_length=20, alphabet="1234567890")

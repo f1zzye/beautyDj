@@ -20,6 +20,7 @@ from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
                          Product, WishList)
 from userauths.models import ContactUs, Profile
 from core.forms import ProfileForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.utils.translation import gettext_lazy as _
 
@@ -44,10 +45,22 @@ def index(request):
 
 
 def product_list(request):
-    products = Product.objects.filter(product_status="опубліковано")
+    products_list = Product.objects.filter(product_status="опубліковано")
+
+    paginator = Paginator(products_list, 5)
+
+    page = request.GET.get('page', 1)
+
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
 
     context = {
         "products": products,
+        "total_products": products_list.count(),
     }
     return render(request, "core/product_list.html", context)
 
@@ -142,11 +155,11 @@ def filter_products(request):
     sort_by = request.GET.get("orderby", "menu_order")
     min_price = request.GET.get("min_price")
     max_price = request.GET.get("max_price")
-    search_query = request.GET.get("search_query")  # Добавляем поисковый запрос
+    search_query = request.GET.get("search_query")
+    page = request.GET.get('page', 1)
 
     products = Product.objects.filter(product_status="опубліковано").distinct()
 
-    # Применяем поисковый фильтр, если есть запрос
     if search_query:
         products = products.filter(
             Q(title__icontains=search_query)
@@ -174,6 +187,14 @@ def filter_products(request):
     else:
         products = products.order_by("date")
 
+    paginator = Paginator(products, 5)
+    try:
+        products_page = paginator.page(page)
+    except PageNotAnInteger:
+        products_page = paginator.page(1)
+    except EmptyPage:
+        products_page = paginator.page(paginator.num_pages)
+
     products_count = products.count()
 
     word_ending = "ів"
@@ -182,13 +203,24 @@ def filter_products(request):
     elif products_count in [2, 3, 4]:
         word_ending = "и"
 
+    # Рендеринг шаблонов
     data = render_to_string("core/async/product-list.html", {
-        "products": products,
+        "products": products_page,
         "search_query": search_query
     })
-    count_text = f"Ми знайшли для вас <strong>{products_count}</strong> товар{word_ending}!"
 
-    return JsonResponse({"data": data, "count_text": count_text})
+    pagination_html = render_to_string("core/async/pagination.html", {
+        "products": products_page
+    })
+
+    count_text = f"""<p class="woocommerce-result-count" id="products-count">
+        Показано {products_page.start_index()}-{products_page.end_index()} із {products_count} товар{'и' if products_count in [2, 3, 4] else 'ів' if products_count != 1 else ''}</p>"""
+
+    return JsonResponse({
+        "data": data,
+        "pagination": pagination_html,
+        "count_text": count_text
+    })
 
 
 def get_price_range(request):
@@ -559,6 +591,7 @@ def save_checkout_info(request):
             city=city,
             state=state,
             extra_info=extra_info,
+            product_status="обробка",
         )
 
         if "cart_data_obj" in request.session:

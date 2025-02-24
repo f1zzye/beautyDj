@@ -121,8 +121,10 @@
 
 	                <div class="c-catalog-ordering ">
 	                    <div class="c-catalog-ordering__col c-catalog-ordering__col--result">
-							<p class="woocommerce-result-count" id="products-count">Ми знайшли для вас <strong>{{ products.count }}</strong> товар{% if products.count == 1 %}{% elif products.count == 2 or products.count == 3 or products.count == 4 %}и{% else %}ів{% endif %}!</p>
-	                    </div>
+							<p class="woocommerce-result-count" id="products-count">
+								Показано {{ products.start_index }}-{{ products.end_index }} із {{ total_products }} товар{% if total_products == 1 %}{% elif total_products == 2 or total_products == 3 or total_products == 4 %}и{% else %}ів{% endif %}
+							</p>
+						</div>
 	                    <div class="c-catalog-ordering__col c-catalog-ordering__col--ordering">
 							<form class="woocommerce-ordering" onsubmit="return false;">
 								{% csrf_token %}
@@ -272,19 +274,39 @@
 	                    </div>
 	                </div>
 	                <nav class="woocommerce-pagination">
-	                    <ul class='page-numbers'>
-	                        <li><span aria-current="page" class="page-numbers current">1</span></li>
-	                        <li><a class="page-numbers" href="page/2/index.htm">2</a></li>
-	                        <li><span class="page-numbers dots">&hellip;</span></li>
-	                        <li><a class="page-numbers" href="page/11/index.htm">11</a></li>
-	                        <li><a class="next page-numbers" href="page/2/index.htm"><i class="ip-menu-right page-numbers__prev-ico"></i></a></li>
-	                    </ul>
-	                </nav>
+						{% include "core/async/pagination.html" with products=products %}
+					</nav>
 	            </div>
 	        </div>
 	    </div>
 
 	    <div class="l-section l-section--container entry-content c-product-grid__cat-desc c-product-grid__cat-desc--below"></div>
 	</div>
+
+<script>
+
+function updateQueryString(key, value) {
+    let uri = window.location.href;
+    let re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+    let separator = uri.indexOf('?') !== -1 ? "&" : "?";
+
+    if (uri.match(re)) {
+        return uri.replace(re, '$1' + key + "=" + value + '$2');
+    } else {
+        return uri + separator + key + "=" + value;
+    }
+}
+
+document.querySelectorAll('.page-numbers').forEach(link => {
+    link.addEventListener('click', function(e) {
+        if (!this.classList.contains('current')) {
+            e.preventDefault();
+            let page = this.href.split('page=')[1] || 1;
+            let newUrl = updateQueryString('page', page);
+            window.location.href = newUrl;
+        }
+    });
+});
+</script>
 
 {% endblock %}

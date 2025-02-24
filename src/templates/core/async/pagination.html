@@ -1,0 +1,43 @@
+{% if products.paginator.num_pages > 1 %}
+<ul class='page-numbers'>
+    {% if products.has_previous %}
+        <li>
+            <a class="page-numbers" href="javascript:void(0);" data-page="1">
+                <i class="ip-menu-left page-numbers__prev-ico"></i>
+            </a>
+        </li>
+        <li>
+            <a class="page-numbers" href="javascript:void(0);" data-page="{{ products.previous_page_number }}">
+                {{ products.previous_page_number }}
+            </a>
+        </li>
+    {% endif %}
+
+    <li>
+        <span aria-current="page" class="page-numbers current">{{ products.number }}</span>
+    </li>
+
+    {% if products.has_next %}
+        <li>
+            <a class="page-numbers" href="javascript:void(0);" data-page="{{ products.next_page_number }}">
+                {{ products.next_page_number }}
+            </a>
+        </li>
+        {% if products.next_page_number != products.paginator.num_pages %}
+            {% if products.next_page_number|add:1 != products.paginator.num_pages %}
+                <li><span class="page-numbers dots">&hellip;</span></li>
+            {% endif %}
+            <li>
+                <a class="page-numbers" href="javascript:void(0);" data-page="{{ products.paginator.num_pages }}">
+                    {{ products.paginator.num_pages }}
+                </a>
+            </li>
+        {% endif %}
+        <li>
+            <a class="next page-numbers" href="javascript:void(0);" data-page="{{ products.next_page_number }}">
+                <i class="ip-menu-right page-numbers__prev-ico"></i>
+            </a>
+        </li>
+    {% endif %}
+</ul>
+{% endif %}
