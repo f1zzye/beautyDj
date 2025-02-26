@@ -40,73 +40,129 @@ $(document).ready(function () {
     const orderbySelect = document.querySelector('.orderby');
 
     function updateSliderRange(minPrice, maxPrice) {
-        minRange.min = minPrice;
-        minRange.max = maxPrice;
-        maxRange.min = minPrice;
-        maxRange.max = maxPrice;
+        if (minRange && maxRange) {
+            minRange.min = minPrice;
+            minRange.max = maxPrice;
+            maxRange.min = minPrice;
+            maxRange.max = maxPrice;
 
-        minRange.value = minPrice;
-        maxRange.value = maxPrice;
+            minRange.value = minPrice;
+            maxRange.value = maxPrice;
 
-        updatePriceLabels();
+            updatePriceLabels();
+        }
     }
 
     function updatePriceLabels() {
-        minLabel.textContent = parseFloat(minRange.value).toFixed(2);
-        maxLabel.textContent = parseFloat(maxRange.value).toFixed(2);
+        if (minLabel && maxLabel && minRange && maxRange) {
+            minLabel.textContent = parseFloat(minRange.value).toFixed(2);
+            maxLabel.textContent = parseFloat(maxRange.value).toFixed(2);
 
-        const percent1 = ((minRange.value - minRange.min) / (minRange.max - minRange.min)) * 100;
-        const percent2 = ((maxRange.value - minRange.min) / (minRange.max - minRange.min)) * 100;
+            const percent1 = ((minRange.value - minRange.min) / (minRange.max - minRange.min)) * 100;
+            const percent2 = ((maxRange.value - minRange.min) / (minRange.max - minRange.min)) * 100;
 
-        $('.range-track').css('background',
-            `linear-gradient(to right, 
-            #ddd ${percent1}%, 
-            #000 ${percent1}%, 
-            #000 ${percent2}%, 
-            #ddd ${percent2}%)`
-        );
+            $('.range-track').css('background',
+                `linear-gradient(to right, 
+                #ddd ${percent1}%, 
+                #000 ${percent1}%, 
+                #000 ${percent2}%, 
+                #ddd ${percent2}%)`
+            );
+        }
     }
 
     function getFilterParams() {
+        const urlParams = new URLSearchParams(window.location.search);
         let filter_object = {
-            min_price: minRange.value,
-            max_price: maxRange.value
+            page: urlParams.get('page') || 1
         };
+
+        if (minRange && maxRange) {
+            filter_object.min_price = minRange.value;
+            filter_object.max_price = maxRange.value;
+        }
 
         if (orderbySelect) {
             filter_object.orderby = orderbySelect.value;
         }
 
-        $(".filter-checkbox").each(function () {
-            let filter_value = $(this).val();
+        // Собираем только отмеченные чекбоксы
+        $(".filter-checkbox:checked").each(function () {
             let filter_key = $(this).data("filter");
-
-            filter_object[filter_key] = Array.from(
-                document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')
-            ).map(element => element.value);
+            if (!filter_object[filter_key + "[]"]) {
+                filter_object[filter_key + "[]"] = [];
+            }
+            filter_object[filter_key + "[]"].push($(this).val());
         });
 
         return filter_object;
     }
 
-    function updateProducts() {
-        const filter_object = getFilterParams();
+    function updateProducts(page = null) {
+    const filter_object = getFilterParams();
+    if (page) {
+        filter_object.page = page;
+    }
 
-        $.ajax({
-            url: '/filter-products',
-            data: filter_object,
-            dataType: 'json',
-            beforeSend: function() {
-                $('#filtered-products').addClass('loading');
-            },
-            success: function(response) {
+    // Сначала обновляем URL
+    const url = new URL(window.location.href);
+    url.searchParams.forEach((value, key) => {
+        url.searchParams.delete(key);
+    });
+
+    Object.entries(filter_object).forEach(([key, value]) => {
+        if (Array.isArray(value) && value.length > 0) {
+            value.forEach(v => url.searchParams.append(key, v));
+        } else if (value !== null && value !== '') {
+            url.searchParams.set(key, value);
+        }
+    });
+
+    $.ajax({
+        url: '/filter-products',
+        data: filter_object,
+        dataType: 'json',
+        beforeSend: function() {
+            $('#filtered-products').addClass('loading');
+        },
+        success: function(response) {
+            if (response && response.data) {
                 $('#filtered-products').html(response.data);
-                $('#products-count').html(response.count_text);
-                $('#filtered-products').removeClass('loading');
-            },
-            error: function(error) {
-                console.log('Error:', error);
-                $('#filtered-products').removeClass('loading');
+                // Обновляем пагинацию только если она есть
+                if (response.pagination) {
+                    $('.woocommerce-pagination').html(response.pagination);
+                    bindPaginationHandlers();
+                } else {
+                    // Если пагинации нет, удаляем её
+                    $('.woocommerce-pagination').empty();
+                }
+                if (response.count_text) {
+                    $('#products-count').html(response.count_text);
+                }
+                window.history.pushState({}, '', url);
+            }
+        },
+        error: function(error) {
+            console.error('Error:', error);
+        },
+        complete: function() {
+            $('#filtered-products').removeClass('loading');
+        }
+    });
+}
+
+    function bindPaginationHandlers() {
+        $('.page-numbers a').off('click').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation(); // Останавливаем всплытие события
+            const page = $(this).data('page');
+            if (page) {
+                updateProducts(page);
+                if ($('#filtered-products').length) {
+                    $('html, body').animate({
+                        scrollTop: $('#filtered-products').offset().top - 100
+                    }, 500);
+                }
             }
         });
     }
@@ -115,7 +171,7 @@ $(document).ready(function () {
     if (orderbySelect) {
         orderbySelect.addEventListener('change', function(e) {
             e.preventDefault();
-            updateProducts();
+            updateProducts(1); // Сброс на первую страницу при изменении сортировки
         });
     }
 
@@ -123,49 +179,107 @@ $(document).ready(function () {
     $(".filter-checkbox").on("change", function(event) {
         let filter_object = {};
 
-        $(".filter-checkbox").each(function () {
+        $(".filter-checkbox:checked").each(function () {
             let filter_key = $(this).data("filter");
-            filter_object[filter_key + "[]"] = Array.from(
-                document.querySelectorAll('input[data-filter=' + filter_key + ']:checked')
-            ).map(element => element.value);
+            if (!filter_object[filter_key + "[]"]) {
+                filter_object[filter_key + "[]"] = [];
+            }
+            filter_object[filter_key + "[]"].push($(this).val());
         });
 
+        // Сначала обновляем диапазон цен
         $.ajax({
             url: '/get-price-range/',
             data: {
-            ...filter_object,
-            ignore_price_filter: !this.checked
+                ...filter_object,
+                ignore_price_filter: !this.checked
             },
             dataType: 'json',
             success: function(response) {
-                updateSliderRange(response.min_price, response.max_price);
-                updateProducts();
+                if (response && typeof response.min_price !== 'undefined' && typeof response.max_price !== 'undefined') {
+                    updateSliderRange(response.min_price, response.max_price);
+                    // Только после обновления диапазона цен обновляем продукты
+                    updateProducts(1);
+                }
+            },
+            error: function(error) {
+                console.error('Error updating price range:', error);
             }
         });
-
     });
 
-    minRange.addEventListener('input', function() {
-        if (parseFloat(minRange.value) > parseFloat(maxRange.value)) {
-            minRange.value = maxRange.value;
-        }
-        updatePriceLabels();
+    // Обработчики ползунков цены
+    if (minRange && maxRange) {
+        minRange.addEventListener('input', function() {
+            if (parseFloat(minRange.value) > parseFloat(maxRange.value)) {
+                minRange.value = maxRange.value;
+            }
+            updatePriceLabels();
+        });
+
+        maxRange.addEventListener('input', function() {
+            if (parseFloat(maxRange.value) < parseFloat(minRange.value)) {
+                maxRange.value = minRange.value;
+            }
+            updatePriceLabels();
+        });
+    }
+
+    // Обработчик кнопки фильтра цены
+    $("#price-filter-btn").on("click", function() {
+        updateProducts(1); // Сброс на первую страницу при применении фильтра цены
     });
 
-    maxRange.addEventListener('input', function() {
-        if (parseFloat(maxRange.value) < parseFloat(minRange.value)) {
-            maxRange.value = minRange.value;
-        }
-        updatePriceLabels();
-    });
-
-    $("#price-filter-btn").on("click", updateProducts);
-
+    // Инициализация при загрузке страницы
     if (minRange && maxRange) {
         updatePriceLabels();
     }
-});
 
+    // Восстановление состояния из URL при загрузке страницы
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('page') || urlParams.has('category[]') || urlParams.has('brand[]') ||
+        urlParams.has('min_price') || urlParams.has('max_price') || urlParams.has('orderby')) {
+
+        // Устанавливаем значения фильтров из URL
+        if (urlParams.has('min_price') && urlParams.has('max_price') && minRange && maxRange) {
+            minRange.value = urlParams.get('min_price');
+            maxRange.value = urlParams.get('max_price');
+            updatePriceLabels();
+        }
+
+        // Восстанавливаем чекбоксы
+        urlParams.forEach((value, key) => {
+            if (key.endsWith('[]')) {
+                $(`.filter-checkbox[data-filter="${key.slice(0, -2)}"][value="${value}"]`).prop('checked', true);
+            }
+        });
+
+        updateProducts(urlParams.get('page') || 1);
+    }
+
+    // Обработчик изменения истории браузера (кнопки назад/вперед)
+    window.addEventListener('popstate', function(e) {
+        e.preventDefault();
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Восстанавливаем состояние фильтров из URL
+        if (urlParams.has('min_price') && urlParams.has('max_price') && minRange && maxRange) {
+            minRange.value = urlParams.get('min_price');
+            maxRange.value = urlParams.get('max_price');
+            updatePriceLabels();
+        }
+
+        // Восстанавливаем чекбоксы
+        $(".filter-checkbox").prop('checked', false); // Сначала снимаем все галочки
+        urlParams.forEach((value, key) => {
+            if (key.endsWith('[]')) {
+                $(`.filter-checkbox[data-filter="${key.slice(0, -2)}"][value="${value}"]`).prop('checked', true);
+            }
+        });
+
+        updateProducts(urlParams.get('page') || 1);
+    });
+});
 
 function handleAddToCart(this_val, isProductPage, currentVariationData = null) {
     const index_val = this_val.attr('data-index');

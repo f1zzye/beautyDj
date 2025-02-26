@@ -1,7 +1,7 @@
 .elementor-1131 .elementor-element.elementor-element-aaeed27:not(.elementor-motion-effects-element-type-background)>.elementor-widget-wrap,
 .elementor-1131 .elementor-element.elementor-element-aaeed27>.elementor-widget-wrap>.elementor-motion-effects-container>.elementor-motion-effects-layer {
     background-color: #F6D5DA;
-    background-image: url('/static/imgs/main/collorsbanner.jpg');
+    background-image: url('/static/imgs/main/banner1.JPEG');
     background-position: center center;
     background-size: cover;
 }
@@ -36,7 +36,7 @@
 .elementor-1131 .elementor-element.elementor-element-64ce9a3:not(.elementor-motion-effects-element-type-background)>.elementor-widget-wrap,
 .elementor-1131 .elementor-element.elementor-element-64ce9a3>.elementor-widget-wrap>.elementor-motion-effects-container>.elementor-motion-effects-layer {
     background-color: #E9DED8;
-    background-image: url('/static/imgs/main/lolabanner.png');
+    background-image: url('/static/imgs/main/banner2.JPG');
     background-position: center left;
     background-size: cover;
 }
@@ -252,7 +252,7 @@
 
     .elementor-1131 .elementor-element.elementor-element-aaeed27:not(.elementor-motion-effects-element-type-background)>.elementor-widget-wrap,
     .elementor-1131 .elementor-element.elementor-element-aaeed27>.elementor-widget-wrap>.elementor-motion-effects-container>.elementor-motion-effects-layer {
-        background-image: url('/static/imgs/main/collorsbanner.jpg');
+        background-image: url('/static/imgs/main/banner1.JPEG');
     }
 
     .elementor-1131 .elementor-element.elementor-element-eaa0ffd .c-ip-heading .c-ip-heading__inner {

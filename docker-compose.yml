@@ -15,6 +15,22 @@ services:
       - media_volume:/beautyDj/src/media
     env_file:
       - ./src/.env
+    environment:
+      - DJANGO_SUPERUSER_USERNAME=user
+      - DJANGO_SUPERUSER_EMAIL=user@gmail.com
+      - DJANGO_SUPERUSER_PASSWORD=user
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:13
+    container_name: beauty_postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pd_data:/var/lib/postgresql/data
+    env_file:
+      - ./src/.env
 
   nginx:
     image: nginx:1.19
@@ -32,3 +48,4 @@ services:
 volumes:
   static_volume:
   media_volume:
+  pd_data:
