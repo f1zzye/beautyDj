@@ -16,13 +16,7 @@ All actions should be executed from the source directory of the project and only
    source ../venv/bin/activate
    ```
    
-2. Install packages:
-   ```bash
-   poetry update
-   poetry install
-   ```
-   
-3. Run project dependencies, migrations, fill the database with the fixture data etc.:
+2. Run project dependencies, migrations, fill the database with the fixture data etc.:
    ```bash
    ./manage.py migrate
    ./manage.py loaddata <path_to_fixture_files> 
