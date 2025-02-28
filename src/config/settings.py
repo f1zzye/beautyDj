@@ -86,7 +86,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    # "default_sql": {
+    # "default_FFFFF": {
     #     "ENGINE": "django.db.backends.sqlite3",
     #     "NAME": BASE_DIR / "db.sqlite3",
     # }
@@ -150,19 +150,19 @@ LOCALE_PATHS = [
 
 # моя машина
 
-STATIC_URL = "static/"
-
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+# STATIC_URL = "static/"
+#
+# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+#
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # статика для работы с nginx
 
-# STATIC_URL = '/static/'
-#
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
-#
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
+STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
 
 
 MEDIA_URL = "/media/"

@@ -15,10 +15,6 @@ services:
       - media_volume:/beautyDj/src/media
     env_file:
       - ./src/.env
-    environment:
-      - DJANGO_SUPERUSER_USERNAME=user
-      - DJANGO_SUPERUSER_EMAIL=user@gmail.com
-      - DJANGO_SUPERUSER_PASSWORD=user
     depends_on:
       - postgres
 
