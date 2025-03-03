@@ -63,10 +63,13 @@ class Product(models.Model):
         (100, "100 мл"),
         (150, "150 мл"),
         (200, "200 мл"),
+        (240, "240 мл"),
         (250, "250 мл"),
         (300, "300 мл"),
         (400, "400 мл"),
         (500, "500 мл"),
+        (600, "600 мл"),
+        (900, "900 мл"),
         (1000, "1000 мл"),
     ]
 
@@ -87,6 +90,7 @@ class Product(models.Model):
     )
     mini_description = models.TextField(_("Короткий опис"), null=True, blank=True, default="Короткий опис товару")
     description = models.TextField(_("Опис"), null=True, blank=True, default="Повний опис товару")
+    composition = models.TextField(_("Склад"), null=True, blank=True, default="Немає")
     skin_type = models.CharField(_("Тип шкіри/волосся:"), max_length=100, null=True, blank=True, default="Тип шкіри")
 
     country_of_manufacture = models.CharField(_("Країна виробник"), max_length=100, default="Ukraine")

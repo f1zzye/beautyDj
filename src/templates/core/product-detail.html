@@ -45,6 +45,10 @@
                     <p>{{ product.description }}</p>
               <strong>Спосіб використання:</strong>
                     <p>{{ product.usage }}</p>
+              {% if product.composition != "Немає" %}
+                <strong>Склад:</strong>
+                <p>{{ product.composition }}</p>
+              {% endif %}
 
             </div>
             <div class="c-product__tabs-panel woocommerce-Tabs-panel woocommerce-Tabs-panel--additional_information panel  wc-tab " id="tab-additional_information" role="tabpanel" aria-labelledby="tab-title-additional_information" style="display: none;">
