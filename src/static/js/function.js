@@ -26,7 +26,7 @@ $(document).on('submit', '#contact-form-ajax', function (e){
         success: function(res){
             console.log('Data sent successfully');
             $('#contact-form-ajax').hide()
-            $('#message-response').html('Message sent successfully')
+            $('#message-response').html('Повідомлення успішно відправлено')
 
         }
     })

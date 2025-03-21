@@ -17711,6 +17711,18 @@ a.woocommerce-store-notice__dismiss-link {
     align-items: center
 }
 
+@media (max-width: 768px) {
+    .c-ip-social {
+        transform: translateY(-15px);
+        position: relative;
+        z-index: 1;
+    }
+
+    .elementor-widget-container {
+        margin-bottom: 10px;
+    }
+}
+
 .c-ip-social__icon {
     display: block;
     line-height: 1
@@ -20781,5 +20793,254 @@ body {
         border: none !important;
         font-size: 14px;
         color: #666;
+    }
+}
+
+/* Основные стили слайдера */
+.banner-slider:not(.slick-initialized) {
+    position: relative;
+    overflow: hidden;
+}
+
+.banner-slider:not(.slick-initialized) .banner-slide:not(:first-child) {
+    display: none;
+}
+
+.banner-slider:not(.slick-initialized) .banner-slide:first-child {
+    display: block;
+}
+
+.banner-slider {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.banner-slide {
+    height: 500px;
+    position: relative;
+}
+
+/* First Banner */
+.first-banner {
+    background-color: #F6D5DA;
+    background-image: url('/static/imgs/main/banner1.JPEG');
+    background-position: center center;
+    background-size: cover;
+}
+
+/* Second Banner */
+.second-banner {
+    background-color: #E9DED8;
+    background-image: url('/static/imgs/main/banner2.JPG');
+    background-position: center left;
+    background-size: cover;
+}
+
+/* Button Styles */
+.c-ip-button__wrap {
+    position: absolute;
+    bottom: 50px;
+    left: 50px;
+}
+
+/* Slick Slider Customization */
+.slick-prev,
+.slick-next {
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    background: #fff !important;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+    background: #fff !important;
+}
+
+.slick-prev:before,
+.slick-next:before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #000;
+    border-right: 2px solid #000;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.slick-prev:before {
+    transform: translate(-25%, -50%) rotate(-135deg);
+}
+
+.slick-next:before {
+    transform: translate(-75%, -50%) rotate(45deg);
+}
+
+.slick-prev {
+    left: 25px;
+}
+
+.slick-next {
+    right: 25px;
+}
+
+/* Стили для точек навигации */
+.slick-dots {
+    position: absolute;
+    bottom: 25px;
+    right: 25px; /* Позиционирование справа */
+    display: flex !important;
+    width: auto; /* Изменено с 100% на auto */
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: right;
+    justify-content: flex-end; /* Выравнивание по правому краю */
+}
+
+.slick-dots li {
+    position: relative;
+    display: inline-block;
+    margin: 0 5px;
+    padding: 0;
+}
+
+.slick-dots li button {
+    font-size: 0;
+    line-height: 0;
+    display: block;
+    width: 12px;
+    height: 12px;
+    padding: 0;
+    cursor: pointer;
+    color: transparent;
+    border: 1px solid #808080;
+    border-radius: 50%;
+    background: transparent;
+    outline: none;
+    position: relative;
+}
+
+.slick-dots li button:before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: transparent;
+}
+
+/* Активная точка */
+.slick-dots li.slick-active button {
+    border-color: #000;
+}
+
+.slick-dots li.slick-active button:before {
+    background: #000;
+}
+
+/* Fix for slide height */
+.slick-list,
+.slick-track {
+    height: 100%;
+}
+
+.slick-slide > div {
+    height: 100%;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .banner-slide {
+        height: 400px;
+    }
+
+    .c-ip-button__wrap {
+        bottom: 30px;
+        left: 30px;
+    }
+
+    .slick-prev,
+    .slick-next {
+        display: none !important;
+    }
+
+    .slick-dots {
+        right: 15px;
+        bottom: 15px;
+    }
+}
+
+/* Стили для баннера доставки */
+.delivery-banner {
+    width: 100%;
+    background-color: #F6D5DA; /* нежно-розовый цвет */
+    padding: 12px 0;
+    text-align: center;
+}
+
+.delivery-banner__text {
+    margin: 0;
+    font-size: 14px;
+    color: #000;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    font-family: 'Inter', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.4;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .delivery-banner {
+        padding: 8px 0;
+    }
+
+    .delivery-banner__text {
+        font-size: 12px;
+        padding: 0 15px;
+    }
+    .delivery-banner__text {
+        font-size: 11px; /* уменьшил размер шрифта */
+        padding: 0 10px; /* уменьшил отступы */
+        white-space: nowrap; /* запрещаем перенос строки */
+        width: 100%; /* убеждаемся, что текст занимает всю ширину */
+    }
+}
+
+.c-header__menu-button {
+    padding: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.c-header__menu-button-icon {
+    width: 35px; /* увеличили размер */
+    height: 35px; /* увеличили размер */
+    color: #000;
+    transition: transform 0.3s ease;
+}
+
+/* Для мобильных устройств */
+@media (max-width: 768px) {
+    .c-header__menu-button {
+        padding: 8px;
+    }
+
+    .c-header__menu-button-icon {
+        width: 28px; /* немного меньше на мобильных */
+        height: 28px;
     }
 }

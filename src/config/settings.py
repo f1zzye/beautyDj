@@ -91,7 +91,7 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 
-    # "default_ff": {
+    # "default_dd": {
     #     "ENGINE": "django.db.backends.postgresql",
     #     "NAME": config("POSTGRES_NAME"),
     #     "USER": config("POSTGRES_USER"),
