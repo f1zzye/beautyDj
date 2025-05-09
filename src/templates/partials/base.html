@@ -21,6 +21,10 @@
     <link rel='dns-prefetch' href='//stats.wp.com'>
     <link rel="alternate" type="application/rss+xml" title="MoodCosmetics &raquo; стрічка" href="feed/index.htm">
     <link rel="alternate" type="application/rss+xml" title="MoodCosmetics &raquo; Канал коментарів" href="comments/feed/index.htm">
+    <!-- Then Slick files -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 
     <script src="https://kit.fontawesome.com/dd7087f72a.js" crossorigin="anonymous"></script>
     <script type="text/javascript">
@@ -320,9 +324,18 @@
             <div class="c-header__outer c-header__outer--mobile c-header__outer--header-type-4 c-header__outer--header-type-mobile-2">
                 <div class="c-header c-header--sticky-support c-header--header-type-4 c-header--header-type-mobile-2 c-header--buttons-4 c-header--mobile js-header-mobile">
                     <div class="c-header__row">
-                        <button class="h-cb h-cb--svg c-header__menu-button js-mobile-menu-open" type="button"><i class="ip-hamburger_menu c-header__menu-button-icon"></i></button>
-                        <div class="c-header__logo">
+                        <button class="h-cb h-cb--svg c-header__menu-button js-mobile-menu-open" type="button">
+                            <svg class="c-header__menu-button-icon" width="32" height="32" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.5833 5.5459H2.75M19.25 11.0459H2.75M13.8417 16.4541H2.75"
+                                      stroke="currentColor"
+                                      stroke-width="1.5"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round">
+                                </path>
+                            </svg>
+                        </button>
 
+                        <div class="c-header__logo">
 
 
                             <a href="{% url 'core:index' %}">
@@ -691,6 +704,10 @@
                 </div>
             </div>
 
+            <div class="delivery-banner">
+                <p class="delivery-banner__text">Безкоштовна доставка при замовленні від 3000 грн</p>
+            </div>
+
             {% if messages %}
                 <div class="fade-alert-container">
                     {% for message in messages %}
@@ -754,26 +771,26 @@
                                     <div class="c-ip-banners">
                                         <div class="c-ip-banners__list c-ip-banners__list--2 js-ip-banners" data-animation="banners-slide-up" data-animation-timeout="3000">
                                             <div data-id="5209-b73cbae3" class="c-ip-banners__item c-ip-banners__item--left elementor-repeater-item-ba3d430">
-                                                <a href="" class="c-ip-banners__link">
+                                                <a href="https://mood-cosmetics.com.ua/products/?brand[]=18" class="c-ip-banners__link">
                                                     <img class="c-ip-banners__image" width="760" height="407" src="{% static 'imgs/main/banner4.png' %}" srcset="{% static 'imgs/main/banner4.png' %}" sizes="(max-width: 760px) 100vw, 760px" alt="janeke+banner" loading="lazy">
                                                     <div class="c-ip-banners__wrap c-ip-banners__wrap--stretch c-ip-banners__wrap--left">
                                                         <div class="c-ip-banners__subheader">Бальзами для губ</div>
                                                         <div class="c-ip-banners__header"><span class="c-ip-banners__header-size">LIPSS</span>
                                                         </div>
                                                         <div class="c-ip-banners__space"></div>
-                                                        <span class="c-button c-button--outline c-ip-banners__button">Переглянути</span>
+                                                        <span href="https://mood-cosmetics.com.ua/products/?brand[]=18" class="c-button c-button--outline c-ip-banners__button">Переглянути</span>
                                                     </div>
                                                 </a>
                                             </div>
                                             <div data-id="5209-b73cbae3" class="c-ip-banners__item c-ip-banners__item--left elementor-repeater-item-ba3d430">
-                                                <a href="" class="c-ip-banners__link">
+                                                <a href="https://mood-cosmetics.com.ua/products/?category[]=18&brand[]=21" class="c-ip-banners__link">
                                                     <img class="c-ip-banners__image" width="760" height="407" src="{% static 'imgs/main/banner3.png' %}" srcset="{% static 'imgs/main/banner3.png' %}" sizes="(max-width: 760px) 100vw, 760px" alt="janeke+banner" loading="lazy">
                                                     <div class="c-ip-banners__wrap c-ip-banners__wrap--stretch c-ip-banners__wrap--left">
                                                         <div class="c-ip-banners__subheader">Скраби для тіла</div>
                                                         <div class="c-ip-banners__header"><span class="c-ip-banners__header-size">TREE HUT</span>
                                                         </div>
                                                         <div class="c-ip-banners__space"></div>
-                                                        <span class="c-button c-button--outline c-ip-banners__button">Переглянути</span>
+                                                        <span href="https://mood-cosmetics.com.ua/products/?category[]=18&brand[]=21" class="c-button c-button--outline c-ip-banners__button">Переглянути</span>
                                                     </div>
                                                 </a>
                                             </div>
@@ -798,6 +815,10 @@
                                             <a href="{% url 'core:about-us' %}">
                                                 Про нас </a>
                                         </span>
+                                        <i class="ip-dot c-ip-inline-menu__separator c-ip-inline-menu__separator--dot"></i> <span class="c-ip-inline-menu__item">
+                                            <a href="{% url 'core:contacts' %}">
+                                                Контакти </a>
+                                        </span>
 <!--                                        <i class="ip-dot c-ip-inline-menu__separator c-ip-inline-menu__separator&#45;&#45;dot"></i> <span class="c-ip-inline-menu__item">-->
 <!--                                            <a href="faq/index.htm">-->
 <!--                                                FAQ </a>-->
@@ -807,8 +828,8 @@
                                                 Оплата та Доставка </a>
                                         </span>
                                         <i class="ip-dot c-ip-inline-menu__separator c-ip-inline-menu__separator--dot"></i> <span class="c-ip-inline-menu__item">
-                                            <a href="{% url 'core:contacts' %}">
-                                                Контакти </a>
+                                            <a href="{% url 'core:privacy-policy' %}">
+                                                Договір публічної оферти </a>
                                         </span>
                                     </div>
                                 </div>
@@ -858,8 +879,7 @@
                                         <div class="elementor-widget-wrap elementor-element-populated">
                                             <div class="elementor-element elementor-element-b40b0fc elementor-widget elementor-widget-image" data-id="b40b0fc" data-element_type="widget" data-widget_type="image.default">
                                                 <div class="elementor-widget-container">
-                                                    <a href="#">
-                                                        <img width="1414" height="275" src="{% static 'imgs/footerlogo.png '%}" class="attachment-full size-full wp-image-3075" alt="" srcset="{% static 'imgs/footerlogo.png '%}" sizes="(max-width: 1414px) 100vw, 1414px"> </a>
+
                                                 </div>
                                             </div>
                                             <div class="elementor-element elementor-element-23c59ef elementor-align-center elementor-widget elementor-widget-ideapark-social" data-id="23c59ef" data-element_type="widget" data-widget_type="ideapark-social.default">

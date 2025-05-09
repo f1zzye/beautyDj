@@ -59,14 +59,29 @@ class Brand(models.Model):
 class Product(models.Model):
     VOLUME_CHOICES = [
         (None, _("Без об'єму")),
+	(8, "8 мл"),
+        (30, "30 мл"),
         (50, "50 мл"),
+	(60, "60 мл"),
+        (70, "70 мл"),
         (100, "100 мл"),
+        (120, "120 мл"),
+	(135, "135 мл"),
         (150, "150 мл"),
+        (180, "180 мл"),
         (200, "200 мл"),
+        (240, "240 мл"),
         (250, "250 мл"),
+        (280, "280 мл"),
         (300, "300 мл"),
+        (350, "350 мл"),
         (400, "400 мл"),
+        (480, "480 мл"),
         (500, "500 мл"),
+        (600, "600 мл"),
+        (730, "730 мл"),
+        (750, "750 мл"),
+        (900, "900 мл"),
         (1000, "1000 мл"),
     ]
 
@@ -87,6 +102,7 @@ class Product(models.Model):
     )
     mini_description = models.TextField(_("Короткий опис"), null=True, blank=True, default="Короткий опис товару")
     description = models.TextField(_("Опис"), null=True, blank=True, default="Повний опис товару")
+    composition = models.TextField(_("Склад"), null=True, blank=True, default="Немає")
     skin_type = models.CharField(_("Тип шкіри/волосся:"), max_length=100, null=True, blank=True, default="Тип шкіри")
 
     country_of_manufacture = models.CharField(_("Країна виробник"), max_length=100, default="Ukraine")

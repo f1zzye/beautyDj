@@ -1,0 +1,60 @@
+[
+{
+  "model": "userauths.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$cgrSd5eLwnWSggdbhjf8PI$p9Mh5iiRLpxhIHAgo9QSFTcMxVF6DyTeE2xx1AnXoyk=",
+    "last_login": "2025-03-27T13:26:25.362Z",
+    "is_superuser": true,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-02-28T17:44:08.672Z",
+    "email": "user@gmail.com",
+    "username": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "userauths.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$8pLfeZCzzxDpq3xxJrxEoZ$VCKXSH7Ik1DWEvOdKOFArUiTVvoCSJ2fREudwqvypc4=",
+    "last_login": "2025-03-17T19:41:54.673Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-16T17:32:34.292Z",
+    "email": "annadidinchyk@gmail.com",
+    "username": "анна",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "userauths.profile",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "image": "",
+    "fname": null,
+    "lname": null,
+    "phone": null
+  }
+},
+{
+  "model": "userauths.profile",
+  "pk": 5,
+  "fields": {
+    "user": 5,
+    "image": "",
+    "fname": null,
+    "lname": null,
+    "phone": null
+  }
+}
+]

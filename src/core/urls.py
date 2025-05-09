@@ -8,7 +8,7 @@ from core.views import (about_us, add_to_cart, add_to_wishlist, ajax_contact,
                         payment_completed, payment_delivery, payment_failed,
                         payment_result, product_list, products_detail,
                         remove_from_wishlist, save_checkout_info, search,
-                        update_cart, wishlist)
+                        update_cart, wishlist, public_offer)
 
 app_name = "core"
 
@@ -39,5 +39,6 @@ urlpatterns = [
     path("dashboard/order/<int:id>", order_detail, name="order-detail"),
     path("dashboard/settings/", dashboard_settings, name="settings"),
     path("about-us/", about_us, name="about-us"),
+    path("privacy-policy/", public_offer, name="privacy-policy"),
     path("payment-and-delivery", payment_delivery, name="payment-and-delivery"),
 ]

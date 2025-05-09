@@ -45,7 +45,7 @@
                     {% endif %}
 
                     <div class="woocommerce-privacy-policy-text">
-                        <p>Натискаючи «Реєстрація», ви погоджуєтеся з <a href="path_to_terms_of_service_page" class="terms-of-service-link" target="_blank">Умовами обслуговування</a> та <a href="../faq/index.htm" class="woocommerce-privacy-policy-link" target="_blank">Політикою конфіденційності.</a>.</p>
+                        <p>Натискаючи «Реєстрація», ви погоджуєтеся з <a href="{% url 'core:payment-and-delivery' %}" class="terms-of-service-link" target="_blank">Умовами обслуговування</a> та <a href="{% url 'core:privacy-policy' %}" class="woocommerce-privacy-policy-link" target="_blank">Політикою конфіденційності.</a>.</p>
                     </div>
                     <div class="c-form__row">
                         <input type="hidden" id="woocommerce-register-nonce" name="woocommerce-register-nonce" value="2b3d5da06c">

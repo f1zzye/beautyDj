@@ -17,9 +17,10 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from liqpay.liqpay3 import LiqPay
+from bot.bot import send_order_notification
 
 from core.forms import ProfileForm
-from core.models import (Address, CartOrder, CartOrderItems, Category, Coupon,
+from core.models import (CartOrder, CartOrderItems, Coupon,
                          Product, WishList)
 from userauths.models import ContactUs, Profile
 
@@ -597,11 +598,20 @@ def save_checkout_info(request):
         city = address_data.get("city", request.POST.get("city", ""))
         address = address_data.get("address", address_ref)
 
+        ordered_items = []
         if "cart_data_obj" in request.session:
             for product_id, item in request.session["cart_data_obj"].items():
                 price = float(item["price"].replace(",", "."))
                 item_total = price * int(item["quantity"])
                 total_amount += item_total
+
+                ordered_items.append({
+                    "title": item["title"],
+                    "quantity": item["quantity"],
+                    "price": price,
+                    "volume": item.get("volume", ""),
+                    "total": item_total
+                })
 
         order = CartOrder.objects.create(
             user=request.user if request.user.is_authenticated else None,
@@ -616,6 +626,22 @@ def save_checkout_info(request):
             extra_info=extra_info,
             product_status="обробка",
         )
+
+        order_details = {
+            'oid': order.oid,
+            'fname': order.fname,
+            'lname': order.lname,
+            'email': order.email,
+            'phone': order.phone,
+            'address': order.address,
+            'city': order.city,
+            'state': order.state,
+            'price': order.price,
+            'paid_status': order.paid_status,
+            'items': ordered_items
+        }
+
+        send_order_notification(order_details)
 
         if "cart_data_obj" in request.session:
             for product_id, item in request.session["cart_data_obj"].items():
@@ -678,9 +704,9 @@ def checkout(request, oid):
         "description": f"Оплата замовлення №{order.oid}",
         "order_id": order.oid,
         "version": "3",
-        "sandbox": 0,  # Удалить для продакшн
+	    'sandbox': 0,
         # 'server_url': request.build_absolute_uri(reverse("core:liqpay_callback")),
-        "server_url": request.build_absolute_uri("https://c414-62-16-0-117.ngrok-free.app/billing/pay-callback/"),
+        "server_url": request.build_absolute_uri("https://3e80-62-16-15-179.ngrok-free.app/billing/pay-callback/"),
         "result_url": request.build_absolute_uri(reverse("core:payment-result", args=[order.oid])),
     }
     form_html = liqpay.cnb_form(params)
@@ -722,6 +748,34 @@ def liqpay_callback(request):
     if response["status"] == "success":
         order.paid_status = True
         order.save()
+
+        order_items = CartOrderItems.objects.filter(order=order)
+        ordered_items = []
+        for item in order_items:
+            ordered_items.append({
+                "title": item.item,
+                "quantity": item.quantity,
+                "price": float(item.price),
+                "volume": item.volume,
+                "total": float(item.total)
+            })
+
+        order_details = {
+            'oid': order.oid,
+            'fname': order.fname,
+            'lname': order.lname,
+            'email': order.email,
+            'phone': order.phone,
+            'address': order.address,
+            'city': order.city,
+            'state': order.state,
+            'price': float(order.price),
+            'paid_status': order.paid_status,
+            'items': ordered_items
+        }
+
+        send_order_notification(order_details)
+
     elif response["status"] == "failure":
         print("Payment failed")
     elif response["status"] in ["sandbox", "wait_accept", "processing", "wait_secure"]:
@@ -876,6 +930,10 @@ def about_us(request):
 
 def payment_delivery(request):
     return render(request, "core/payment-delivery.html")
+
+
+def public_offer(request):
+    return render(request, "core/public-offer.html")
 
 
 def page_not_found(request, exception):

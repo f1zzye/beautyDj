@@ -45,6 +45,10 @@
                     <p>{{ product.description }}</p>
               <strong>Спосіб використання:</strong>
                     <p>{{ product.usage }}</p>
+              {% if product.composition != "Немає" %}
+                <strong>Склад:</strong>
+                <p>{{ product.composition }}</p>
+              {% endif %}
 
             </div>
             <div class="c-product__tabs-panel woocommerce-Tabs-panel woocommerce-Tabs-panel--additional_information panel  wc-tab " id="tab-additional_information" role="tabpanel" aria-labelledby="tab-title-additional_information" style="display: none;">
@@ -202,8 +206,8 @@
                         {% if request.user.is_authenticated and product in request.user.wishlist_set.all %}active{% endif %}>
                     <i class="ip-heart c-product__wishlist-icon c-wishlist__btn-icon c-wishlist__btn-icon-normal"></i>
                     <i class="ip-heart_hover c-product__wishlist-icon c-wishlist__btn-icon c-wishlist__btn-icon--hover"></i>
-                    <span class="c-product__wishlist-text c-wishlist__btn-text-add">Add to Wishlist</span>
-                    <span class="c-product__wishlist-text c-wishlist__btn-text-remove">Remove from Wishlist</span>
+                    <span class="c-product__wishlist-text c-wishlist__btn-text-add">У список побажань</span>
+                    <span class="c-product__wishlist-text c-wishlist__btn-text-remove">Прибрати зі списоку побажань</span>
                 </button>
             </div>
             <div class="product_meta">
