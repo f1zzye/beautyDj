@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-dr%&m5pevsxk41%gg)i@c7_ed$!@lf^&y&^go)992ttz8t-x&5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", '3e80-62-16-15-179.ngrok-free.app', '127.0.0.1', "mood-cosmetics.com.ua", "45.94.157.32"]
+ALLOWED_HOSTS = ["localhost", '3e80-62-16-15-179.ngrok-free.app', '127.0.0.1', "mood-cosmetics.com.ua"]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://mood-cosmetics.com.ua',
@@ -94,7 +94,7 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 
-    # "default_FFF": {
+    # "default_dd": {
     #     "ENGINE": "django.db.backends.postgresql",
     #     "NAME": config("POSTGRES_NAME"),
     #     "USER": config("POSTGRES_USER"),
@@ -151,12 +151,21 @@ LOCALE_PATHS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+# моя машина
 
-STATIC_URL = '/static/'
+STATIC_URL = "static/"
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+# статика для работы с nginx
+
+# STATIC_URL = '/static/'
+#
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+#
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
 
 
 MEDIA_URL = "/media/"

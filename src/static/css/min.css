@@ -20832,8 +20832,13 @@ body {
 /* Second Banner */
 .second-banner {
     background-color: #E9DED8;
+<<<<<<< HEAD
     background-image: url('/static/imgs/main/banner2.jpg');
     background-position: center center;
+=======
+    background-image: url('/static/imgs/main/banner2.JPG');
+    background-position: center left;
+>>>>>>> 924ae1e626879b687db690c397175bf0f20678a3
     background-size: cover;
 }
 
@@ -20980,6 +20985,7 @@ body {
 }
 
 /* Стили для баннера доставки */
+<<<<<<< HEAD
 
 
 .c-header__menu-button {
@@ -21011,6 +21017,8 @@ body {
     }
 }
 
+=======
+>>>>>>> 924ae1e626879b687db690c397175bf0f20678a3
 .delivery-banner {
     width: 100%;
     background-color: #F6D5DA; /* нежно-розовый цвет */
@@ -21045,4 +21053,37 @@ body {
         white-space: nowrap; /* запрещаем перенос строки */
         width: 100%; /* убеждаемся, что текст занимает всю ширину */
     }
+<<<<<<< HEAD
 }
+=======
+}
+
+.c-header__menu-button {
+    padding: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.c-header__menu-button-icon {
+    width: 35px; /* увеличили размер */
+    height: 35px; /* увеличили размер */
+    color: #000;
+    transition: transform 0.3s ease;
+}
+
+/* Для мобильных устройств */
+@media (max-width: 768px) {
+    .c-header__menu-button {
+        padding: 8px;
+    }
+
+    .c-header__menu-button-icon {
+        width: 28px; /* немного меньше на мобильных */
+        height: 28px;
+    }
+}
+>>>>>>> 924ae1e626879b687db690c397175bf0f20678a3

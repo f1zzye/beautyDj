@@ -8,6 +8,7 @@ from core.models import (Address, Brand, CartOrder, CartOrderItems, Category,
 def default(request):
     categories = Category.objects.all()
     brands = Brand.objects.all()
+
     min_max_price = Product.objects.aggregate(Min("price"), Max("price"))
     min_max_price = {
         'price__min': str(min_max_price['price__min']).replace(',', '.'),
